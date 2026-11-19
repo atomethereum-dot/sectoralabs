@@ -923,7 +923,7 @@
       '<div class="sl-orbit" id="slOrbit" aria-hidden="true"></div></section>' +
       '<div class="sl-hero-stats fade-in" style="--d:.75s">' + (live() ? LIVE.statTiles(NET) : statTiles()) + "</div>" +
       (live() ? LIVE.explore(NET) : demoExplore(tabs)) + filmSec() +
-      '<section class="sl-sec"><div class="sl-head"><div><h2>' + esc(t("how_t")) + '</h2></div></div><div class="sl-steps">' +
+      '<div class="sl-light"><section class="sl-sec"><div class="sl-head"><div><h2>' + esc(t("how_t")) + '</h2></div></div><div class="sl-steps">' +
       [1, 2, 3, 4].map(function (i) {
         return '<div class="sl-step"><div class="top"><span class="n">0' + i + "</span>" + ico(stepIco[i - 1]) + "</div><h4>" + esc(t("h" + i + "_t")) + "</h4><p>" + esc(t("h" + i + "_p", { raise: raise })) + "</p>" +
           (i === 1 ? '<a class="go-link" href="#/create">' + esc(t("cta_launch")) + " →</a>" : "") + "</div>";
@@ -931,7 +931,7 @@
       '<section class="sl-sec"><div class="sl-head"><div><h2>' + esc(t("why_t")) + '</h2></div></div><p class="sl-sec-sub">' + esc(t("why_s")) + '</p><div class="sl-why">' +
       why.map(function (w, j) {
         return '<div class="sl-why-i"><div class="top"><span class="n">' + String(j + 1).padStart(2, "0") + "</span>" + ico(w[0]) + "</div><h4>" + esc(t("w" + w[1] + "_t")) + "</h4><p>" + esc(t("w" + w[1] + "_p")) + '</p><span class="vs">' + esc(t("w" + w[1] + "_v")) + "</span></div>";
-      }).join("") + "</div></section>" + endBand();
+      }).join("") + "</div></section></div>" + endBand();
   }
   function filmSec() {
     return '<section class="sl-sec sl-film"><div><span class="sl-eyebrow"><i class="rule"></i>' + esc(t("film_eb")) + " · 0:34</span><h2>" + esc(t("film_t")) + "</h2><p>" + esc(t("film_s")) + "</p>" +
