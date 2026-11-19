@@ -116,7 +116,7 @@
       r_fair: "Above the 1 % per wallet limit of the fair window", r_grad: "This coin already graduated", r_slip: "Price moved more than your slippage. Try again.",
       r_fee: "Launch fee missing", r_dev: "Your buy is above 5 % of supply", r_bal: "Not enough balance",
       soon_on: "Live on {n} networks", why_multi_t: "Any EVM network", why_multi_p: "BNB Chain, Base, Ethereum, Arbitrum, Polygon, Optimism and Avalanche today. SectoraEVM at mainnet, approx. 22 March 2027.",
-      block: "Block", usd: "≈ {u}"
+      block: "Block", usd: "≈ {u}", st_main: "SectoraEVM mainnet", days: "days", approx_d: "approx. {d}", bal_h: "Balance"
     },
     es: {
       net: "Red", net_t: "Elige la red", net_live: "Activa", net_soon: "Próximamente", sectora_demo: "SectoraEVM", sectora_note: "Mainnet aprox. {d}", sectora_menu: "Demo · mainnet aprox. {d}",
@@ -169,7 +169,7 @@
       r_fair: "Supera el límite del 1 % por cartera de la ventana justa", r_grad: "Esta moneda ya se graduó", r_slip: "El precio se movió más que tu deslizamiento. Inténtalo de nuevo.",
       r_fee: "Falta la comisión de lanzamiento", r_dev: "Tu compra supera el 5 % del supply", r_bal: "Saldo insuficiente",
       soon_on: "Activo en {n} redes", why_multi_t: "Cualquier red EVM", why_multi_p: "BNB Chain, Base, Ethereum, Arbitrum, Polygon, Optimism y Avalanche hoy. SectoraEVM con la mainnet, aprox. el 22 de marzo de 2027.",
-      block: "Bloque", usd: "≈ {u}"
+      block: "Bloque", usd: "≈ {u}", st_main: "Mainnet SectoraEVM", days: "días", approx_d: "aprox. {d}", bal_h: "Saldo"
     },
     pt: {
       net: "Rede", net_t: "Escolha a rede", net_live: "Ativa", net_soon: "Em breve", sectora_demo: "SectoraEVM", sectora_note: "Mainnet aprox. {d}", sectora_menu: "Demo · mainnet aprox. {d}",
@@ -222,7 +222,7 @@
       r_fair: "Acima do limite de 1 % por carteira da janela justa", r_grad: "Esta moeda já graduou", r_slip: "O preço mudou mais que seu slippage. Tente de novo.",
       r_fee: "Falta a taxa de lançamento", r_dev: "Sua compra passa de 5 % do supply", r_bal: "Saldo insuficiente",
       soon_on: "Ativo em {n} redes", why_multi_t: "Qualquer rede EVM", why_multi_p: "BNB Chain, Base, Ethereum, Arbitrum, Polygon, Optimism e Avalanche hoje. SectoraEVM com a mainnet, aprox. 22 de março de 2027.",
-      block: "Bloco", usd: "≈ {u}"
+      block: "Bloco", usd: "≈ {u}", st_main: "Mainnet SectoraEVM", days: "dias", approx_d: "aprox. {d}", bal_h: "Saldo"
     }
   };
   // Home / create copy that changes when the coins are real (no SECT burn outside SectoraEVM).
@@ -233,6 +233,7 @@
       w5_t: "Automatic graduation", w5_p: "When the curve sells out, the coin moves to PancakeSwap or Uniswap in the same transaction, with the LP burned.", w5_v: "Elsewhere: migrations that depend on a team server.",
       w7_p: "Prices in the network's own coin with the dollar value next to it, from live market data.",
       w9_t: "Any EVM network", w9_p: "BNB Chain, Base, Ethereum, Arbitrum, Polygon, Optimism and Avalanche today. SectoraEVM at mainnet, approx. 22 March 2027.", w9_v: "Elsewhere: one chain only.",
+      end_s: "Sectora Launch arrives on SectoraEVM approximately on 22 March 2027. Today it already runs with real coins on BNB Chain, Base, Ethereum and more.",
       h1_p: "Name, ticker, image and links. One transaction from your own wallet.",
       h3_p: "When the curve sells out, all the raised liquidity plus 200M tokens become a DEX pool and the LP is burned forever.",
       h4_p: "The creator earns 0.5 % of every curve trade and can claim it at any time.",
@@ -244,6 +245,7 @@
       w5_t: "Graduación automática", w5_p: "Cuando la curva se completa, la moneda pasa a PancakeSwap o Uniswap en la misma transacción, con el LP quemado.", w5_v: "En otras: migraciones que dependen de un servidor del equipo.",
       w7_p: "Precios en la moneda de la red con su valor en dólares al lado, con datos reales del mercado.",
       w9_t: "Cualquier red EVM", w9_p: "BNB Chain, Base, Ethereum, Arbitrum, Polygon, Optimism y Avalanche hoy. SectoraEVM con la mainnet, aprox. el 22 de marzo de 2027.", w9_v: "En otras: una sola red.",
+      end_s: "Sectora Launch llegará a SectoraEVM aproximadamente el 22 de marzo de 2027. Hoy ya funciona con monedas reales en BNB Chain, Base, Ethereum y más.",
       h1_p: "Nombre, ticker, imagen y enlaces. Una transacción desde tu propia wallet.",
       h3_p: "Cuando la curva se completa, toda la liquidez reunida y 200M de tokens forman un pool en el DEX y el LP se quema para siempre.",
       h4_p: "El creador gana el 0,5 % de cada operación en la curva y lo cobra cuando quiera.",
@@ -255,6 +257,7 @@
       w5_t: "Graduação automática", w5_p: "Quando a curva se completa, a moeda vai para a PancakeSwap ou Uniswap na mesma transação, com o LP queimado.", w5_v: "Em outras: migrações que dependem de um servidor da equipe.",
       w7_p: "Preços na moeda da rede com o valor em dólares ao lado, com dados reais do mercado.",
       w9_t: "Qualquer rede EVM", w9_p: "BNB Chain, Base, Ethereum, Arbitrum, Polygon, Optimism e Avalanche hoje. SectoraEVM com a mainnet, aprox. 22 de março de 2027.", w9_v: "Em outras: uma única rede.",
+      end_s: "O Sectora Launch chega à SectoraEVM aproximadamente em 22 de março de 2027. Hoje já funciona com moedas reais na BNB Chain, Base, Ethereum e mais.",
       h1_p: "Nome, ticker, imagem e links. Uma transação da sua própria carteira.",
       h3_p: "Quando a curva se completa, toda a liquidez reunida e 200M de tokens viram um pool na DEX e o LP é queimado para sempre.",
       h4_p: "O criador ganha 0,5 % de cada operação na curva e resgata quando quiser.",
@@ -354,6 +357,8 @@
       pair: v.pair, vN: v.vNative, vT: v.vToken, real: v.realNative, sold: v.sold, dev: v.devAmount, devClaimed: v.devClaimed
     };
   }
+  // the chain's own clock (block timestamps), so time rules match the contract exactly
+  function chainNow(k) { var sk = D[k] && D[k].skew; return Date.now() + (Math.abs(sk) > 2000 ? sk : 0); }
   function priceOf(c) { return fx(c.vN) / fx(c.vT); }
   function soldOf(c) { return fx(c.sold); }
   function progressOf(c) { return c.grad ? 1 : Math.min(1, soldOf(c) / CURVE); }
@@ -373,9 +378,9 @@
     if (st.loading) return st.loading;
     if (!force && st.at && Date.now() - st.at < 12000) return Promise.resolve(st);
     st.loading = loadCfg(k).then(function () {
-      return withRpc(k, function (p) { var f = fac(k, p); return Promise.all([f.coinsCount(), f.latestCoins(0, 120), p.getBlockNumber(), f.protocolFees()]); });
+      return withRpc(k, function (p) { var f = fac(k, p); return Promise.all([f.coinsCount(), f.latestCoins(0, 120), p.getBlock("latest"), f.protocolFees()]); });
     }).then(function (r) {
-      st.count = Number(r[0]); st.coins = r[1].map(mapCoin); st.block = r[2]; st.fees = r[3]; st.at = Date.now(); st.err = ""; st.loading = false;
+      st.count = Number(r[0]); st.coins = r[1].map(mapCoin); st.block = r[2].number; st.skew = r[2].timestamp * 1000 - Date.now(); st.fees = r[3]; st.at = Date.now(); st.err = ""; st.loading = false;
       return st;
     }, function (err) { st.loading = false; st.err = String((err && (err.shortMessage || err.message)) || err); throw err; });
     loadUsd(k);
@@ -401,9 +406,10 @@
     if (td.loading) return td.loading;
     if (!force && td.at && Date.now() - td.at < 8000) return Promise.resolve(td);
     td.loading = loadCfg(k).then(function () {
-      return withRpc(k, function (p) { return Promise.all([fac(k, p).coinView(addr), p.getBlockNumber()]); });
+      return withRpc(k, function (p) { return Promise.all([fac(k, p).coinView(addr), p.getBlock("latest")]); });
     }).then(function (r) {
-      var v = r[0], latest = r[1];
+      var v = r[0], latest = r[1].number;
+      chainState(k).skew = r[1].timestamp * 1000 - Date.now();
       if (v.creator === E.ZeroAddress) { td.missing = true; td.loading = null; td.at = Date.now(); return td; }
       td.c = mapCoin(v);
       var jobs = [loadTrades(k, td, latest)];
@@ -656,14 +662,19 @@
 
   /* ------------------------------------------------------------------ home */
   var ui = { tab: "trend", q: "", side: "buy", ctab: "trades", slip: 3 };
-  function coinCard(k, c) {
-    var pr = progressOf(c), p = priceOf(c), mc = p * 1e9;
-    return '<a class="sl-card" href="#/t/' + k + "/" + c.addr + '">' +
-      '<div class="sl-card-h">' + logoTag(c, "sl-logo") + "<div><b>" + X.esc(c.name) + "</b><span>$" + X.esc(c.sym) + "</span></div>" + chainDot(k, 10) + "</div>" +
-      '<p class="sl-card-d">' + X.esc(c.meta.d || "") + "</p>" +
-      '<div class="sl-card-m"><span class="dim">' + X.esc(lt("mc")) + "</span><span><b>" + X.esc(amt(mc, CHAINS[k].sym)) + '</b> <span class="faint">' + X.esc(usdOf(k, mc)) + "</span></span></div>" +
-      '<div class="sl-prog' + (c.grad ? " is-done" : "") + '"><i style="width:' + (pr * 100).toFixed(1) + '%"></i></div>' +
-      '<div class="sl-card-f"><span>' + (c.grad ? '<span class="sl-tag is-good">' + X.ico("check") + X.esc(lt("grad_dex", { d: CHAINS[k].dex })) + "</span>" : X.nf(pr * 100, 1) + " % " + X.esc(lt("curve"))) + "</span><span>" + X.esc(X.ago(c.created)) + "</span></div></a>";
+  function coinRow(k, c, i, extra) {
+    var pr = progressOf(c), p = priceOf(c), mc = p * 1e9, ch = CHAINS[k], href = "#/t/" + k + "/" + c.addr;
+    return '<tr data-go="' + href + '"><td class="rk">' + (i + 1) + '</td><td><div class="sl-coin">' + logoTag(c, "sl-logo") + '<div><b><a href="' + href + '">' + X.esc(c.name) + "</a></b><span>$" + X.esc(c.sym) + "</span></div></div></td>" +
+      (extra != null ? '<td class="r num">' + extra + "</td>" : "") +
+      '<td class="r num sl-hide-sm">' + X.fmtPrice(p) + ' <span class="faint">' + X.esc(ch.sym) + "</span></td>" +
+      '<td class="r num">' + X.esc(amt(mc, ch.sym)) + '<span class="usd">' + (X.esc(usdOf(k, mc)) || "&nbsp;") + "</span></td>" +
+      '<td><div class="sl-pcell"><div class="sl-prog' + (c.grad ? " is-done" : "") + '"><i style="width:' + (pr * 100).toFixed(1) + '%"></i></div><b>' + (c.grad ? X.esc(ch.dex) : X.nf(pr * 100, 1) + " %") + "</b></div></td>" +
+      '<td class="r num sl-hide-sm dim">' + X.esc(X.ago(c.created)) + "</td></tr>";
+  }
+  function coinTable(k, list, extraHead, extraFn) {
+    return '<div class="sl-table-wrap"><table class="sl-table"><thead><tr><th class="rk">#</th><th>' + X.esc(X.t("th_coin")) + "</th>" + (extraHead ? '<th class="r">' + X.esc(extraHead) + "</th>" : "") +
+      '<th class="r sl-hide-sm">' + X.esc(lt("price")) + '</th><th class="r">' + X.esc(lt("mc")) + "</th><th>" + X.esc(lt("curve")) + '</th><th class="r sl-hide-sm">' + X.esc(X.t("created")) + "</th></tr></thead><tbody>" +
+      list.map(function (c, i) { return coinRow(k, c, i, extraFn ? extraFn(c) : null); }).join("") + "</tbody></table></div>";
   }
   function filtered(k) {
     var st = chainState(k), q = ui.q.trim().toLowerCase(), cs = st.coins.slice();
@@ -681,7 +692,7 @@
     if (!st.coins.length) return '<div class="sl-empty">' + X.ico("rocket") + "<h3>" + X.esc(lt("ex_empty_t", { c: ch.name })) + "</h3><p>" + X.esc(lt("ex_empty_p")) + '</p><a class="sl-btn sl-btn-p" href="#/create">' + X.esc(X.t("cta_launch")) + "</a></div>";
     var cs = filtered(k);
     if (!cs.length) return '<div class="sl-empty"><p>' + X.esc(X.t("empty_f")) + "</p></div>";
-    return cs.map(function (c) { return coinCard(k, c); }).join("");
+    return coinTable(k, cs);
   }
   function offHtml(k) {
     var live = liveChains();
@@ -702,23 +713,25 @@
       '<label class="sl-search">' + X.ico("search") + '<span class="sr">' + X.esc(X.t("search")) + '</span><input class="sl-input" id="slLQ" type="search" placeholder="' + X.esc(X.t("search")) + '" value="' + X.esc(ui.q) + '"></label></div>' +
       netRow(net) +
       '<div class="sl-tabs" style="margin:16px 0">' + tabs.map(function (x) { return '<button data-a="ltab" data-v="' + x[0] + '"' + (ui.tab === x[0] ? ' class="on"' : "") + ">" + X.esc(X.t(x[1])) + "</button>"; }).join("") + "</div>" +
-      '<div class="sl-grid" id="slLGrid">' + gridHtml(net) + "</div></section>" + soonBand();
+      '<div class="sl-mkt" id="slLGrid">' + gridHtml(net) + "</div></section>" + soonBand();
   }
   function soonBand() {
     return '<section class="sl-sec"><div class="sl-soon"><div class="sl-soon-ic"><i class="sl-cdot is-sect" style="--s:14px"></i></div><div><span class="sl-eyebrow"><i class="rule"></i>SectoraEVM · ' + X.esc(lt("sectora_note", { d: MAINNET_TXT })) + "</span><h3>" + X.esc(lt("sectora_soon_t")) + "</h3><p>" + X.esc(lt("sectora_soon_p")) + "</p></div></div></section>";
   }
   function statTiles(net) {
     var st = chainState(net), ch = CHAINS[net], grads = st.coins.filter(function (c) { return c.grad; }).length;
-    var raised = st.coins.reduce(function (s, c) { return s + (c.grad ? 0 : fx(c.real)); }, 0);
+    var raised = st.coins.reduce(function (s2, c) { return s2 + (c.grad ? 0 : fx(c.real)); }, 0);
+    var days = Math.max(0, Math.ceil((Date.UTC(2027, 2, 22) - Date.now()) / 864e5));
     var tiles = [
-      ["rocket", lt("st_coins"), X.nf(st.count || 0, 0), ""],
-      ["check", lt("st_grad"), X.nf(grads, 0), ""],
-      ["chart", lt("st_raised"), amt(raised, ch.sym), usdOf(net, raised)],
-      ["layers", lt("st_nets"), X.nf(liveChains().length, 0), ""]
+      [lt("net"), ch.name, lt("soon_on", { n: liveChains().length }), "is-net"],
+      [lt("st_coins"), X.nf(st.count || 0, 0), deployed(net) ? lt("net_live") : lt("net_soon"), ""],
+      [lt("st_grad"), X.nf(grads, 0), ch.dex, ""],
+      [lt("st_raised"), amt(raised, ch.sym), usdOf(net, raised), ""],
+      [lt("st_main"), days + " " + lt("days"), "SectoraEVM · " + lt("approx_d", { d: MAINNET_TXT }), ""]
     ];
     return '<div class="sl-stats is-live" id="slLStats">' + tiles.map(function (x) {
-      var parts = String(x[2]).split(" ");
-      return '<div class="sl-stat"><span class="lbl">' + X.ico(x[0]) + X.esc(x[1]) + '</span><b class="big">' + X.esc(parts[0]) + (parts[1] ? "<small>" + X.esc(parts[1]) + "</small>" : "") + '</b><span class="sub">' + (x[3] ? X.esc(x[3]) : "&nbsp;") + "</span></div>";
+      var parts = String(x[1]).split(" "), big = x[3] === "is-net" ? X.esc(x[1]) : X.esc(parts[0]) + (parts[1] ? "<small>" + X.esc(parts.slice(1).join(" ")) + "</small>" : "");
+      return '<div class="sl-stat ' + x[3] + '"><span class="lbl">' + X.esc(x[0]) + '</span><b class="big">' + big + '</b><span class="sub">' + (x[2] ? X.esc(x[2]) : "&nbsp;") + "</span></div>";
     }).join("") + "</div>";
   }
   function hud(net) {
@@ -889,8 +902,8 @@
     var line = coords.map(function (p, i) { return (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1); }).join(" ");
     var col = ys[ys.length - 1] >= ys[0] ? "#14e0a0" : "#ff5c6c", area = line + " L" + W2 + " " + H + " L0 " + H + " Z";
     return '<div class="sl-chart-wrap"><svg class="sl-chart" viewBox="0 0 ' + W2 + " " + H + '" preserveAspectRatio="none"><defs><linearGradient id="slLG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="' + col + '" stop-opacity=".28"/><stop offset="1" stop-color="' + col + '" stop-opacity="0"/></linearGradient></defs>' +
-      '<path d="' + area + '" fill="url(#slLG)"/><path pathLength="1" d="' + line + '" fill="none" stroke="' + col + '" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round" style="filter:drop-shadow(0 0 5px ' + col + '88)"/></svg>' +
-      '<span class="pt" style="position:absolute;right:0;top:' + (coords[coords.length - 1][1] / H * 100).toFixed(2) + '%;width:9px;height:9px;margin:-4.5px -2px 0 0;border-radius:50%;background:' + col + ';box-shadow:0 0 0 4px ' + col + '33,0 0 14px ' + col + '"></span></div>';
+      '<path d="' + area + '" fill="url(#slLG)"/><path pathLength="1" d="' + line + '" fill="none" stroke="' + col + '" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round"/></svg>' +
+      '<span class="pt" style="position:absolute;right:0;top:' + (coords[coords.length - 1][1] / H * 100).toFixed(2) + '%;width:9px;height:9px;margin:-4.5px -2px 0 0;border-radius:50%;background:' + col + ';box-shadow:0 0 0 3px ' + col + '33"></span></div>';
   }
   function curPrice(td) { var c = td.c; return c.grad && td.pool && td.pool.t > 0 ? td.pool.n / td.pool.t : priceOf(c); }
   function priceBar(k, td) {
@@ -965,7 +978,7 @@
     }
     var dev = fx(c.dev);
     if (dev > 0) {
-      var nowS = Date.now() / 1000, startS = c.created / 1000 + CLIFF_S, vest = nowS <= startS ? 0 : Math.min(1, (nowS - startS) / VEST_S), released = dev * vest;
+      var nowS = chainNow(k) / 1000, startS = c.created / 1000 + CLIFF_S, vest = nowS <= startS ? 0 : Math.min(1, (nowS - startS) / VEST_S), released = dev * vest;
       html += '<h4 class="sl-sub">' + X.ico("lock") + X.esc(lt("cr_vest")) + '</h4><div class="sl-prog"><i style="width:' + (vest * 100).toFixed(1) + '%"></i></div><p class="sl-note">' +
         X.esc(lt("cr_vest_p", { v: X.compact(released), a: X.compact(dev), d: X.dateStr((startS + VEST_S) * 1000) })) + "</p>";
       if (mine) html += '<button class="sl-btn sl-btn-w" style="margin-top:10px" data-a="lclaimdev"' + (td.mine.claimable > 0n ? "" : " disabled") + ">" + X.esc(lt("cr_claim")) + " · " + X.esc(X.compact(fx(td.mine.claimable))) + " $" + X.esc(c.sym) + "</button>";
@@ -975,7 +988,7 @@
   function tradePanel(k, td) {
     var c = td.c, ch = CHAINS[k], side = ui.side, m = td.mine;
     var head = '<div class="sl-trade-tabs"><button class="buy' + (side === "buy" ? " on" : "") + '" data-a="lside" data-v="buy">' + X.esc(lt("t_buy")) + '</button><button class="sell' + (side === "sell" ? " on" : "") + '" data-a="lside" data-v="sell">' + X.esc(lt("t_sell")) + "</button></div>";
-    var fairLeft = c.created + FAIR_S * 1000 - Date.now();
+    var fairLeft = c.created + FAIR_S * 1000 - chainNow(k);
     var fair = !c.grad && fairLeft > 0 ? '<div class="sl-alert is-info" style="margin-bottom:14px">' + X.ico("clock") + "<span>" + X.esc(lt("t_fair", { m: X.dur(fairLeft) })) + "</span></div>" : "";
     var dexNote = c.grad ? '<div class="sl-alert is-ok" style="margin-bottom:14px">' + X.ico("check") + "<span>" + X.esc(lt("t_dex_note", { d: ch.dex })) + "</span></div>" : "";
     if (c.grad && !routerOk[k]) {
@@ -1051,7 +1064,7 @@
           if (comp) rows.push([lt("t_refund"), amt(fx(refund), ch.sym)]);
           var err = "";
           if (m && wei > m.native) err = lt("e_bal", { s: ch.sym });
-          else if (Date.now() < c.created + FAIR_S * 1000 && m && fx(m.fair) + tok > FAIR_CAP) err = lt("t_fair_cap");
+          else if (chainNow(k) < c.created + FAIR_S * 1000 && m && fx(m.fair) + tok > FAIR_CAP) err = lt("t_fair_cap");
           return { rows: rows, err: err, note: comp ? lt("t_completes", { d: ch.dex }) : "", kind: "buy", value: wei, min: comp ? 0n : minOut };
         });
       }
@@ -1079,7 +1092,7 @@
   function doTrade(k, addr) {
     var td = TD[k + ":" + addr], q = lastQ;
     if (!td || !td.c || !q || q.err || !W.addr) return;
-    var c = td.c, ch = CHAINS[k], dl = Math.floor(Date.now() / 1000) + 1200;
+    var c = td.c, ch = CHAINS[k], dl = Math.floor(chainNow(k) / 1000) + 1200;
     txFlow(k, function (s) {
       if (q.kind === "buy") return fac(k, s).buy(c.addr, q.min, { value: q.value });
       if (q.kind === "sell") return fac(k, s).sell(c.addr, q.amount, q.min);
@@ -1148,7 +1161,7 @@
     var held = st.coins.filter(function (c) { return ms.bals[c.addr] > 0n; });
     var list = function (arr, bal) {
       if (!arr.length) return '<p class="dim">' + X.esc(lt("me_none")) + "</p>";
-      return '<div class="sl-grid">' + arr.map(function (c) { return coinCard(net, c).replace('<p class="sl-card-d">', bal ? '<p class="sl-card-d"><b class="num">' + X.esc(X.compact(fx(ms.bals[c.addr]))) + " $" + X.esc(c.sym) + "</b> · " : '<p class="sl-card-d">'); }).join("") + "</div>";
+      return '<div class="sl-mkt">' + coinTable(net, arr, bal ? lt("bal_h") : null, bal ? function (c) { return X.esc(X.compact(fx(ms.bals[c.addr]))) + ' <span class="faint">$' + X.esc(c.sym) + "</span>"; } : null) + "</div>";
     };
     return '<div class="sl-pagehead"><span class="sl-eyebrow"><i class="rule"></i>' + X.esc(W.info && W.info.name || "Wallet") + "</span><h1>" + X.esc(lt("me_t")) + "</h1></div>" +
       '<div class="sl-panel"><div class="sl-kv"><span>' + X.esc(lt("w_addr")) + '</span><b class="mono">' + (isLive(net) ? addrLink(net, W.addr, W.addr) : X.esc(W.addr)) + "</b></div>" +
