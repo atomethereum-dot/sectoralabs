@@ -808,6 +808,8 @@
     else if (view === "stats") h = live() ? LIVE.stats() : vStats();
     if (live() && (view === "tokenize" || view === "assets" || view === "asset")) h = '<div class="sl-alert is-info" style="margin-bottom:18px">' + ico("info") + "<span>" + esc(t("rwa_soon")) + "</span></div>" + h;
     m.innerHTML = h;
+    document.body.classList.toggle("lt", view !== "home");
+    document.documentElement.classList.toggle("sl-ondark", view === "home");
     if (window.SLPlanet) window.SLPlanet.setHome(view === "home");
     m.className = entering ? "sl-enter" : "";
     if (entering) {
@@ -930,8 +932,7 @@
       '<button class="sl-play" type="button" data-a="film"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg>' + esc(t("film_eb")) + " · 0:34</button></div></div>" +
       '<div class="sl-orbit" id="slOrbit" aria-hidden="true"></div></section>' +
       '<div class="sl-hero-stats fade-in" style="--d:.75s">' + (live() ? LIVE.statTiles(NET) : statTiles()) + "</div>" +
-      (live() ? LIVE.explore(NET) : demoExplore(tabs)) + filmSec() + storySec() + whiteSec(why) +
-      '<div class="sl-rise sl-bleed"><div class="sl-rise-panel"><div class="sl-rise-in">' + endBand() + "</div></div></div>";
+      '<div class="sl-sheet lt"><div class="sl-sheet-in">' + (live() ? LIVE.explore(NET) : demoExplore(tabs)) + filmSec() + storySec() + whySec(why) + endBand() + "</div></div>";
   }
   // pinned, scroll-driven story: how a coin is born (canvas drawn by launch-scenes.js)
   function storySec() {
@@ -944,14 +945,12 @@
       '</ol><div class="sl-story-bar"><i></i></div><a class="sl-btn sl-btn-p" href="#/create">' + ico("rocket") + esc(t("cta_launch")) + "</a></div>" +
       '<div class="sl-story-vis"><canvas aria-hidden="true"></canvas></div></div></section>';
   }
-  // the white section: a circle opens from the dark page, then the safety cards on white
-  function whiteSec(why) {
-    var head = '<span class="sl-eyebrow"><i class="rule"></i>' + esc(t("ws_eb")) + "</span><h2>" + esc(t("why_t")) + "</h2><p>" + esc(t("why_s")) + "</p>";
-    return '<section class="sl-white sl-bleed"><div class="sl-iris"><div class="sl-iris-pin"><div class="sl-iris-t">' + head + '</div><div class="sl-iris-light"></div><div class="sl-iris-ring"></div><div class="sl-iris-t is-dark" aria-hidden="true">' + head + "</div></div></div>" +
-      '<div class="sl-white-body"><div class="sl-why">' +
+  // the safety cards
+  function whySec(why) {
+    return '<section class="sl-sec"><div class="sl-head"><div><span class="sl-eyebrow"><i class="rule"></i>' + esc(t("ws_eb")) + "</span><h2>" + esc(t("why_t")) + '</h2></div></div><p class="sl-sec-sub">' + esc(t("why_s")) + '</p><div class="sl-why">' +
       why.map(function (w, j) {
         return '<div class="sl-why-i"><div class="top"><span class="n">' + String(j + 1).padStart(2, "0") + "</span>" + ico(w[0]) + "</div><h4>" + esc(t("w" + w[1] + "_t")) + "</h4><p>" + esc(t("w" + w[1] + "_p")) + '</p><span class="vs">' + esc(t("w" + w[1] + "_v")) + "</span></div>";
-      }).join("") + "</div></div></section>";
+      }).join("") + "</div></section>";
   }
   function filmSec() {
     return '<section class="sl-sec sl-film"><div><span class="sl-eyebrow"><i class="rule"></i>' + esc(t("film_eb")) + " · 0:34</span><h2>" + esc(t("film_t")) + "</h2><p>" + esc(t("film_s")) + "</p>" +
@@ -1079,7 +1078,7 @@
     var series = [{ t: c.created, p: V_SECT0 / V_TOK0 }];
     pts.forEach(function (tr) { series.push({ t: tr.t, p: tr.pa || tr.p }); });
     var W = 800, H = 260, padT = 14, padB = 22;
-    if (series.length < 2) return '<div class="sl-chart-wrap"><svg class="sl-chart" viewBox="0 0 ' + W + " " + H + '" preserveAspectRatio="none"><line x1="0" y1="' + (H - 40) + '" x2="' + W + '" y2="' + (H - 40) + '" stroke="rgba(255,255,255,.12)" stroke-dasharray="4 6"/></svg><div class="sl-chart-empty">' + esc(t("chart_empty")) + "</div></div>";
+    if (series.length < 2) return '<div class="sl-chart-wrap"><svg class="sl-chart" viewBox="0 0 ' + W + " " + H + '" preserveAspectRatio="none"><line x1="0" y1="' + (H - 40) + '" x2="' + W + '" y2="' + (H - 40) + '" stroke="rgba(120,130,150,.35)" stroke-dasharray="4 6"/></svg><div class="sl-chart-empty">' + esc(t("chart_empty")) + "</div></div>";
     var ys = series.map(function (s) { return s.p; }), mn = Math.min.apply(null, ys), mx = Math.max.apply(null, ys);
     if (mx === mn) { mx *= 1.05; mn *= 0.95; }
     var n = series.length;
@@ -1090,7 +1089,7 @@
     });
     var line = coords.map(function (p, i) { return (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1); }).join(" ");
     var up = ys[ys.length - 1] >= ys[0];
-    var col = up ? "#14e0a0" : "#ff5c6c";
+    var col = up ? "#12b07a" : "#e5484d";
     var area = line + " L" + W + " " + H + " L0 " + H + " Z";
     return '<div class="sl-chart-wrap"><svg class="sl-chart" viewBox="0 0 ' + W + " " + H + '" preserveAspectRatio="none"><defs><linearGradient id="slG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="' + col + '" stop-opacity=".28"/><stop offset="1" stop-color="' + col + '" stop-opacity="0"/></linearGradient></defs>' +
       '<path class="ar-path" d="' + area + '" fill="url(#slG)"/><path class="ln-path" pathLength="1" d="' + line + '" fill="none" stroke="' + col + '" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round"/></svg>' +

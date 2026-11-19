@@ -979,12 +979,12 @@
     list.forEach(function (tr) { series.push({ t: tr.t, p: tr.p }); });
     if (c.grad && td.pool && td.pool.t > 0) series.push({ t: Date.now(), p: td.pool.n / td.pool.t });
     var W2 = 800, H = 260, padT = 14, padB = 22;
-    if (series.length < 2) return '<div class="sl-chart-wrap"><svg class="sl-chart" viewBox="0 0 ' + W2 + " " + H + '" preserveAspectRatio="none"><line x1="0" y1="' + (H - 40) + '" x2="' + W2 + '" y2="' + (H - 40) + '" stroke="rgba(255,255,255,.12)" stroke-dasharray="4 6"/></svg><div class="sl-chart-empty">' + X.esc(X.t("chart_empty")) + "</div></div>";
+    if (series.length < 2) return '<div class="sl-chart-wrap"><svg class="sl-chart" viewBox="0 0 ' + W2 + " " + H + '" preserveAspectRatio="none"><line x1="0" y1="' + (H - 40) + '" x2="' + W2 + '" y2="' + (H - 40) + '" stroke="rgba(120,130,150,.35)" stroke-dasharray="4 6"/></svg><div class="sl-chart-empty">' + X.esc(X.t("chart_empty")) + "</div></div>";
     var ys = series.map(function (s) { return s.p; }), mn = Math.min.apply(null, ys), mx = Math.max.apply(null, ys);
     if (mx === mn) { mx *= 1.05; mn *= 0.95; }
     var n = series.length, coords = series.map(function (s, i) { return [(i / (n - 1)) * W2, padT + (1 - (s.p - mn) / (mx - mn)) * (H - padT - padB)]; });
     var line = coords.map(function (p, i) { return (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1); }).join(" ");
-    var col = ys[ys.length - 1] >= ys[0] ? "#14e0a0" : "#ff5c6c", area = line + " L" + W2 + " " + H + " L0 " + H + " Z";
+    var col = ys[ys.length - 1] >= ys[0] ? "#12b07a" : "#e5484d", area = line + " L" + W2 + " " + H + " L0 " + H + " Z";
     return '<div class="sl-chart-wrap"><svg class="sl-chart" viewBox="0 0 ' + W2 + " " + H + '" preserveAspectRatio="none"><defs><linearGradient id="slLG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="' + col + '" stop-opacity=".28"/><stop offset="1" stop-color="' + col + '" stop-opacity="0"/></linearGradient></defs>' +
       '<path d="' + area + '" fill="url(#slLG)"/><path pathLength="1" d="' + line + '" fill="none" stroke="' + col + '" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round"/></svg>' +
       '<span class="pt" style="position:absolute;right:0;top:' + (coords[coords.length - 1][1] / H * 100).toFixed(2) + '%;width:9px;height:9px;margin:-4.5px -2px 0 0;border-radius:50%;background:' + col + ';box-shadow:0 0 0 3px ' + col + '33"></span></div>';

@@ -42,7 +42,6 @@
   var lerp = function (a, b, k) { return a + (b - a) * k; };
   var o3 = function (x) { return 1 - Math.pow(1 - x, 3); };
   var io3 = function (x) { return x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
-  function rng(seed) { var a = seed >>> 0; return function () { a = (a + 0x6D2B79F5) >>> 0; var t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
 
   var SMALL = Math.min(innerWidth, innerHeight) < 620;
   var dpr = SMALL ? Math.min(devicePixelRatio || 1, 2) : Math.min(2, Math.max(1.25, devicePixelRatio || 1));
@@ -108,14 +107,6 @@
     fragmentShader: "uniform float uA; uniform vec2 uFade; uniform float uOp; varying vec3 vNv; varying vec3 vN; void main(){ float f=pow(clamp(abs(vNv.z)/0.37,0.,1.),5.0)*uOp*smoothstep(uFade.x,uFade.y,gl_FragCoord.y); float lam=clamp(dot(vN,normalize(vec3(-.35,.75,.55)))*.5+.5,0.,1.); gl_FragColor=vec4(vec3(.75,.84,1.0), f*.20*(.30+.70*lam)*uA);} " });
   var atmo = new T.Mesh(new T.SphereGeometry(1.075, 96, 64), atmoMat); atmo.renderOrder = 1; root.add(atmo);
 
-  /* stars */
-  var R = rng(2027), NS = SMALL ? 1200 : 2400, spos = new Float32Array(NS * 3), ssz = new Float32Array(NS), sfa = new Float32Array(NS);
-  for (var i = 0; i < NS; i++) { var rr = 13 + R() * 17, th = R() * 6.2832, ph = Math.acos(2 * R() - 1); spos[i * 3] = rr * Math.sin(ph) * Math.cos(th); spos[i * 3 + 1] = rr * Math.sin(ph) * Math.sin(th); spos[i * 3 + 2] = rr * Math.cos(ph); ssz[i] = 0.9 + Math.pow(R(), 2.6) * 4.0; sfa[i] = R() * 6.283; }
-  var sg = new T.BufferGeometry(); sg.setAttribute("position", new T.BufferAttribute(spos, 3)); sg.setAttribute("aSize", new T.BufferAttribute(ssz, 1)); sg.setAttribute("aFase", new T.BufferAttribute(sfa, 1));
-  var starMat = new T.ShaderMaterial({ transparent: true, depthWrite: false, blending: T.AdditiveBlending, uniforms: { uDpr: { value: dpr }, uT: { value: 0 }, uA: { value: 1 } },
-    vertexShader: "attribute float aSize; attribute float aFase; uniform float uDpr, uT; varying float vA; void main(){ vec4 mv = modelViewMatrix * vec4(position,1.0); float pp = 0.72 + 0.28 * sin(uT * 1.15 + aFase); vA = (0.46 + 0.54 * (aSize/5.1)) * pp; gl_PointSize = max(1.0, aSize * uDpr); gl_Position = projectionMatrix * mv; }",
-    fragmentShader: "uniform float uA; varying float vA; void main(){ float d = length(gl_PointCoord - 0.5); if (d > 0.5) discard; gl_FragColor = vec4(vec3(0.86,0.91,1.0), smoothstep(0.42, 0.02, d) * vA * uA); }" });
-  scene.add(new T.Points(sg, starMat));
 
   /* ---------- framing: the planet follows the #slOrbit box at the bottom of the hero ---------- */
   function frameFor(cx, cy, rad) {
@@ -161,7 +152,6 @@
     globe.rotation.set(.24, SPIN0 + (t - END) * .03, 0);
     surfMat.uniforms.uDiss.value = o3(seg(t, .2, 1.3));
     haloMat.uniforms.uA.value = seg(t, .3, 1.4); atmoMat.uniforms.uA.value = seg(t, .3, 1.4);
-    starMat.uniforms.uT.value = t; starMat.uniforms.uA.value = seg(t, 0, 1);
     var sw = seg(t, 1.2, 2.5); SWEEP.value.set(lerp(-.8, .8, io3(sw)), Math.sin(Math.PI * sw) * .9);
     if (lock) {
       var out = seg(t, 2.25, 2.6);
@@ -176,7 +166,7 @@
     if (!reduce) spin += dt * .03;
     globe.rotation.set(.24, SPIN0 + spin, 0);
     surfMat.uniforms.uDiss.value = 1; haloMat.uniforms.uA.value = 1; atmoMat.uniforms.uA.value = 1;
-    starMat.uniforms.uT.value = t; starMat.uniforms.uA.value = 1; SWEEP.value.set(0, 0);
+    SWEEP.value.set(0, 0);
   }
 
   function scrollFade() {
