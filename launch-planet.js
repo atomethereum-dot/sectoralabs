@@ -79,29 +79,30 @@
   /* ---------- planet: same look as the Dashboard globe ---------- */
   var LIGHT = new T.Vector3(-0.35, 0.75, 0.55).normalize();
   var root = new T.Group(); scene.add(root);
+  var FADE = { value: new T.Vector2(-2, -1) }, OPAC = { value: 1 }; // screen-space fade (device px from the bottom) and overall opacity
   var globe = new T.Group(); root.add(globe);
   var surfMat = new T.ShaderMaterial({
     transparent: true,
-    uniforms: { uMask: { value: landMask(SMALL ? 1024 : 2048) }, uDiss: { value: 1 }, uL: { value: LIGHT } },
+    uniforms: { uMask: { value: landMask(SMALL ? 1024 : 2048) }, uDiss: { value: 1 }, uL: { value: LIGHT }, uFade: FADE, uOp: OPAC },
     vertexShader: "varying vec2 vUv; varying vec3 vN; varying vec3 vNv;\n" +
       "void main(){ vUv = uv; vN = normalize(mat3(modelMatrix) * normal); vNv = normalize(normalMatrix * normal); gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }",
-    fragmentShader: "uniform sampler2D uMask; uniform float uDiss; uniform vec3 uL; varying vec2 vUv; varying vec3 vN; varying vec3 vNv;\n" +
+    fragmentShader: "uniform sampler2D uMask; uniform float uDiss; uniform vec3 uL; uniform vec2 uFade; uniform float uOp; varying vec2 vUv; varying vec3 vN; varying vec3 vNv;\n" +
       "float h21(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }\n" +
       "void main(){ float land = texture2D(uMask, vUv).r;\n" +
       "  vec3 base = mix(vec3(0.020, 0.027, 0.050), vec3(0.125, 0.145, 0.190), land);\n" +
       "  float lam = clamp(dot(vN, uL) * 0.5 + 0.5, 0.0, 1.0); base *= 0.32 + 0.95 * pow(lam, 1.35);\n" +
       "  float edge = 1.0 - abs(vNv.z); base += vec3(1.0) * pow(edge, 13.5) * 0.80 * (0.5 + 0.5 * lam); base += vec3(1.0) * pow(edge, 4.5) * 0.075;\n" +
       "  if (step(h21(floor(vUv * vec2(96.0, 48.0))), uDiss) < 0.5) discard;\n" +
-      "  gl_FragColor = vec4(base, 1.0); }"
+      "  gl_FragColor = vec4(base, uOp * smoothstep(uFade.x, uFade.y, gl_FragCoord.y)); }"
   });
   globe.add(new T.Mesh(new T.SphereGeometry(1, SMALL ? 128 : 192, SMALL ? 90 : 132), surfMat));
-  var haloMat = new T.ShaderMaterial({ transparent: true, side: T.BackSide, depthWrite: false, blending: T.AdditiveBlending, uniforms: { uA: { value: 1 } },
+  var haloMat = new T.ShaderMaterial({ transparent: true, side: T.BackSide, depthWrite: false, blending: T.AdditiveBlending, uniforms: { uA: { value: 1 }, uFade: FADE, uOp: OPAC },
     vertexShader: "varying vec3 vNv; varying vec3 vN; void main(){ vNv=normalize(normalMatrix*normal); vN=normalize(mat3(modelMatrix)*normal); gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);} ",
-    fragmentShader: "uniform float uA; varying vec3 vNv; varying vec3 vN; void main(){ float f=pow(clamp(abs(vNv.z)/0.70,0.,1.),3.2); float lam=clamp(dot(vN,normalize(vec3(-.35,.75,.55)))*.5+.5,0.,1.); gl_FragColor=vec4(vec3(.16,.38,.95), f*.26*(.25+.75*lam)*uA);} " });
+    fragmentShader: "uniform float uA; uniform vec2 uFade; uniform float uOp; varying vec3 vNv; varying vec3 vN; void main(){ float f=pow(clamp(abs(vNv.z)/0.70,0.,1.),3.2)*uOp*smoothstep(uFade.x,uFade.y,gl_FragCoord.y); float lam=clamp(dot(vN,normalize(vec3(-.35,.75,.55)))*.5+.5,0.,1.); gl_FragColor=vec4(vec3(.16,.38,.95), f*.26*(.25+.75*lam)*uA);} " });
   var halo = new T.Mesh(new T.SphereGeometry(1.42, 64, 48), haloMat); halo.renderOrder = 1; root.add(halo);
-  var atmoMat = new T.ShaderMaterial({ transparent: true, side: T.BackSide, depthWrite: false, blending: T.AdditiveBlending, uniforms: { uA: { value: 1 } },
+  var atmoMat = new T.ShaderMaterial({ transparent: true, side: T.BackSide, depthWrite: false, blending: T.AdditiveBlending, uniforms: { uA: { value: 1 }, uFade: FADE, uOp: OPAC },
     vertexShader: haloMat.vertexShader,
-    fragmentShader: "uniform float uA; varying vec3 vNv; varying vec3 vN; void main(){ float f=pow(clamp(abs(vNv.z)/0.37,0.,1.),5.0); float lam=clamp(dot(vN,normalize(vec3(-.35,.75,.55)))*.5+.5,0.,1.); gl_FragColor=vec4(vec3(.75,.84,1.0), f*.20*(.30+.70*lam)*uA);} " });
+    fragmentShader: "uniform float uA; uniform vec2 uFade; uniform float uOp; varying vec3 vNv; varying vec3 vN; void main(){ float f=pow(clamp(abs(vNv.z)/0.37,0.,1.),5.0)*uOp*smoothstep(uFade.x,uFade.y,gl_FragCoord.y); float lam=clamp(dot(vN,normalize(vec3(-.35,.75,.55)))*.5+.5,0.,1.); gl_FragColor=vec4(vec3(.75,.84,1.0), f*.20*(.30+.70*lam)*uA);} " });
   var atmo = new T.Mesh(new T.SphereGeometry(1.075, 96, 64), atmoMat); atmo.renderOrder = 1; root.add(atmo);
 
   /* stars */
@@ -160,16 +161,18 @@
   function heroFrame() {
     if (!anchor || !anchor.isConnected) anchor = document.getElementById("slOrbit");
     var r = anchor && anchor.getBoundingClientRect();
-    if (r && r.width > 10 && r.height > 10) {
-      anchorRect = r;
-      var wide = innerWidth >= 960, rad = wide ? Math.min(r.width * .37, r.height * .42) : Math.min(r.width * .30, r.height * .40);
-      return frameFor(r.left + r.width * (wide ? .56 : .5), r.top + r.height * .5, rad);
-    }
-    anchorRect = null;
-    var w = innerWidth, h = innerHeight;
-    if (w < 960) return frameFor(w * .5, h * .8, w * .32);
-    return frameFor(w * .76, h * .5, Math.min(h * .34, w * .22));
+    var w = innerWidth, h = innerHeight, wide = w >= 960;
+    if (!(r && r.width > 10 && r.height > 10)) r = { left: 0, width: w, top: h * .62, height: h * .3, bottom: h * .92 };
+    anchorRect = r;
+    var rad = wide ? Math.min(w * .44, 860) : w * .9;
+    return frameFor(r.left + r.width * .5, r.top + r.height * .04 + rad, rad);
   }
+  // fade of the cover planet: solid near its rim, gone a little below the hero
+  function heroFade() {
+    var r = anchorRect, k = renderer.getPixelRatio();
+    return { a: (innerHeight - (r.bottom + r.height * .1)) * k, b: (innerHeight - (r.top + r.height * .05)) * k };
+  }
+  var HERO_OP = .55;
   function place(f) { root.position.set(f.x, f.y, 0); camera.position.set(0, 0, f.d); camera.lookAt(0, 0, 0); }
 
   /* ---------- intro overlay text ---------- */
@@ -202,13 +205,15 @@
   var t0 = 0, last = 0, raf = 0, home = homeRoute, visible = true, skipAt = -1, introOver = !playIntro, hadLaunch = false;
   var spin = 0;
   function frameIntro(t) {
-    var A = introFrame(), H = heroFrame(), m = io3(seg(t, 2.9, END));
+    var A = introFrame(), H = heroFrame(), m = io3(seg(t, 2.9, END)), hf = heroFade(), off = -innerHeight * renderer.getPixelRatio();
     place({ d: lerp(A.d, H.d, m), x: lerp(A.x, H.x, m), y: lerp(A.y, H.y, m) });
-    globe.rotation.set(.32 + .18 * m, -1.9 + t * .09, 0);
+    FADE.value.set(lerp(off * 2, hf.a, m), lerp(off, hf.b, m)); OPAC.value = lerp(1, HERO_OP, m);
+    globe.rotation.set(.32 - .08 * m, -1.9 + t * .09, 0);
     surfMat.uniforms.uDiss.value = o3(seg(t, .1, 1.4));
     haloMat.uniforms.uA.value = seg(t, .5, 1.6); atmoMat.uniforms.uA.value = seg(t, .4, 1.5);
     starMat.uniforms.uT.value = t; starMat.uniforms.uA.value = .3 + .7 * seg(t, 0, 1.2);
-    orbitMat.opacity = .3 * seg(t, ARRIVE - .3, END);
+    var keep = 1 - seg(t, 3.2, 4.0);
+    orbitMat.opacity = .3 * seg(t, ARRIVE - .3, ARRIVE + .3) * keep;
     // countdown and system log
     var n = Math.max(0, 10 - Math.floor(seg(t, .3, LIFT) * 10));
     if (big) big.textContent = String(n).padStart(2, "0");
@@ -220,25 +225,24 @@
     pulse.position.copy(P0); var pk = seg(t, LIFT - .05, LIFT + .9); pulse.visible = pk > 0 && pk < 1; pulse.scale.setScalar(.02 + pk * .5); pulse.material.opacity = .9 * (1 - pk);
     if (t >= LIFT) {
       hadLaunch = true;
-      curve.getPoint(e, tmp); mark.position.copy(tmp); mark.material.opacity = seg(t, LIFT, LIFT + .15);
+      curve.getPoint(e, tmp); mark.position.copy(tmp); mark.material.opacity = seg(t, LIFT, LIFT + .15) * keep;
       var n2 = Math.max(2, Math.floor(e * (trailN - 1)) + 1);
       for (var j = 0; j < n2; j++) { curve.getPoint(e * j / (n2 - 1), tmp); trailPos[j * 3] = tmp.x; trailPos[j * 3 + 1] = tmp.y; trailPos[j * 3 + 2] = tmp.z; }
       trailGeo.attributes.position.needsUpdate = true; trailGeo.setDrawRange(0, n2);
-      trailMat.opacity = .85 * (1 - seg(t, ARRIVE, ARRIVE + 1.2));
+      trailMat.opacity = .85 * (1 - seg(t, ARRIVE, ARRIVE + 1.2)) * keep;
       if (t > ARRIVE) { orbitPoint(ORBIT_A0 + (t - ARRIVE) * ORBIT_W, tmp); mark.position.copy(tmp); }
     } else { mark.material.opacity = 0; mark.position.copy(P0); }
   }
   var heroTick = 0;
   function frameHero(t, dt) {
     place(heroFrame());
+    var hf = heroFade(); FADE.value.set(hf.a, hf.b); OPAC.value = HERO_OP;
     if (reduce) { t = END; dt = 0; }
-    spin += dt * .035;
-    globe.rotation.set(.5, -1.9 + 4.3 * .09 + spin, 0);
+    spin += dt * .03;
+    globe.rotation.set(.24, -1.9 + 4.3 * .09 + spin, 0);
     surfMat.uniforms.uDiss.value = 1; haloMat.uniforms.uA.value = 1; atmoMat.uniforms.uA.value = 1;
     starMat.uniforms.uT.value = t; starMat.uniforms.uA.value = 1;
-    orbitMat.opacity = .3; trailMat.opacity = 0; pulse.visible = false;
-    orbitPoint(ORBIT_A0 + (t - ARRIVE) * ORBIT_W, tmp); mark.position.copy(tmp); mark.material.opacity = 1;
-    // behind the planet the mark is hidden by depth (sprites are depth-tested)
+    orbitMat.opacity = 0; trailMat.opacity = 0; pulse.visible = false; mark.material.opacity = 0;
   }
   mark.material.depthTest = true;
 

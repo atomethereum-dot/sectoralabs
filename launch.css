@@ -632,20 +632,17 @@ html.li-run, html.li-run body { overflow: hidden; }
 html.sl-top0 .sl-top { background: transparent; border-bottom-color: transparent; }
 html.sl-top0 .sl-banner { background: transparent; }
 
-/* ---------- hero: headline left, the planet on the right ---------- */
-.sl-hero { grid-template-columns: minmax(0, 1fr) minmax(0, 1.04fr); gap: clamp(20px, 3vw, 48px); align-items: stretch; padding: clamp(26px, 6vh, 74px) 0 clamp(24px, 4vh, 44px); min-height: max(480px, calc(100svh - 268px)); }
-.sl-hero-txt { display: flex; flex-direction: column; justify-content: center; position: relative; z-index: 1; }
-.sl-hero-facts { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 22px; margin-top: 34px; padding-top: 20px; border-top: 1px solid var(--hair); max-width: 560px; }
+/* ---------- hero: centred headline, the planet rises faded beneath it ---------- */
+.sl-hero { display: block; position: relative; text-align: center; padding: clamp(40px, 9vh, 104px) 0 clamp(170px, 28vh, 290px); }
+.sl-hero-txt { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; }
+.sl-hero h1 { font-size: clamp(36px, 5.2vw, 76px); }
+.sl-hero-p { margin: 0 auto; max-width: 60ch; }
+.sl-hero-cta { justify-content: center; }
+.sl-hero-facts { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px 22px; margin-top: 30px; }
 .sl-hero-facts span { display: inline-flex; align-items: center; gap: 9px; font-family: var(--mono); font-size: 9.5px; letter-spacing: .17em; text-transform: uppercase; color: var(--ink3); white-space: nowrap; }
 .sl-hero-facts span i { width: 5px; height: 5px; background: var(--key); display: block; flex: none; }
-.sl-hero-facts .sl-play { margin-left: auto; }
-.sl-orbit { position: relative; min-height: 440px; pointer-events: none; }
-.sl-orb-l { position: absolute; display: flex; align-items: center; gap: 9px; font-family: var(--mono); font-size: 9px; letter-spacing: .22em; text-transform: uppercase; color: var(--ink4); white-space: nowrap; }
-.sl-orb-l::before { content: ""; width: 16px; height: 1px; background: var(--key); }
-.sl-orb-l.a { top: 4%; right: 2%; }
-.sl-orb-l.b { bottom: 3%; left: 4%; }
-html:not(.sl-gl) .sl-orbit { display: none; }
-html:not(.sl-gl) .sl-hero { grid-template-columns: minmax(0, 1fr); min-height: 0; }
+.sl-orbit { position: absolute; left: 0; right: 0; bottom: 0; height: 27%; pointer-events: none; }
+html:not(.sl-gl) .sl-hero { padding-bottom: clamp(30px, 5vh, 52px); }
 .sl-hero-stats .sl-stat { background: rgba(10, 13, 19, .86); }
 .sl-filmbox { border: 1px solid var(--hair); background: var(--surf); }
 .sl-filmbox-v { position: relative; aspect-ratio: 16 / 9; background: #000; }
@@ -727,10 +724,8 @@ html.sl-lb-open, html.sl-lb-open body { overflow: hidden; }
 .sl-cd-row .lbl { margin: 10px 0 0; font-size: 9px; }
 
 @media (max-width: 960px) {
-  .sl-hero { grid-template-columns: minmax(0, 1fr); min-height: 0; padding-bottom: 8px; gap: 0; }
-  .sl-hero { padding-top: 0; }
-  .sl-orbit { order: -1; min-height: 0; height: min(76vw, 460px); margin: 0 calc(var(--pad) * -1) 6px; }
-  .sl-orb-l.a { top: 10%; right: var(--pad); } .sl-orb-l.b { bottom: 4%; left: var(--pad); }
+  .sl-hero { padding: 34px 0 clamp(150px, 48vw, 250px); }
+  .sl-orbit { height: 24%; }
   .sl-film { grid-template-columns: minmax(0, 1fr); }
   .sl-end { grid-template-columns: minmax(0, 1fr); }
   .sl-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
