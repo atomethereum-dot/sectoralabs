@@ -798,3 +798,13 @@ html.sl-lb-open, html.sl-lb-open body { overflow: hidden; }
   .sl-pcell b { min-width: 0; }
   .sl-mkt .sl-table th:last-child, .sl-mkt .sl-table td:last-child { padding-right: 14px; }
 }
+
+/* ---------- SECT market: pay toggle and route notes ---------- */
+.sl-pay { display: flex; align-items: center; gap: 6px; margin: 0 0 14px; }
+.sl-pay > span { margin-right: auto; font-family: var(--mono); font-size: 9.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--ink4); }
+.sl-pay button { padding: 7px 14px; border: 1px solid var(--hair); color: var(--ink2); font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em; transition: border-color .2s var(--ease); }
+.sl-pay button:hover { border-color: var(--rule); }
+.sl-pay button.on { border-color: var(--key); color: var(--ink); background: rgba(21, 105, 255, .1); }
+.sl-field .sl-pay { justify-content: flex-start; }
+.sl-route { margin: -4px 0 14px; font-size: 12px; line-height: 1.55; color: var(--ink4); }
+.sl-route a { color: var(--blue); }
