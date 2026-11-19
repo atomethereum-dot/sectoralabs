@@ -606,25 +606,17 @@ html.li-run, html.li-run body { overflow: hidden; }
 #slGlobe.is-intro { z-index: 401; }
 .li { position: fixed; inset: 0; z-index: 400; background: #05070b; transition: opacity .45s var(--ease), visibility .45s; }
 .li.out, .li-ui.out { opacity: 0; visibility: hidden; pointer-events: none; }
-.li-ui { position: fixed; inset: 0; z-index: 402; pointer-events: none; font-family: var(--mono); text-transform: uppercase; color: var(--ink3); }
-.li-c { position: absolute; font-size: 10px; letter-spacing: .26em; white-space: nowrap; }
-.li-tl { top: 22px; left: var(--pad); display: flex; align-items: center; gap: 11px; color: var(--ink); font-size: 11.5px; letter-spacing: .28em; }
-.li-tl em { font-style: normal; color: var(--blue); }
-.li-tr { top: 32px; right: var(--pad); }
-.li-bl { bottom: 30px; left: var(--pad); }
-.li-br { bottom: 30px; right: var(--pad); }
-.li-count { position: absolute; left: var(--pad); top: 50%; transform: translateY(-46%); }
-.li-lbl { display: block; font-size: 10.5px; letter-spacing: .26em; color: var(--blue); }
-.li-big { display: block; font-family: var(--sans); font-weight: 200; font-size: clamp(110px, 13.5vw, 196px); line-height: .86; letter-spacing: -0.045em; color: var(--ink); font-variant-numeric: tabular-nums; margin: 22px 0 22px -.04em; }
-.li-log { font-size: 10px; letter-spacing: .2em; line-height: 2.3; color: var(--ink4); }
-.li-log > div { opacity: 0; white-space: nowrap; }
-.li-log b { font-weight: 400; color: var(--live); }
-@media (max-width: 760px), (max-aspect-ratio: 11/10) {
-  .li-count { top: auto; bottom: 64px; transform: none; }
-  .li-big { font-size: clamp(84px, 26vw, 140px); margin: 12px 0 14px; }
-  .li-log { font-size: 8.5px; letter-spacing: .14em; line-height: 2.05; }
-  .li-tr { display: none; }
-  .li-bl { bottom: 24px; } .li-br { bottom: 24px; }
+.li-ui { position: fixed; inset: 0; z-index: 402; pointer-events: none; }
+.li-lock { position: absolute; left: 50%; top: 31%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; gap: 20px; }
+.li-lock .sl-mark { width: 48px; height: 48px; opacity: 0; }
+.li-lock .sl-mark i { width: 24px; height: 24px; border-width: 3.8px; }
+.li-word { font-family: var(--mono); font-size: 15px; letter-spacing: .3em; margin-right: -.3em; color: var(--ink); white-space: nowrap; clip-path: inset(-20% 100% -20% 0); }
+.li-word em { font-style: normal; color: var(--blue); }
+.li-tag { font-family: var(--mono); font-size: 10px; letter-spacing: .26em; margin-right: -.26em; text-transform: uppercase; color: var(--ink3); white-space: nowrap; opacity: 0; }
+@media (max-width: 640px) {
+  .li-lock { top: 29%; gap: 16px; }
+  .li-lock .sl-mark { width: 38px; height: 38px; } .li-lock .sl-mark i { width: 19px; height: 19px; border-width: 3px; }
+  .li-word { font-size: 12.5px; } .li-tag { font-size: 8.5px; letter-spacing: .2em; margin-right: -.2em; }
 }
 
 /* top bar is see-through over the cover, solid once you scroll */

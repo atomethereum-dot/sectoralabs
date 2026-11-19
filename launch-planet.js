@@ -1,9 +1,10 @@
 /* Sectora Launch — the planet.
  * One WebGL scene does two jobs:
- *  1. Intro (once per session): on black, the planet dissolves in while a countdown runs from 10 to 00
- *     and the contract systems report ready; at 00 the Sectora mark lifts off the planet into orbit.
- *  2. Cover: the planet then settles to the right of the headline (like the Dashboard globe) and keeps
- *     turning, with the mark circling on its orbit. It fades out as you scroll and only runs on the home view.
+ *  1. Intro "Horizon" (once per session): on black, the planet rises from below and settles as a faded
+ *     horizon while the Sectora Launch name appears at the top; a light runs along the rim; then the page
+ *     fades in around it. The planet is already where the cover keeps it, so the hand-off has no jump.
+ *  2. Cover: the planet stays beneath the centred headline, faded downwards, turning slowly. It scrolls with
+ *     the hero, fades out as you scroll and only runs on the home view.
  * Without WebGL, with reduced motion or after the first visit the intro is skipped.
  * window.SL_INTRO resolves when the page may animate in. */
 (function () {
@@ -80,18 +81,20 @@
   var LIGHT = new T.Vector3(-0.35, 0.75, 0.55).normalize();
   var root = new T.Group(); scene.add(root);
   var FADE = { value: new T.Vector2(-2, -1) }, OPAC = { value: 1 }; // screen-space fade (device px from the bottom) and overall opacity
+  var SWEEP = { value: new T.Vector2(0, 0) }; // light running along the rim: x position in view space, strength
   var globe = new T.Group(); root.add(globe);
   var surfMat = new T.ShaderMaterial({
     transparent: true,
-    uniforms: { uMask: { value: landMask(SMALL ? 1024 : 2048) }, uDiss: { value: 1 }, uL: { value: LIGHT }, uFade: FADE, uOp: OPAC },
+    uniforms: { uMask: { value: landMask(SMALL ? 1024 : 2048) }, uDiss: { value: 1 }, uL: { value: LIGHT }, uFade: FADE, uOp: OPAC, uSweep: SWEEP },
     vertexShader: "varying vec2 vUv; varying vec3 vN; varying vec3 vNv;\n" +
       "void main(){ vUv = uv; vN = normalize(mat3(modelMatrix) * normal); vNv = normalize(normalMatrix * normal); gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }",
-    fragmentShader: "uniform sampler2D uMask; uniform float uDiss; uniform vec3 uL; uniform vec2 uFade; uniform float uOp; varying vec2 vUv; varying vec3 vN; varying vec3 vNv;\n" +
+    fragmentShader: "uniform sampler2D uMask; uniform float uDiss; uniform vec3 uL; uniform vec2 uFade; uniform float uOp; uniform vec2 uSweep; varying vec2 vUv; varying vec3 vN; varying vec3 vNv;\n" +
       "float h21(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }\n" +
       "void main(){ float land = texture2D(uMask, vUv).r;\n" +
       "  vec3 base = mix(vec3(0.020, 0.027, 0.050), vec3(0.125, 0.145, 0.190), land);\n" +
       "  float lam = clamp(dot(vN, uL) * 0.5 + 0.5, 0.0, 1.0); base *= 0.32 + 0.95 * pow(lam, 1.35);\n" +
       "  float edge = 1.0 - abs(vNv.z); base += vec3(1.0) * pow(edge, 13.5) * 0.80 * (0.5 + 0.5 * lam); base += vec3(1.0) * pow(edge, 4.5) * 0.075;\n" +
+      "  base += vec3(0.55, 0.68, 1.0) * pow(edge, 5.0) * exp(-pow((vNv.x - uSweep.x) / 0.16, 2.0)) * uSweep.y;\n" +
       "  if (step(h21(floor(vUv * vec2(96.0, 48.0))), uDiss) < 0.5) discard;\n" +
       "  gl_FragColor = vec4(base, uOp * smoothstep(uFade.x, uFade.y, gl_FragCoord.y)); }"
   });
@@ -114,85 +117,33 @@
     fragmentShader: "uniform float uA; varying float vA; void main(){ float d = length(gl_PointCoord - 0.5); if (d > 0.5) discard; gl_FragColor = vec4(vec3(0.86,0.91,1.0), smoothstep(0.42, 0.02, d) * vA * uA); }" });
   scene.add(new T.Points(sg, starMat));
 
-  /* orbit ring + the Sectora mark */
-  var RO = 1.46;
-  var orbit = new T.Group(); orbit.rotation.set(0.30, 0, -0.32); root.add(orbit);
-  var opts = []; for (i = 0; i <= 240; i++) { var a = i / 240 * Math.PI * 2; opts.push(new T.Vector3(Math.cos(a) * RO, 0, Math.sin(a) * RO)); }
-  var orbitMat = new T.LineBasicMaterial({ color: 0x7d9ad4, transparent: true, opacity: 0, depthWrite: false });
-  var orbitLine = new T.LineLoop(new T.BufferGeometry().setFromPoints(opts), orbitMat); orbitLine.renderOrder = 2; orbit.add(orbitLine);
-  function markTexture() {
-    var s = 128, c = document.createElement("canvas"); c.width = c.height = s; var g = c.getContext("2d");
-    var r = 14, m = 10; g.fillStyle = "#1569ff"; g.beginPath(); g.moveTo(m + r, m); g.arcTo(s - m, m, s - m, s - m, r); g.arcTo(s - m, s - m, m, s - m, r); g.arcTo(m, s - m, m, m, r); g.arcTo(m, m, s - m, m, r); g.closePath(); g.fill();
-    g.strokeStyle = "#fff"; g.lineWidth = 10; g.beginPath(); g.arc(s / 2, s / 2, 25, 0, Math.PI * 2); g.stroke();
-    var tx = new T.CanvasTexture(c); tx.minFilter = T.LinearFilter; return tx;
-  }
-  var mark = new T.Sprite(new T.SpriteMaterial({ map: markTexture(), transparent: true, depthWrite: false, opacity: 0 }));
-  mark.scale.setScalar(0.11); mark.renderOrder = 4; root.add(mark);
-  var trailN = 90, trailPos = new Float32Array(trailN * 3), trailGeo = new T.BufferGeometry();
-  trailGeo.setAttribute("position", new T.BufferAttribute(trailPos, 3)); trailGeo.setDrawRange(0, 0);
-  var trailMat = new T.LineBasicMaterial({ color: 0x7fa6ff, transparent: true, opacity: 0, depthWrite: false, blending: T.AdditiveBlending });
-  var trail = new T.Line(trailGeo, trailMat); trail.renderOrder = 3; root.add(trail);
-  var ringTex = (function () { var s = 128, c = document.createElement("canvas"); c.width = c.height = s; var g = c.getContext("2d"); var grd = g.createRadialGradient(s / 2, s / 2, s * .32, s / 2, s / 2, s * .5); grd.addColorStop(0, "rgba(90,130,255,0)"); grd.addColorStop(.55, "rgba(140,175,255,0.7)"); grd.addColorStop(1, "rgba(90,130,255,0)"); g.fillStyle = grd; g.beginPath(); g.arc(s / 2, s / 2, s / 2, 0, 6.284); g.fill(); return new T.CanvasTexture(c); })();
-  var pulse = new T.Sprite(new T.SpriteMaterial({ map: ringTex, transparent: true, blending: T.AdditiveBlending, depthWrite: false, depthTest: false, opacity: 0 }));
-  pulse.renderOrder = 5;
-  root.add(pulse);
-
-  /* launch path: from a point of the planet facing the viewer up to the orbit */
-  var LAUNCH_DIR = new T.Vector3(-0.42, 0.66, 0.62).normalize();
-  var ORBIT_A0 = Math.PI + 0.55, ORBIT_W = -0.24; // where the mark joins the orbit, and its angular speed
-  function orbitPoint(angle, out) { out.set(Math.cos(angle) * RO, 0, Math.sin(angle) * RO); out.applyEuler(orbit.rotation); return out; }
-  var P0 = LAUNCH_DIR.clone().multiplyScalar(1.01), P1 = orbitPoint(ORBIT_A0, new T.Vector3());
-  var PC = LAUNCH_DIR.clone().multiplyScalar(1.75).add(new T.Vector3(0, .35, 0));
-  var curve = new T.QuadraticBezierCurve3(P0, PC, P1);
-  var tmp = new T.Vector3();
-
-  /* ---------- framing: where the planet sits on screen ---------- */
+  /* ---------- framing: the planet follows the #slOrbit box at the bottom of the hero ---------- */
   function frameFor(cx, cy, rad) {
     var t = Math.tan(FOV / 2 * D), d = innerHeight / (2 * rad * t), hh = d * t, hw = hh * camera.aspect;
     return { d: d, x: (cx / innerWidth * 2 - 1) * hw, y: -(cy / innerHeight * 2 - 1) * hh };
   }
-  function introFrame() {
-    var w = innerWidth, h = innerHeight;
-    if (w < h * 1.1) return frameFor(w * .5, h * .32, Math.min(w * .31, h * .22));
-    return frameFor(w * .68, h * .52, Math.min(h * .36, w * .25));
-  }
-  // on the cover the planet follows the #slOrbit box of the hero, so it scrolls with the page
-  var anchor = null, anchorRect = null;
-  function heroFrame() {
-    if (!anchor || !anchor.isConnected) anchor = document.getElementById("slOrbit");
-    var r = anchor && anchor.getBoundingClientRect();
-    var w = innerWidth, h = innerHeight, wide = w >= 960;
-    if (!(r && r.width > 10 && r.height > 10)) r = { left: 0, width: w, top: h * .62, height: h * .3, bottom: h * .92 };
-    anchorRect = r;
-    var rad = wide ? Math.min(w * .44, 860) : w * .9;
-    return frameFor(r.left + r.width * .5, r.top + r.height * .04 + rad, rad);
-  }
-  // fade of the cover planet: solid near its rim, gone a little below the hero
-  function heroFade() {
-    var r = anchorRect, k = renderer.getPixelRatio();
-    return { a: (innerHeight - (r.bottom + r.height * .1)) * k, b: (innerHeight - (r.top + r.height * .05)) * k };
-  }
-  var HERO_OP = .55;
   function place(f) { root.position.set(f.x, f.y, 0); camera.position.set(0, 0, f.d); camera.lookAt(0, 0, 0); }
+  var anchor = null;
+  function coverAt(lift) {
+    if (!anchor || !anchor.isConnected) anchor = document.getElementById("slOrbit");
+    var r = anchor && anchor.getBoundingClientRect(), w = innerWidth, h = innerHeight;
+    if (!(r && r.width > 10 && r.height > 10)) r = { left: 0, width: w, top: h * .68, height: h * .22, bottom: h * .9 };
+    var rad = w >= 960 ? Math.min(w * .44, 860) : w * .9, k = renderer.getPixelRatio();
+    place(frameFor(r.left + r.width * .5, r.top + r.height * .04 + rad + lift, rad));
+    FADE.value.set((h - (r.bottom + r.height * .1 + lift)) * k, (h - (r.top + r.height * .05 + lift)) * k);
+    OPAC.value = .55;
+  }
 
-  /* ---------- intro overlay text ---------- */
+  /* ---------- intro overlay: the name at the top ---------- */
   var L = (function () { var s = ""; try { s = localStorage.getItem("sectoraLaunch.lang") || ""; } catch (e) {} s = s || (navigator.language || "en").slice(0, 2).toLowerCase(); return { es: 1, pt: 1 }[s] ? s : "en"; })();
-  var TXT = {
-    en: { lbl: "Ignition · T-minus", go: "Liftoff · Sectora Launch", tr: "Sectora Launch · Ignition", bl: "Ethereum · SECT", br: "Fair launches" },
-    es: { lbl: "Ignición · cuenta atrás", go: "Despegue · Sectora Launch", tr: "Sectora Launch · Ignición", bl: "Ethereum · SECT", br: "Lanzamientos justos" },
-    pt: { lbl: "Ignição · contagem", go: "Decolagem · Sectora Launch", tr: "Sectora Launch · Ignição", bl: "Ethereum · SECT", br: "Lançamentos justos" }
-  }[L];
-  var LOG = ["BONDING CURVE · 800,000,000 · ARMED", "FAIR WINDOW · 1 % / 5 MIN · ARMED", "CREATOR VESTING · 7 D + 30 D · LOCKED", "QUOTE · SECT · LIVE",
-    "ROUTE · ETH → USDT → SECT · READY", "GRADUATION · UNISWAP · READY", "LP · 0x…DEAD · BURN ARMED", "SECTORA SHIELD · 8 CHECKS · ON", "SECT BURN · PLATFORM SHARE · ON", "ALL SYSTEMS · GO"];
-  var big = null, lbl = null, rows = [];
+  var TAG = { en: "Fair launches · Ethereum · SECT", es: "Lanzamientos justos · Ethereum · SECT", pt: "Lançamentos justos · Ethereum · SECT" }[L];
+  var lock = null, lmark = null, lword = null, ltag = null;
   if (playIntro) {
     cover.innerHTML = "";
     ui = document.createElement("div"); ui.className = "li-ui"; ui.setAttribute("aria-hidden", "true");
-    ui.innerHTML = '<span class="li-c li-tl"><span class="sl-mark"><i></i></span>SECTORA <em>LAUNCH</em></span><span class="li-c li-tr">' + TXT.tr + '</span><span class="li-c li-bl">' + TXT.bl + '</span><span class="li-c li-br">' + TXT.br + "</span>" +
-      '<div class="li-count"><span class="li-lbl">' + TXT.lbl + '</span><b class="li-big">10</b><div class="li-log">' +
-      LOG.map(function (x) { var p = x.split(" · "), st = p.pop(); return "<div>" + p.join(" · ") + " · <b>" + st + "</b></div>"; }).join("") + "</div></div>";
+    ui.innerHTML = '<div class="li-lock"><span class="sl-mark"><i></i></span><span class="li-word">SECTORA <em>LAUNCH</em></span><span class="li-tag">' + TAG + "</span></div>";
     document.body.appendChild(ui);
-    big = ui.querySelector(".li-big"); lbl = ui.querySelector(".li-lbl"); rows = Array.prototype.slice.call(ui.querySelectorAll(".li-log > div"));
+    lock = ui.querySelector(".li-lock"); lmark = ui.querySelector(".sl-mark"); lword = ui.querySelector(".li-word"); ltag = ui.querySelector(".li-tag");
     canvas.classList.add("is-intro");
     html.classList.add("li-run");
   } else {
@@ -201,50 +152,32 @@
   }
 
   /* ---------- timeline ---------- */
-  var LIFT = 2.45, ARRIVE = 3.45, END = 4.3;
-  var t0 = 0, last = 0, raf = 0, home = homeRoute, visible = true, skipAt = -1, introOver = !playIntro, hadLaunch = false;
-  var spin = 0;
+  var END = 3.3, SPIN0 = -1.513;
+  var o5 = function (x) { return 1 - Math.pow(1 - x, 5); };
+  var back = function (x) { var c = 1.4; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
+  var t0 = 0, last = 0, home = homeRoute, visible = true, skipAt = -1, introOver = !playIntro, spin = 0, heroTick = 0, scrolled = false;
   function frameIntro(t) {
-    var A = introFrame(), H = heroFrame(), m = io3(seg(t, 2.9, END)), hf = heroFade(), off = -innerHeight * renderer.getPixelRatio();
-    place({ d: lerp(A.d, H.d, m), x: lerp(A.x, H.x, m), y: lerp(A.y, H.y, m) });
-    FADE.value.set(lerp(off * 2, hf.a, m), lerp(off, hf.b, m)); OPAC.value = lerp(1, HERO_OP, m);
-    globe.rotation.set(.32 - .08 * m, -1.9 + t * .09, 0);
-    surfMat.uniforms.uDiss.value = o3(seg(t, .1, 1.4));
-    haloMat.uniforms.uA.value = seg(t, .5, 1.6); atmoMat.uniforms.uA.value = seg(t, .4, 1.5);
-    starMat.uniforms.uT.value = t; starMat.uniforms.uA.value = .3 + .7 * seg(t, 0, 1.2);
-    var keep = 1 - seg(t, 3.2, 4.0);
-    orbitMat.opacity = .3 * seg(t, ARRIVE - .3, ARRIVE + .3) * keep;
-    // countdown and system log
-    var n = Math.max(0, 10 - Math.floor(seg(t, .3, LIFT) * 10));
-    if (big) big.textContent = String(n).padStart(2, "0");
-    if (lbl) lbl.textContent = t >= LIFT ? TXT.go : TXT.lbl;
-    rows.forEach(function (d, i) { var k = seg(t, .35 + i * .2, .55 + i * .2); d.style.opacity = k; d.style.transform = "translateX(" + ((1 - o3(k)) * -14) + "px)"; });
-    if (ui) ui.style.opacity = 1 - seg(t, 3.0, 3.5);
-    // lift-off: the mark leaves the planet and joins the orbit
-    var f = seg(t, LIFT, ARRIVE), e = o3(f);
-    pulse.position.copy(P0); var pk = seg(t, LIFT - .05, LIFT + .9); pulse.visible = pk > 0 && pk < 1; pulse.scale.setScalar(.02 + pk * .5); pulse.material.opacity = .9 * (1 - pk);
-    if (t >= LIFT) {
-      hadLaunch = true;
-      curve.getPoint(e, tmp); mark.position.copy(tmp); mark.material.opacity = seg(t, LIFT, LIFT + .15) * keep;
-      var n2 = Math.max(2, Math.floor(e * (trailN - 1)) + 1);
-      for (var j = 0; j < n2; j++) { curve.getPoint(e * j / (n2 - 1), tmp); trailPos[j * 3] = tmp.x; trailPos[j * 3 + 1] = tmp.y; trailPos[j * 3 + 2] = tmp.z; }
-      trailGeo.attributes.position.needsUpdate = true; trailGeo.setDrawRange(0, n2);
-      trailMat.opacity = .85 * (1 - seg(t, ARRIVE, ARRIVE + 1.2)) * keep;
-      if (t > ARRIVE) { orbitPoint(ORBIT_A0 + (t - ARRIVE) * ORBIT_W, tmp); mark.position.copy(tmp); }
-    } else { mark.material.opacity = 0; mark.position.copy(P0); }
+    coverAt((1 - o5(seg(t, .15, 1.9))) * innerHeight * .55);
+    globe.rotation.set(.24, SPIN0 + (t - END) * .03, 0);
+    surfMat.uniforms.uDiss.value = o3(seg(t, .2, 1.3));
+    haloMat.uniforms.uA.value = seg(t, .3, 1.4); atmoMat.uniforms.uA.value = seg(t, .3, 1.4);
+    starMat.uniforms.uT.value = t; starMat.uniforms.uA.value = seg(t, 0, 1);
+    var sw = seg(t, 1.2, 2.5); SWEEP.value.set(lerp(-.8, .8, io3(sw)), Math.sin(Math.PI * sw) * .9);
+    if (lock) {
+      var out = seg(t, 2.25, 2.6);
+      lock.style.opacity = 1 - out; lock.style.transform = "translate(-50%, calc(-50% - " + (out * 14).toFixed(1) + "px))";
+      lmark.style.opacity = seg(t, .95, 1.2); lmark.style.transform = "scale(" + lerp(.7, 1, back(seg(t, .95, 1.4))).toFixed(3) + ")";
+      lword.style.clipPath = "inset(-20% " + ((1 - seg(t, 1.25, 1.95)) * 100).toFixed(1) + "% -20% 0)";
+      ltag.style.opacity = seg(t, 1.85, 2.3);
+    }
   }
-  var heroTick = 0;
   function frameHero(t, dt) {
-    place(heroFrame());
-    var hf = heroFade(); FADE.value.set(hf.a, hf.b); OPAC.value = HERO_OP;
-    if (reduce) { t = END; dt = 0; }
-    spin += dt * .03;
-    globe.rotation.set(.24, -1.9 + 4.3 * .09 + spin, 0);
+    coverAt(0);
+    if (!reduce) spin += dt * .03;
+    globe.rotation.set(.24, SPIN0 + spin, 0);
     surfMat.uniforms.uDiss.value = 1; haloMat.uniforms.uA.value = 1; atmoMat.uniforms.uA.value = 1;
-    starMat.uniforms.uT.value = t; starMat.uniforms.uA.value = 1;
-    orbitMat.opacity = 0; trailMat.opacity = 0; pulse.visible = false; mark.material.opacity = 0;
+    starMat.uniforms.uT.value = t; starMat.uniforms.uA.value = 1; SWEEP.value.set(0, 0);
   }
-  mark.material.depthTest = true;
 
   function scrollFade() {
     var k = home ? 1 - seg(scrollY, innerHeight * .35, innerHeight * 1.25) : 0;
@@ -252,24 +185,22 @@
     visible = k > 0.01;
     html.classList.toggle("sl-top0", home && scrollY < 8);
   }
-  var scrolled = false;
   addEventListener("scroll", function () { scrolled = true; scrollFade(); }, { passive: true });
 
+  function endIntro() {
+    introOver = true; canvas.classList.remove("is-intro"); dropCover(); finishIntro();
+    ["pointerdown", "keydown", "wheel", "touchmove"].forEach(function (ev) { removeEventListener(ev, skip, true); });
+  }
   function loop(now) {
-    raf = requestAnimationFrame(loop);
+    requestAnimationFrame(loop);
     if (!t0) t0 = now;
     var dt = Math.min(.05, (now - (last || now)) / 1000); last = now;
     var t = (now - t0) / 1000;
     if (!introOver) {
-      var a = 1;
-      if (skipAt >= 0) { a = 1 - o3(seg(now, skipAt, skipAt + 450)); if (a <= .001) t = END; }
-      if (t >= 3.15 && !done) finishIntro();
-      if (t >= END) {
-        introOver = true; canvas.classList.remove("is-intro"); dropCover(); finishIntro();
-        ["pointerdown", "keydown", "wheel", "touchmove"].forEach(function (ev) { removeEventListener(ev, skip, true); });
-      } else {
-        cover.style.background = "rgba(5,7,11," + (1 - seg(t, 3.15, END)) * (skipAt >= 0 ? a : 1) + ")";
-        if (ui && skipAt >= 0) ui.style.opacity = Math.min(+ui.style.opacity || 1, a);
+      if (t >= 2.6) finishIntro();
+      if (t >= END) endIntro();
+      else {
+        cover.style.background = "rgba(5,7,11," + (1 - seg(t, 2.55, END)).toFixed(3) + ")";
         try { frameIntro(t); } catch (e) { skip(); }
         renderer.render(scene, camera);
         return;
@@ -278,28 +209,25 @@
     if (!visible || document.hidden) return;
     if (SMALL && (heroTick++ & 1) && !scrolled) return; // phones: 30 fps while the page is still
     scrolled = false;
-    frameHero(Math.max(t, END), dt);
+    frameHero(t, dt);
     renderer.render(scene, camera);
   }
   function skip() {
     if (skipAt >= 0 || introOver) return;
     skipAt = performance.now();
-    t0 = performance.now() - END * 1000 + 450; // jump to the cover framing, fading the overlay out
+    t0 = skipAt - 2.55 * 1000; // jump to the hand-off: the planet is in place, the page fades in
     finishIntro();
   }
   if (playIntro) ["pointerdown", "keydown", "wheel", "touchmove"].forEach(function (ev) { addEventListener(ev, skip, true); });
-  else t0 = performance.now() - END * 1000; // straight to the cover framing
 
-  window.SLPlanet = {
-    setHome: function (on) { home = !!on; scrollFade(); }
-  };
+  window.SLPlanet = { setHome: function (on) { home = !!on; scrollFade(); } };
   scrollFade();
-  // wait for the fonts (max 700 ms) so the counter does not jump
+  // wait for the fonts (max 700 ms) so the name does not jump
   var fontsReady = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
   Promise.race([fontsReady, new Promise(function (r) { setTimeout(r, 700); })]).then(function () {
     if (playIntro && skipAt < 0) t0 = 0;
-    raf = requestAnimationFrame(loop);
+    requestAnimationFrame(loop);
   });
   // safety: whatever happens, the page appears
-  setTimeout(function () { if (!introOver) { introOver = true; canvas.classList.remove("is-intro"); dropCover(); finishIntro(); } }, 9000);
+  setTimeout(function () { if (!introOver) endIntro(); }, 9000);
 })();
