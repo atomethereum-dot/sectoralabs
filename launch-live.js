@@ -231,6 +231,7 @@
   // Home / create copy that changes when the coins are real and priced in SECT.
   var OVR = {
     "en": {
+      "st4_p": "Liquidity moves to a COIN/SECT pool on Uniswap and the LP is burned at 0x…dEaD, so nobody can pull it.", "sc_dex": "Uniswap",
       "eyebrow2": "Sectora Launch · Ethereum · SECT",
       "hero_s": "Fair launches on Ethereum where every coin is priced in SECT: anti-sniper limits, liquidity locked forever on Uniswap and creator tokens with vesting. Pay with ETH or SECT.",
       "w4_p": "1 % per curve trade: 0.5 % to the creator and 0.5 % to Sectora, part of which is burned in SECT. Nothing hidden, nothing changeable.",
@@ -248,6 +249,7 @@
       "end_s": "Sectora Launch arrives on SectoraEVM approximately on 22 March 2027. Today it already runs on Ethereum with real coins priced in SECT."
     },
     "es": {
+      "st4_p": "La liquidez pasa a un pool MONEDA/SECT en Uniswap y el LP se quema en 0x…dEaD: nadie puede retirarla.", "sc_dex": "Uniswap",
       "eyebrow2": "Sectora Launch · Ethereum · SECT",
       "hero_s": "Lanzamientos justos en Ethereum donde cada moneda cotiza en SECT: límites anti-snipers, liquidez bloqueada para siempre en Uniswap y tokens del creador con vesting. Paga con ETH o con SECT.",
       "w4_p": "1 % por operación en la curva: 0,5 % para el creador y 0,5 % para Sectora, de la que una parte se quema en SECT. Nada oculto y nada que se pueda cambiar.",
@@ -265,6 +267,7 @@
       "end_s": "Sectora Launch llegará a SectoraEVM aproximadamente el 22 de marzo de 2027. Hoy ya funciona en Ethereum con monedas reales cotizadas en SECT."
     },
     "pt": {
+      "st4_p": "A liquidez vai para um pool MOEDA/SECT na Uniswap e o LP é queimado em 0x…dEaD: ninguém pode retirá-la.", "sc_dex": "Uniswap",
       "eyebrow2": "Sectora Launch · Ethereum · SECT",
       "hero_s": "Lançamentos justos na Ethereum onde cada moeda é cotada em SECT: limites anti-snipers, liquidez bloqueada para sempre na Uniswap e tokens do criador com vesting. Pague com ETH ou SECT.",
       "w4_p": "1 % por operação na curva: 0,5 % para o criador e 0,5 % para a Sectora, parte dela queimada em SECT. Nada oculto, nada alterável.",

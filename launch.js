@@ -63,6 +63,7 @@
       w8_t: "Copycat protection", w8_p: "Tickers are unique and look-alike names are flagged before launch and on the coin page.", w8_v: "Elsewhere: fake copies with the same name and ticker.",
       w9_t: "Real assets with proof", w9_p: "Tokenized assets carry SHA-256 fingerprints of their documents, a named custodian and an attestation schedule.", w9_v: "Elsewhere: \"stock\" tokens that give no rights and no documents.",
       w10_t: "A registered company", w10_p: "Sectora Foundation is registered in Illinois (USA) and creators can verify their identity.", w10_v: "Elsewhere: anonymous teams.",
+      st_eb: "How it works", st_t: "From idea to market, <b>in four steps</b>.", st1_t: "Create your coin", st1_p: "Name, ticker, image and links. Fixed supply of 1,000,000,000: no owner, no mint, no tax.", st2_t: "Fair window", st2_p: "For the first 5 minutes nobody can buy more than 1 % of the supply. The creator buys at most 5 %, locked for 7 days and released over 30.", st3_t: "Price curve", st3_p: "Every buy moves the price up the curve. When about {raise} SECT are raised, the coin graduates.", st4_t: "Graduation", st4_p: "Liquidity moves to Sectora DEX and the LP is burned at 0x…dEaD, so nobody can pull it.", sc_coin: "Your coin", sc_tick: "$YOURS", sc_ini: "YC", sc_supply: "Supply", sc_owner: "Owner", sc_none: "None", sc_creator: "Creator buy", sc_launch: "Launch coin", sc_fair: "Fair window", sc_cap: "max. 1 % per wallet", sc_blocked: "blocked", sc_raised: "SECT raised", sc_grad: "Graduated", sc_dex: "Sectora DEX", sc_lp: "LP burned forever", sc_ready: "Ready to trade", ws_eb: "Safety", f_tag: "Fair coin launches, priced in SECT.", f_plat: "Platform", f_legal_link: "Legal notice", lg_t: "Legal and risk notices", lg_more: "Full terms at", lg1_t: "Coins are made by users", lg1_p: "Sectora does not issue, endorse, audit or recommend any coin created on Sectora Launch. Each creator is solely responsible for their coin, its name, image and everything they publish.", lg2_t: "High risk", lg2_p: "New coins are extremely volatile and speculative. You can lose everything you put in. Only use money you can afford to lose.", lg3_t: "Not advice", lg3_p: "Nothing on this site is financial, investment, legal or tax advice. Do your own research before you buy or sell.", lg4_t: "Sectora Shield is not an audit", lg4_p: "Shield runs automatic checks on the contract rules, the name and the ticker. It does not guarantee a coin’s value, liquidity or the creator’s behaviour.", lg5_t: "Smart contracts", lg5_p: "Trades run on a blockchain and cannot be reversed. Contracts can contain errors. Network fees (gas) and slippage are paid by you.", lg6_t: "No rights", lg6_p: "Buying a coin gives no share, dividend, vote or any other right over Sectora or the creator.", lg7_t: "Your obligations", lg7_p: "You are responsible for following the laws of your country, including taxes. Do not use the service where it is not allowed.", lg8_t: "Testnet and real networks", lg8_p: "On the SectoraEVM testnet, SECT and test coins have no value. On Ethereum, coins are real and every trade moves real funds.",
       how_t: "How it works",
       h1_t: "Create", h1_p: "Name, ticker, image and links. Launch costs 50 SECT, burned in full.",
       h2_t: "Trade on the curve", h2_p: "The price rises as people buy. Anti-sniper limits protect the first minutes.",
@@ -162,6 +163,7 @@
       w8_t: "Protección contra copias", w8_p: "Los tickers son únicos y los nombres parecidos se avisan antes del lanzamiento y en la ficha.", w8_v: "En otras: copias falsas con el mismo nombre y ticker.",
       w9_t: "Activos reales con pruebas", w9_p: "Cada activo tokenizado lleva la huella SHA-256 de sus documentos, un custodio identificado y un calendario de verificación.", w9_v: "En otras: tokens de \"acciones\" sin derechos ni documentos.",
       w10_t: "Empresa registrada", w10_p: "Sectora Foundation está registrada en Illinois (EE. UU.) y los creadores pueden verificar su identidad.", w10_v: "En otras: equipos anónimos.",
+      st_eb: "Cómo funciona", st_t: "De la idea al mercado, <b>en cuatro pasos</b>.", st1_t: "Crea tu moneda", st1_p: "Nombre, ticker, imagen y enlaces. Supply fijo de 1.000.000.000: sin dueño, sin mint y sin impuestos.", st2_t: "Ventana justa", st2_p: "Los primeros 5 minutos nadie puede comprar más del 1 % del supply. El creador compra como máximo el 5 %, bloqueado 7 días y liberado en 30.", st3_t: "Curva de precio", st3_p: "Cada compra sube el precio por la curva. Al reunir unos {raise} SECT, la moneda se gradúa.", st4_t: "Graduación", st4_p: "La liquidez pasa a Sectora DEX y el LP se quema en 0x…dEaD: nadie puede retirarla.", sc_coin: "Tu moneda", sc_tick: "$TUYA", sc_ini: "TM", sc_supply: "Supply", sc_owner: "Dueño", sc_none: "Ninguno", sc_creator: "Compra del creador", sc_launch: "Lanzar moneda", sc_fair: "Ventana justa", sc_cap: "máx. 1 % por cartera", sc_blocked: "bloqueado", sc_raised: "SECT reunidos", sc_grad: "Graduada", sc_dex: "Sectora DEX", sc_lp: "LP quemado para siempre", sc_ready: "Lista para operar", ws_eb: "Seguridad", f_tag: "Lanzamientos justos de monedas, cotizadas en SECT.", f_plat: "Plataforma", f_legal_link: "Aviso legal", lg_t: "Avisos legales y de riesgo", lg_more: "Condiciones completas en", lg1_t: "Las monedas las crean los usuarios", lg1_p: "Sectora no emite, no avala, no audita ni recomienda ninguna moneda creada en Sectora Launch. Cada creador es el único responsable de su moneda, su nombre, su imagen y todo lo que publica.", lg2_t: "Riesgo alto", lg2_p: "Las monedas nuevas son muy volátiles y especulativas. Puedes perder todo lo que pongas. Usa solo dinero que puedas permitirte perder.", lg3_t: "No es asesoramiento", lg3_p: "Nada de este sitio es asesoramiento financiero, de inversión, legal ni fiscal. Investiga por tu cuenta antes de comprar o vender.", lg4_t: "Sectora Shield no es una auditoría", lg4_p: "Shield hace comprobaciones automáticas de las reglas del contrato, del nombre y del ticker. No garantiza el valor de una moneda, su liquidez ni la conducta del creador.", lg5_t: "Contratos inteligentes", lg5_p: "Las operaciones se ejecutan en blockchain y no se pueden deshacer. Los contratos pueden tener errores. Las comisiones de red (gas) y el deslizamiento corren por tu cuenta.", lg6_t: "Sin derechos", lg6_p: "Comprar una moneda no da participación, dividendos, voto ni ningún otro derecho sobre Sectora o sobre el creador.", lg7_t: "Tus obligaciones", lg7_p: "Eres responsable de cumplir las leyes de tu país, incluidos los impuestos. No uses el servicio donde no esté permitido.", lg8_t: "Testnet y redes reales", lg8_p: "En la testnet de SectoraEVM el SECT y las monedas de prueba no tienen valor. En Ethereum las monedas son reales y cada operación mueve fondos reales.",
       how_t: "Cómo funciona",
       h1_t: "Crea", h1_p: "Nombre, ticker, imagen y enlaces. Lanzar cuesta 50 SECT, que se queman.",
       h2_t: "Opera en la curva", h2_p: "El precio sube a medida que la gente compra. Los límites anti-snipers protegen los primeros minutos.",
@@ -261,6 +263,7 @@
       w8_t: "Proteção contra cópias", w8_p: "Os tickers são únicos e nomes parecidos são sinalizados antes do lançamento e na página.", w8_v: "Em outras: cópias falsas com o mesmo nome e ticker.",
       w9_t: "Ativos reais com provas", w9_p: "Cada ativo tokenizado traz a impressão SHA-256 dos documentos, um custodiante identificado e um calendário de verificação.", w9_v: "Em outras: tokens de \"ações\" sem direitos nem documentos.",
       w10_t: "Empresa registrada", w10_p: "A Sectora Foundation é registrada em Illinois (EUA) e os criadores podem verificar sua identidade.", w10_v: "Em outras: equipes anônimas.",
+      st_eb: "Como funciona", st_t: "Da ideia ao mercado, <b>em quatro passos</b>.", st1_t: "Crie sua moeda", st1_p: "Nome, ticker, imagem e links. Supply fixo de 1.000.000.000: sem dono, sem mint e sem impostos.", st2_t: "Janela justa", st2_p: "Nos primeiros 5 minutos ninguém pode comprar mais de 1 % do supply. O criador compra no máximo 5 %, bloqueado por 7 dias e liberado em 30.", st3_t: "Curva de preço", st3_p: "Cada compra sobe o preço pela curva. Ao reunir cerca de {raise} SECT, a moeda se gradua.", st4_t: "Graduação", st4_p: "A liquidez vai para a Sectora DEX e o LP é queimado em 0x…dEaD: ninguém pode retirá-la.", sc_coin: "Sua moeda", sc_tick: "$SUA", sc_ini: "SM", sc_supply: "Supply", sc_owner: "Dono", sc_none: "Nenhum", sc_creator: "Compra do criador", sc_launch: "Lançar moeda", sc_fair: "Janela justa", sc_cap: "máx. 1 % por carteira", sc_blocked: "bloqueado", sc_raised: "SECT reunidos", sc_grad: "Graduada", sc_dex: "Sectora DEX", sc_lp: "LP queimado para sempre", sc_ready: "Pronta para negociar", ws_eb: "Segurança", f_tag: "Lançamentos justos de moedas, cotadas em SECT.", f_plat: "Plataforma", f_legal_link: "Aviso legal", lg_t: "Avisos legais e de risco", lg_more: "Termos completos em", lg1_t: "As moedas são criadas pelos usuários", lg1_p: "A Sectora não emite, não endossa, não audita nem recomenda nenhuma moeda criada no Sectora Launch. Cada criador é o único responsável pela sua moeda, nome, imagem e tudo o que publica.", lg2_t: "Risco alto", lg2_p: "Moedas novas são muito voláteis e especulativas. Você pode perder tudo o que colocar. Use apenas dinheiro que pode perder.", lg3_t: "Não é aconselhamento", lg3_p: "Nada neste site é aconselhamento financeiro, de investimento, jurídico ou fiscal. Pesquise por conta própria antes de comprar ou vender.", lg4_t: "O Sectora Shield não é uma auditoria", lg4_p: "O Shield faz verificações automáticas das regras do contrato, do nome e do ticker. Não garante o valor de uma moeda, sua liquidez nem a conduta do criador.", lg5_t: "Contratos inteligentes", lg5_p: "As operações rodam em blockchain e não podem ser desfeitas. Contratos podem ter erros. As taxas de rede (gas) e o slippage ficam por sua conta.", lg6_t: "Sem direitos", lg6_p: "Comprar uma moeda não dá participação, dividendos, voto nem nenhum outro direito sobre a Sectora ou o criador.", lg7_t: "Suas obrigações", lg7_p: "Você é responsável por cumprir as leis do seu país, incluindo impostos. Não use o serviço onde não for permitido.", lg8_t: "Testnet e redes reais", lg8_p: "Na testnet da SectoraEVM, o SECT e as moedas de teste não têm valor. Na Ethereum as moedas são reais e cada operação movimenta fundos reais.",
       how_t: "Como funciona",
       h1_t: "Crie", h1_p: "Nome, ticker, imagem e links. Lançar custa 50 SECT, que são queimados.",
       h2_t: "Negocie na curva", h2_p: "O preço sobe conforme as pessoas compram. Limites anti-snipers protegem os primeiros minutos.",
@@ -779,9 +782,15 @@
     document.getElementById("slTabbar").innerHTML = NAV.filter(function (n) { return n[0] !== "stats"; }).map(function (n) {
       return '<a href="' + n[1] + '"' + (navOn(n[0]) ? ' class="on"' : "") + ">" + ico(n[3]) + "<span>" + esc(t(n[2])) + "</span></a>";
     }).join("");
+    var fnav = NAV.map(function (n) { return '<a href="' + n[1] + '">' + esc(t(n[2])) + "</a>"; }).join("");
     document.getElementById("slFoot").innerHTML =
-      "<span>" + esc(t("footer_l")) + "</span>" +
-      '<span><a href="#/stats">' + esc(t("nav_stats")) + '</a> · <a href="https://sectoraorg.com" target="_blank" rel="noopener">sectoraorg.com</a> · <a href="https://sectoraorg.com/legal" target="_blank" rel="noopener">Legal</a></span>';
+      '<div class="sl-foot-in"><div class="sl-foot-top"><div class="sl-foot-brand"><a class="sl-brand" href="#/" aria-label="Sectora Launch"><span class="sl-mark"><i></i></span><span class="sl-word">SECTORA <em>LAUNCH</em></span></a><p>' + esc(t("f_tag")) + "</p></div>" +
+      '<nav class="sl-foot-col" aria-label="' + esc(t("f_plat")) + '"><b>' + esc(t("f_plat")) + "</b>" + fnav + "</nav>" +
+      '<nav class="sl-foot-col" aria-label="Sectora"><b>Sectora</b><a href="https://sectoraorg.com" target="_blank" rel="noopener">sectoraorg.com</a><a href="https://sectoraorg.com/legal" target="_blank" rel="noopener">' + esc(t("f_legal_link")) + "</a></nav></div>" +
+      '<div class="sl-legal"><h4>' + ico("shield") + esc(t("lg_t")) + '</h4><div class="sl-legal-g">' +
+      [1, 2, 3, 4, 5, 6, 7, 8].map(function (i) { return "<p><b>" + esc(t("lg" + i + "_t")) + ".</b> " + esc(t("lg" + i + "_p")) + "</p>"; }).join("") +
+      '</div><p class="more">' + esc(t("lg_more")) + ' <a href="https://sectoraorg.com/legal" target="_blank" rel="noopener">sectoraorg.com/legal</a></p></div>' +
+      '<div class="sl-foot-bot"><span>' + esc(t("footer_l")) + "</span><span>© 2026 Sectora Launch</span></div></div>";
     document.documentElement.lang = L;
   }
 
@@ -814,6 +823,7 @@
     }
     entering = false;
     wire();
+    if (window.SLScenes) { if (view === "home") window.SLScenes.mount(m); else window.SLScenes.unmount(); }
   }
 
   function coinsList() { return S.order.map(function (a) { return S.coins[a]; }).filter(Boolean); }
@@ -910,10 +920,8 @@
       '<div class="sl-mkt" id="slGrid">' + gridHtml() + "</div></section>";
   }
   function vHome() {
-    var raise = nf(GRAD_RAISE, 0);
     var tabs = [["trend", "tab_trend"], ["new", "tab_new"], ["soon", "tab_soon"], ["grad", "tab_grad"]];
     var why = [["bolt", 1], ["users", 2], ["lock", 3], ["scale", 4], ["fire", 5], ["shield", 6], ["chart", 7], ["copycat", 8], ["file", 9], ["badge", 10]];
-    var stepIco = ["rocket", "chart", "check", "coins"];
     return '<section class="sl-hero"><div><span class="sl-eyebrow fade-in" style="--d:.05s"><i class="rule"></i>' + esc(t("eyebrow2")) + "</span>" +
       "<h1>" + ["hero_l1", "hero_l2", "hero_l3"].map(function (k, i) { return '<span class="ln"><span style="--i:' + i + '">' + t(k) + "</span></span>"; }).join("") + "</h1>" +
       '<p class="sl-hero-p fade-in" style="--d:.42s">' + esc(t("hero_s")) + "</p>" +
@@ -922,16 +930,28 @@
       '<button class="sl-play" type="button" data-a="film"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg>' + esc(t("film_eb")) + " · 0:34</button></div></div>" +
       '<div class="sl-orbit" id="slOrbit" aria-hidden="true"></div></section>' +
       '<div class="sl-hero-stats fade-in" style="--d:.75s">' + (live() ? LIVE.statTiles(NET) : statTiles()) + "</div>" +
-      (live() ? LIVE.explore(NET) : demoExplore(tabs)) + filmSec() +
-      '<div class="sl-light"><section class="sl-sec"><div class="sl-head"><div><h2>' + esc(t("how_t")) + '</h2></div></div><div class="sl-steps">' +
-      [1, 2, 3, 4].map(function (i) {
-        return '<div class="sl-step"><div class="top"><span class="n">0' + i + "</span>" + ico(stepIco[i - 1]) + "</div><h4>" + esc(t("h" + i + "_t")) + "</h4><p>" + esc(t("h" + i + "_p", { raise: raise })) + "</p>" +
-          (i === 1 ? '<a class="go-link" href="#/create">' + esc(t("cta_launch")) + " →</a>" : "") + "</div>";
-      }).join("") + "</div></section>" +
-      '<section class="sl-sec"><div class="sl-head"><div><h2>' + esc(t("why_t")) + '</h2></div></div><p class="sl-sec-sub">' + esc(t("why_s")) + '</p><div class="sl-why">' +
+      (live() ? LIVE.explore(NET) : demoExplore(tabs)) + filmSec() + storySec() + whiteSec(why) +
+      '<div class="sl-rise sl-bleed"><div class="sl-rise-panel"><div class="sl-rise-in">' + endBand() + "</div></div></div>";
+  }
+  // pinned, scroll-driven story: how a coin is born (canvas drawn by launch-scenes.js)
+  function storySec() {
+    var keys = ["sc_coin", "sc_tick", "sc_ini", "sc_supply", "sc_owner", "sc_none", "sc_creator", "sc_launch", "sc_fair", "sc_cap", "sc_blocked", "sc_raised", "sc_grad", "sc_dex", "sc_lp", "sc_ready"];
+    var lab = { loc: { es: "es-ES", pt: "pt-BR" }[L] || "en-US", gr: Math.round(GRAD_RAISE) };
+    keys.forEach(function (k) { lab[k] = t(k); });
+    return '<section class="sl-story" data-l="' + esc(JSON.stringify(lab)) + '"><div class="sl-story-pin"><div class="sl-story-txt">' +
+      '<span class="sl-eyebrow"><i class="rule"></i>' + esc(t("st_eb")) + "</span><h2>" + t("st_t") + '</h2><ol class="sl-story-steps">' +
+      [1, 2, 3, 4].map(function (i) { return "<li" + (i === 1 ? ' class="on"' : "") + '><div class="h"><span class="n">' + i + "</span>" + esc(t("st" + i + "_t")) + "</div><p>" + esc(t("st" + i + "_p", { raise: nf(GRAD_RAISE, 0) })) + "</p></li>"; }).join("") +
+      '</ol><div class="sl-story-bar"><i></i></div><a class="sl-btn sl-btn-p" href="#/create">' + ico("rocket") + esc(t("cta_launch")) + "</a></div>" +
+      '<div class="sl-story-vis"><canvas aria-hidden="true"></canvas></div></div></section>';
+  }
+  // the white section: a circle opens from the dark page, then the safety cards on white
+  function whiteSec(why) {
+    var head = '<span class="sl-eyebrow"><i class="rule"></i>' + esc(t("ws_eb")) + "</span><h2>" + esc(t("why_t")) + "</h2><p>" + esc(t("why_s")) + "</p>";
+    return '<section class="sl-white sl-bleed"><div class="sl-iris"><div class="sl-iris-pin"><div class="sl-iris-t">' + head + '</div><div class="sl-iris-light"></div><div class="sl-iris-ring"></div><div class="sl-iris-t is-dark" aria-hidden="true">' + head + "</div></div></div>" +
+      '<div class="sl-white-body"><div class="sl-why">' +
       why.map(function (w, j) {
         return '<div class="sl-why-i"><div class="top"><span class="n">' + String(j + 1).padStart(2, "0") + "</span>" + ico(w[0]) + "</div><h4>" + esc(t("w" + w[1] + "_t")) + "</h4><p>" + esc(t("w" + w[1] + "_p")) + '</p><span class="vs">' + esc(t("w" + w[1] + "_v")) + "</span></div>";
-      }).join("") + "</div></section></div>" + endBand();
+      }).join("") + "</div></div></section>";
   }
   function filmSec() {
     return '<section class="sl-sec sl-film"><div><span class="sl-eyebrow"><i class="rule"></i>' + esc(t("film_eb")) + " · 0:34</span><h2>" + esc(t("film_t")) + "</h2><p>" + esc(t("film_s")) + "</p>" +
