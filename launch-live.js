@@ -15,7 +15,8 @@
       dex: "PancakeSwap", dexFactory: "0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73", router: "0x10ED43C718714eb63d5aA57B78B54704E256024E", wnative: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
       swap: "https://pancakeswap.finance/swap?chain=bsc&outputCurrency=", quick: ["0.05", "0.1", "0.5", "1"],
       // every coin is priced in BNB: the factory holds WBNB and pays out native BNB
-      native: true, qs: "BNB", qaddr: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", qquick: ["0.05", "0.1", "0.5", "1"] },
+      native: true, qs: "BNB", qaddr: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", qquick: ["0.05", "0.1", "0.5", "1"],
+      oracle: "0x172fcD41E0913e95784454622d1c3724f546f849", oracleDex: "PancakeSwap V3 WBNB/USDT 0.01 %" },
     base: { id: 8453, name: "Base", short: "Base", sym: "ETH", col: "#0052ff", ds: "base", exp: "https://basescan.org",
       rpc: ["https://base-rpc.publicnode.com", "https://mainnet.base.org"],
       dex: "Uniswap V2", dexFactory: "0x8909Dc15e40173Ff4699343b6eB8132c65e18eC6", router: "0x4752ba5DBc23f44D87826276BF6Fd6b1C372aD24", wnative: "0x4200000000000000000000000000000000000006",
@@ -26,6 +27,7 @@
       swap: "https://app.uniswap.org/swap?chain=mainnet&inputCurrency=ETH&outputCurrency=", quick: ["0.005", "0.01", "0.05", "0.1"],
       // every coin is priced in SECT; ETH buys swap ETH → USDT → SECT on Uniswap V3
       qs: "SECT", qaddr: "0x8C9984B06281f1CA9416e493c2E602AaB08513db", qquick: ["100", "500", "1000", "5000"],
+      oracle: "0xA12A11fc202827B7c734Cf2019f2C7A6CF061d69", oracleDex: "Uniswap V3 SECT/USDT 0.01 %",
       v3router: "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45", quoter: "0x61fFE014bA17989E743c5F6cB21bF9697530B21e",
       path: ["0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2", 500, "0xdAC17F958D2ee523a2206206994597C13D831ec7", 100, "0x8C9984B06281f1CA9416e493c2E602AaB08513db"] },
     arbitrum: { id: 42161, name: "Arbitrum", short: "ARB", sym: "ETH", col: "#28a0f0", ds: "arbitrum", exp: "https://arbiscan.io",
@@ -91,7 +93,7 @@
       c_web: "Website", c_x: "X (Twitter)", c_tg: "Telegram", c_dev: "Your buy at launch (optional)", c_dev_h: "Up to 5 % of supply. Locked 7 days, then released over 30 days.",
       c_max: "Max 5 %", c_summary: "Summary", c_fee: "Launch fee", c_devbuy: "Your buy", c_total: "Total", c_get: "You get (locked)",
       c_rules: "Rules in the contract", c_r1: "Fixed supply 1,000,000,000 · no owner, no mint, no tax",
-      c_r2: "Anti-sniper: max 1 % per wallet for 5 minutes", c_r3: "Graduates at ~{g} {s} raised → COIN/{s} pool on {d}, LP burned forever",
+      c_r2: "Anti-sniper: max 1 % per wallet for 5 minutes", c_r3: "Graduates at ~{g} {s} raised{u} → COIN/{s} pool on {d}, LP burned forever",
       c_r4: "Fee 1 % per curve trade: 0.5 % creator · 0.5 % Sectora ({b} % of it burned in SECT)", c_r5: "Until graduation it trades only on the curve",
       c_ack: "I understand this is a real transaction on {c} and that new coins are high risk.",
       c_btn: "Launch on {c}", c_need_wallet: "Connect your wallet to launch",
@@ -144,7 +146,7 @@
       c_web: "Web", c_x: "X (Twitter)", c_tg: "Telegram", c_dev: "Tu compra al lanzar (opcional)", c_dev_h: "Hasta el 5 % del supply. Bloqueada 7 días y liberada durante 30 días.",
       c_max: "Máx. 5 %", c_summary: "Resumen", c_fee: "Comisión de lanzamiento", c_devbuy: "Tu compra", c_total: "Total", c_get: "Recibes (bloqueado)",
       c_rules: "Reglas del contrato", c_r1: "Supply fijo 1.000.000.000 · sin dueño, sin mint, sin impuestos",
-      c_r2: "Anti-snipers: máx. 1 % por cartera durante 5 minutos", c_r3: "Se gradúa al reunir ~{g} {s} → pool MONEDA/{s} en {d}, LP quemado para siempre",
+      c_r2: "Anti-snipers: máx. 1 % por cartera durante 5 minutos", c_r3: "Se gradúa al reunir ~{g} {s}{u} → pool MONEDA/{s} en {d}, LP quemado para siempre",
       c_r4: "Comisión 1 % por operación en la curva: 0,5 % creador · 0,5 % Sectora (el {b} % se quema en SECT)", c_r5: "Hasta graduarse solo se opera en la curva",
       c_ack: "Entiendo que es una transacción real en {c} y que las monedas nuevas son de alto riesgo.",
       c_btn: "Lanzar en {c}", c_need_wallet: "Conecta tu wallet para lanzar",
@@ -197,7 +199,7 @@
       c_web: "Site", c_x: "X (Twitter)", c_tg: "Telegram", c_dev: "Sua compra no lançamento (opcional)", c_dev_h: "Até 5 % do supply. Bloqueada 7 dias e liberada ao longo de 30 dias.",
       c_max: "Máx. 5 %", c_summary: "Resumo", c_fee: "Taxa de lançamento", c_devbuy: "Sua compra", c_total: "Total", c_get: "Você recebe (bloqueado)",
       c_rules: "Regras do contrato", c_r1: "Supply fixo 1.000.000.000 · sem dono, sem mint, sem impostos",
-      c_r2: "Anti-snipers: máx. 1 % por carteira durante 5 minutos", c_r3: "Gradua ao reunir ~{g} {s} → pool MOEDA/{s} na {d}, LP queimado para sempre",
+      c_r2: "Anti-snipers: máx. 1 % por carteira durante 5 minutos", c_r3: "Gradua ao reunir ~{g} {s}{u} → pool MOEDA/{s} na {d}, LP queimado para sempre",
       c_r4: "Taxa de 1 % por operação na curva: 0,5 % criador · 0,5 % Sectora ({b} % queimado em SECT)", c_r5: "Até graduar só se negocia na curva",
       c_ack: "Entendo que é uma transação real na {c} e que moedas novas são de alto risco.",
       c_btn: "Lançar na {c}", c_need_wallet: "Conecte sua carteira para lançar",
@@ -237,6 +239,7 @@
   // Home / create copy that changes when the coins are real and priced in SECT.
   var OVR = {
     "en": {
+      "st3_p": "Every buy moves the price up the curve. When the curve is complete, the coin graduates.",
       "st4_p": "Liquidity moves to a COIN/SECT pool on Uniswap and the LP is burned at 0x…dEaD, so nobody can pull it.", "sc_dex": "Uniswap",
       "eyebrow2": "Sectora Launch · Ethereum · SECT",
       "hero_s": "Fair launches on Ethereum where every coin is priced in SECT: anti-sniper limits, liquidity locked forever on Uniswap and creator tokens with vesting. Pay with ETH or SECT.",
@@ -255,6 +258,7 @@
       "end_s": "Sectora Launch arrives on SectoraEVM approximately on 22 March 2027. Today it already runs on Ethereum with real coins priced in SECT."
     },
     "es": {
+      "st3_p": "Cada compra sube el precio por la curva. Cuando la curva se completa, la moneda se gradúa.",
       "st4_p": "La liquidez pasa a un pool MONEDA/SECT en Uniswap y el LP se quema en 0x…dEaD: nadie puede retirarla.", "sc_dex": "Uniswap",
       "eyebrow2": "Sectora Launch · Ethereum · SECT",
       "hero_s": "Lanzamientos justos en Ethereum donde cada moneda cotiza en SECT: límites anti-snipers, liquidez bloqueada para siempre en Uniswap y tokens del creador con vesting. Paga con ETH o con SECT.",
@@ -273,6 +277,7 @@
       "end_s": "Sectora Launch llegará a SectoraEVM aproximadamente el 22 de marzo de 2027. Hoy ya funciona en Ethereum con monedas reales cotizadas en SECT."
     },
     "pt": {
+      "st3_p": "Cada compra sobe o preço pela curva. Quando a curva se completa, a moeda se gradua.",
       "st4_p": "A liquidez vai para um pool MOEDA/SECT na Uniswap e o LP é queimado em 0x…dEaD: ninguém pode retirá-la.", "sc_dex": "Uniswap",
       "eyebrow2": "Sectora Launch · Ethereum · SECT",
       "hero_s": "Lançamentos justos na Ethereum onde cada moeda é cotada em SECT: limites anti-snipers, liquidez bloqueada para sempre na Uniswap e tokens do criador com vesting. Pague com ETH ou SECT.",
@@ -460,7 +465,7 @@
     return {
       addr: E.getAddress(v.token), name: String(v.name), sym: String(v.symbol), meta: parseMeta(v.meta),
       creator: E.getAddress(v.creator), created: created, createdBlock: Number(v.createdBlock), grad: !!v.graduated,
-      pair: v.pair, vN: v.vQuote, vT: v.vToken, real: v.realQuote, sold: v.sold, dev: v.devAmount, devClaimed: v.devClaimed
+      pair: v.pair, vN: v.vQuote, vT: v.vToken, real: v.realQuote, sold: v.sold, dev: v.devAmount, devClaimed: v.devClaimed, v0: v.vQuote0
     };
   }
   // the chain's own clock (block timestamps), so time rules match the contract exactly
@@ -468,15 +473,24 @@
   function priceOf(c) { return fx(c.vN) / fx(c.vT); }
   function soldOf(c) { return fx(c.sold); }
   function progressOf(c) { return c.grad ? 1 : Math.min(1, soldOf(c) / CURVE); }
-  function gradTarget(k) { var cf = chainState(k).cfg; if (!cf) return 0; var v0 = fx(cf.vN); return v0 * VT0 / (VT0 - CURVE) - v0; }
+  // what a curve raises before graduating: for a coin created now (sized in dollars when the factory has an oracle) …
+  function gradTarget(k) { var cf = chainState(k).cfg; if (!cf) return 0; var v0 = fx(cf.vNow || cf.vN); return v0 * VT0 / (VT0 - CURVE) - v0; }
+  // … and for an existing coin, from the reserve it started with (never changes)
+  function gradOf(k, c) { var cf = chainState(k).cfg, v0 = c && c.v0 ? fx(c.v0) : cf ? fx(cf.vN) : 0; return v0 ? v0 * VT0 / (VT0 - CURVE) - v0 : 0; }
 
+  // the reserve for new coins follows the oracle price, so it is re-read every minute (stale value served meanwhile)
   function loadCfg(k) {
     var st = chainState(k);
-    if (st.cfg) return Promise.resolve(st.cfg);
-    return withRpc(k, function (p) {
-      var f = fac(k, p);
-      return Promise.all([f.virtualQuote(), f.launchFee(), f.burnShareBps()]);
-    }).then(function (r) { st.cfg = { vN: r[0], fee: r[1], burn: Number(r[2]) }; return st.cfg; });
+    if (st.cfg && Date.now() - st.cfg.at < 60000) return Promise.resolve(st.cfg);
+    if (!st.cfgLoading) {
+      st.cfgLoading = withRpc(k, function (p) {
+        var f = fac(k, p);
+        return Promise.all([f.virtualQuote(), f.launchFee(), f.burnShareBps(), f.virtualQuoteNow(), f.gradUsd()]);
+      }).then(function (r) {
+        st.cfg = { vN: r[0], fee: r[1], burn: Number(r[2]), vNow: r[3], gradUsd: fx(r[4]), at: Date.now() }; st.cfgLoading = null; return st.cfg;
+      }, function (err) { st.cfgLoading = null; if (st.cfg) return st.cfg; throw err; });
+    }
+    return st.cfg ? Promise.resolve(st.cfg) : st.cfgLoading;
   }
   function loadChain(k, force) {
     var st = chainState(k);
@@ -889,12 +903,12 @@
   }
   function devTokensFor(k, sectIn) {
     var cf = chainState(k).cfg; if (!cf || !(sectIn > 0)) return 0;
-    var v0 = fx(cf.vN), net = sectIn * 0.99;
+    var v0 = fx(cf.vNow || cf.vN), net = sectIn * 0.99;
     return VT0 - VT0 * v0 / (v0 + net);
   }
   function devMaxSect(k) {
     var cf = chainState(k).cfg; if (!cf) return 0;
-    var v0 = fx(cf.vN), net = v0 * VT0 / (VT0 - DEV_CAP * 0.999) - v0;
+    var v0 = fx(cf.vNow || cf.vN), net = v0 * VT0 / (VT0 - DEV_CAP * 0.999) - v0;
     return Math.floor(net / 0.99 * 1e6) / 1e6;
   }
   function rateOf(k) { return CHAINS[k] && CHAINS[k].native ? 1 : RATE[k] ? RATE[k].r : 0; }
@@ -945,7 +959,7 @@
       rows.map(function (r) { return '<div class="sl-kv"><span>' + X.esc(r[0]) + '</span><b class="num">' + X.esc(r[1]) + (r[2] ? ' <small class="faint">' + X.esc(r[2]) + "</small>" : "") + "</b></div>"; }).join("") +
       (pl.eth && !pl.native ? '<p class="sl-route">' + X.esc(lt("c_route")) + "</p>" : "") +
       '<h4 class="sl-sub">' + X.esc(lt("c_rules")) + '</h4><ul class="sl-rules">' +
-      ["c_r1", "c_r2", "c_r3", burn > 0 ? "c_r4" : "c_r4n", "c_r5"].map(function (r) { return "<li>" + X.ico("check") + "<span>" + X.esc(lt(r, { g: g ? X.nf(g, g >= 100 ? 0 : 2) : "…", s: ch.qs, d: ch.dex, b: burn })) + "</span></li>"; }).join("") + "</ul>" +
+      ["c_r1", "c_r2", "c_r3", burn > 0 ? "c_r4" : "c_r4n", "c_r5"].map(function (r) { return "<li>" + X.ico("check") + "<span>" + X.esc(lt(r, { g: g ? X.nf(g, g >= 100 ? 0 : 2) : "…", s: ch.qs, d: ch.dex, b: burn, u: cf && cf.gradUsd > 0 ? " (≈ $" + X.nf(cf.gradUsd, 0) + ")" : "" })) + "</span></li>"; }).join("") + "</ul>" +
       errList + '<div style="margin-top:14px">' + btn + "</div></div>" +
       '<div class="sl-alert is-info">' + X.ico("info") + "<span>" + X.esc(lt("sectora_soon_p", { c: netsTxt() })) + "</span></div>";
   }
@@ -1060,7 +1074,7 @@
   function chartSvg(k, td) {
     var c = td.c, list = td.trades.slice().reverse(), cf = chainState(k).cfg;
     var series = [];
-    if (cf && (!td.from || td.from <= c.createdBlock)) series.push({ t: c.created, p: fx(cf.vN) / VT0 });
+    if (cf && (!td.from || td.from <= c.createdBlock)) series.push({ t: c.created, p: fx(c.v0 || cf.vN) / VT0 });
     list.forEach(function (tr) { series.push({ t: tr.t, p: tr.p }); });
     if (c.grad && td.pool && td.pool.t > 0) series.push({ t: Date.now(), p: td.pool.n / td.pool.t });
     var W2 = 800, H = 260, padT = 14, padB = 22;
@@ -1127,7 +1141,7 @@
         links.map(function (l) { return '<a href="' + X.esc(c.meta[l[0]]) + '" target="_blank" rel="noopener nofollow ugc" style="color:var(--blue)">' + X.esc(l[1]) + "</a>"; }).join("") + "</b></div>" : "");
   }
   function curvePanel(k, td) {
-    var c = td.c, ch = CHAINS[k], g = gradTarget(k);
+    var c = td.c, ch = CHAINS[k], g = gradOf(k, c);
     if (c.grad) {
       var pn = td.pool ? td.pool.n : 0;
       return '<div class="sl-panel"><h3>' + X.ico("check") + X.esc(lt("cv_grad", { d: ch.dex })) + '</h3><div class="sl-prog is-done"><i style="width:100%"></i></div><p class="sl-note">' +

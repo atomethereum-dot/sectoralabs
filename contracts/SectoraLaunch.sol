@@ -28,9 +28,24 @@ pragma solidity 0.8.24;
  *    with the buyer's own minimum-output protection, then buys on the curve. In native
  *    mode the coin is only wrapped; payouts to accounts that refuse the native coin are
  *    made in the wrapped coin.
+ *  - Graduation in dollars: with an oracle pool set, each coin's curve is sized when the
+ *    coin is created so that it graduates after raising `gradUsd` worth of the quote coin,
+ *    valued at the 30-minute average price of a Uniswap/PancakeSwap V3 quote/stablecoin
+ *    pool. The curve of a coin never changes after creation. If the oracle cannot answer,
+ *    the fixed reserve is used, and the result always stays within 1/50x–50x of it.
  *  - The owner can only change where the platform's (non-burned) share is paid.
  *    It cannot pause, touch the curves, the raised SECT, the route or any coin.
  */
+
+interface IV3PoolOracle {
+    function observe(uint32[] calldata secondsAgos) external view returns (int56[] memory tickCumulatives, uint160[] memory secondsPerLiquidityCumulativeX128s);
+    function token0() external view returns (address);
+    function token1() external view returns (address);
+}
+
+interface IDecimals {
+    function decimals() external view returns (uint8);
+}
 
 interface IERC20Min {
     function balanceOf(address a) external view returns (uint256);
@@ -161,17 +176,24 @@ contract SectoraLaunchFactory {
     uint256 public constant MAX_SYMBOL = 12;
     uint256 public constant MAX_META = 1024;
     address public constant DEAD = 0x000000000000000000000000000000000000dEaD;
+    uint32 public constant TWAP_WINDOW = 30 minutes;      // average price used to size new curves
+    uint256 public constant ORACLE_RANGE = 50;            // sized reserve stays within virtualQuote / 50 … × 50
 
     // ---- configuration, fixed at deployment ----
     address public immutable quote;           // SECT
     address public immutable dexFactory;      // Uniswap V2 factory (graduation)
-    uint256 public immutable virtualQuote;    // virtual SECT reserve of every curve
+    uint256 public immutable virtualQuote;    // virtual SECT reserve (fixed, or fallback when an oracle is set)
     uint256 public immutable launchFee;       // in SECT, platform income
     uint256 public immutable burnShareBps;    // share of platform income burned on withdrawal
     address public immutable swapRouter;      // Uniswap V3 SwapRouter02 (ETH → SECT), 0 = off
     address public immutable wrappedNative;   // WETH
     bool public immutable nativeQuote;        // quote == wrappedNative: pay and get paid in the native coin
     address public immutable tokenImplementation;
+    address public immutable oraclePool;      // V3 pool quote/stablecoin used to size curves in dollars, 0 = off
+    uint256 public immutable gradUsd;         // dollars (18 decimals) each new curve raises before graduating
+    bool private immutable quoteIsToken0;     // side of the quote coin in the oracle pool
+    uint256 private immutable quoteUnit;      // 10 ** quote decimals
+    uint256 private immutable usdUnit;        // 10 ** stablecoin decimals
     bytes public swapPath;                    // WETH … SECT, fixed at deployment
 
     address public owner;
@@ -192,6 +214,7 @@ contract SectoraLaunchFactory {
         uint256 sold;
         uint256 devAmount;
         uint256 devClaimed;
+        uint256 vQuote0;   // virtual reserve this coin started with
     }
 
     mapping(address => Curve) public curves;
@@ -237,6 +260,8 @@ contract SectoraLaunchFactory {
         address swapRouter;
         address wrappedNative;
         bytes swapPath;
+        address oraclePool;
+        uint256 gradUsd;
     }
 
     constructor(Config memory cfg) {
@@ -264,6 +289,26 @@ contract SectoraLaunchFactory {
         wrappedNative = cfg.wrappedNative;
         nativeQuote = native_;
         swapPath = cfg.swapPath;
+        bool q0;
+        uint256 qu;
+        uint256 uu;
+        if (cfg.oraclePool != address(0)) {
+            require(cfg.gradUsd > 0, "SL: graduation in dollars");
+            address t0 = IV3PoolOracle(cfg.oraclePool).token0();
+            address t1 = IV3PoolOracle(cfg.oraclePool).token1();
+            require(t0 == cfg.quote || t1 == cfg.quote, "SL: oracle pool");
+            q0 = t0 == cfg.quote;
+            uint8 qd = IDecimals(cfg.quote).decimals();
+            uint8 ud = IDecimals(q0 ? t1 : t0).decimals();
+            require(qd <= 18 && ud <= 18, "SL: oracle decimals");
+            qu = 10 ** qd;
+            uu = 10 ** ud;
+        }
+        oraclePool = cfg.oraclePool;
+        gradUsd = cfg.oraclePool != address(0) ? cfg.gradUsd : 0;
+        quoteIsToken0 = q0;
+        quoteUnit = qu;
+        usdUnit = uu;
         tokenImplementation = address(new SectoraLaunchToken());
         emit OwnershipTransferred(address(0), cfg.owner);
         emit FeeRecipientChanged(cfg.feeRecipient);
@@ -425,6 +470,7 @@ contract SectoraLaunchFactory {
         uint256 sold;
         uint256 devAmount;
         uint256 devClaimed;
+        uint256 vQuote0;
     }
 
     function coinsCount() external view returns (uint256) {
@@ -449,6 +495,7 @@ contract SectoraLaunchFactory {
         v.sold = c.sold;
         v.devAmount = c.devAmount;
         v.devClaimed = c.devClaimed;
+        v.vQuote0 = c.vQuote0;
     }
 
     /// Newest first: index 0 is the most recent coin.
@@ -491,6 +538,54 @@ contract SectoraLaunchFactory {
         return net + _ceilDiv(net * FEE_BPS, 10_000 - FEE_BPS);
     }
 
+    // ------------------------------------------------------------------ dollar sizing
+
+    /// Virtual reserve a coin created now starts with. With an oracle pool it is sized so the curve
+    /// raises `gradUsd` worth of the quote coin (raise = reserve × 800/273), at the oracle's
+    /// 30-minute average price; otherwise, or if the oracle cannot answer, it is `virtualQuote`.
+    function virtualQuoteNow() public view returns (uint256 v) {
+        uint256 price = quoteUsdPrice();
+        if (price == 0) return virtualQuote;
+        v = (gradUsd * 1e18 * 273) / (price * 800);
+        uint256 lo = virtualQuote / ORACLE_RANGE;
+        uint256 hi = virtualQuote * ORACLE_RANGE;
+        if (v < lo) v = lo;
+        if (v > hi) v = hi;
+    }
+
+    /// Dollars (18 decimals) per whole quote coin, from the 30-minute average tick of the oracle
+    /// pool. 0 when there is no oracle or it cannot answer (not enough price history yet).
+    function quoteUsdPrice() public view returns (uint256) {
+        if (oraclePool == address(0)) return 0;
+        uint32[] memory ago = new uint32[](2);
+        ago[0] = TWAP_WINDOW;
+        try IV3PoolOracle(oraclePool).observe(ago) returns (int56[] memory cum, uint160[] memory) {
+            if (cum.length != 2) return 0;
+            int256 d = int256(cum[1]) - int256(cum[0]);
+            int256 w = int256(uint256(TWAP_WINDOW));
+            int256 t = d / w;
+            if (d < 0 && d % w != 0) t--; // round toward negative infinity, like Uniswap's OracleLibrary
+            int256 e = quoteIsToken0 ? t : -t; // exponent of 1.0001 giving stablecoin units per quote unit
+            if (e > 400_000 || e < -400_000) return 0;
+            uint256 r = _pow10001(uint256(e >= 0 ? e : -e));
+            if (e >= 0) return (r * quoteUnit) / usdUnit;
+            return (1e36 * quoteUnit) / (r * usdUnit);
+        } catch {
+            return 0;
+        }
+    }
+
+    /// 1.0001^n with 18 decimals (n ≤ 400,000 keeps every product far below 2^256).
+    function _pow10001(uint256 n) private pure returns (uint256 r) {
+        uint256 b = 1.0001e18;
+        r = 1e18;
+        while (n > 0) {
+            if (n & 1 == 1) r = (r * b) / 1e18;
+            n >>= 1;
+            if (n > 0) b = (b * b) / 1e18;
+        }
+    }
+
     // ------------------------------------------------------------------ internal
 
     function _create(string memory name_, string memory symbol_, string memory meta_, uint256 devQuote, uint256 minDevTokens)
@@ -510,7 +605,9 @@ contract SectoraLaunchFactory {
         c.creator = msg.sender;
         c.createdAt = uint64(block.timestamp);
         c.createdBlock = uint64(block.number);
-        c.vQuote = virtualQuote;
+        uint256 v0 = virtualQuoteNow();
+        c.vQuote = v0;
+        c.vQuote0 = v0;
         c.vToken = VIRTUAL_TOKENS;
         meta[token] = meta_;
         allTokens.push(token);

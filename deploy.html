@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#05070b">
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
 <link rel="preload" href="fonts/IBMPlexSans.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="launch.css?v=20261120a">
+<link rel="stylesheet" href="launch.css?v=20261120b">
 <style>
   body { padding-top: 0; }
   .dp { max-width: 980px; margin: 0 auto; padding: 40px var(--pad) 80px; }
@@ -45,7 +45,8 @@
     <div class="dp-grid">
       <div class="sl-field"><label for="dpOwner">Dueño (solo puede cambiar a dónde va la parte no quemada de las comisiones)</label><input class="sl-input mono" id="dpOwner" placeholder="0x…"></div>
       <div class="sl-field"><label for="dpFee">Cartera que recibe las comisiones de la plataforma</label><input class="sl-input mono" id="dpFee" placeholder="0x…"></div>
-      <div class="sl-field"><label for="dpV0">Reserva virtual de la curva</label><div class="sl-input-wrap"><input class="sl-input num" id="dpV0"><span class="unit" id="dpU1"></span></div><small id="dpGrad"></small></div>
+      <div class="sl-field"><label for="dpGU">Cada moneda se gradúa al reunir</label><div class="sl-input-wrap"><input class="sl-input num" id="dpGU" value="10000" inputmode="decimal"><span class="unit">USD</span></div><small id="dpGUu"></small></div>
+      <div class="sl-field"><label for="dpV0">Reserva de respaldo (solo si el oráculo no responde)</label><div class="sl-input-wrap"><input class="sl-input num" id="dpV0"><span class="unit" id="dpU1"></span></div><small id="dpGrad"></small></div>
       <div class="sl-field"><label for="dpLF">Comisión por lanzar una moneda</label><div class="sl-input-wrap"><input class="sl-input num" id="dpLF"><span class="unit" id="dpU2"></span></div><small id="dpLFu"></small></div>
       <div class="sl-field"><label for="dpBurn">Parte de los ingresos de la plataforma que se quema</label><div class="sl-input-wrap"><input class="sl-input num" id="dpBurn"><span class="unit">%</span></div><small id="dpBurnU"></small></div>
     </div>
@@ -59,10 +60,10 @@
   </div>
 </main>
 <script src="vendor/ethers-6.13.4.umd.min.js"></script>
-<script src="sl-abi.js?v=20261120a"></script>
-<script src="sl-bytecode.js?v=20261120a"></script>
-<script src="deployments.js?v=20261120a"></script>
-<script src="launch-live.js?v=20261120a"></script>
-<script src="deploy.js?v=20261120a"></script>
+<script src="sl-abi.js?v=20261120b"></script>
+<script src="sl-bytecode.js?v=20261120b"></script>
+<script src="deployments.js?v=20261120b"></script>
+<script src="launch-live.js?v=20261120b"></script>
+<script src="deploy.js?v=20261120b"></script>
 </body>
 </html>
