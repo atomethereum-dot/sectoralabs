@@ -965,7 +965,7 @@
       '<div class="sl-hero-facts fade-in" style="--d:.68s">' + ["hf1", "hf2", "hf3"].map(function (k) { return "<span><i></i>" + esc(t(k)) + "</span>"; }).join("") +
       '<button class="sl-play" type="button" data-a="film"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg>' + esc(t("film_eb")) + " · 0:34</button></div></div>" +
       '<div class="sl-orbit" id="slOrbit" aria-hidden="true"></div></section>' +
-      '<div class="sl-hero-stats fade-in" style="--d:.75s">' + (live() ? LIVE.statTiles(NET) : statTiles()) + "</div>" +
+      (live() ? '<div class="sl-hero-stats fade-in" style="--d:.75s">' + LIVE.statTiles(NET) + "</div>" : "") +
       '<div class="sl-sheet lt"><div class="sl-sheet-in">' + (live() ? LIVE.explore(NET) : demoExplore(tabs)) + filmSec() + storySec() + whySec(why) + endBand() + "</div></div>";
   }
   // pinned, scroll-driven story: how a coin is born (canvas drawn by launch-scenes.js)

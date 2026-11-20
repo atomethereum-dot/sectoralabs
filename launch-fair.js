@@ -877,7 +877,7 @@
       [lt("st_live"), X.nf(n.live, 0), lt("st_lp"), ""],
       [lt("st_burned"), amt(burned, ch.qs), pending > 0 ? lt("burn_pending", { n: amt(pending, ch.qs) }) : usdOf(net, burned), ""]
     ];
-    return '<div class="sl-stats is-live" id="slLStats">' + tiles.map(function (x) {
+    return '<div class="sl-stats is-live" id="slLStats"' + (st.count ? "" : ' style="display:none"') + ">" + tiles.map(function (x) {
       var parts = String(x[1]).split(" "), big = x[3] === "is-net" ? X.esc(x[1]) : X.esc(parts[0]) + (parts[1] ? "<small>" + X.esc(parts.slice(1).join(" ")) + "</small>" : "");
       return '<div class="sl-stat ' + x[3] + '"><span class="lbl">' + X.esc(x[0]) + '</span><b class="big">' + big + '</b><span class="sub">' + (x[2] ? X.esc(x[2]) : "&nbsp;") + "</span></div>";
     }).join("") + "</div>";
