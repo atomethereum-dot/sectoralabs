@@ -38,21 +38,23 @@
   var ERC20 = ["function balanceOf(address) view returns (uint256)", "function allowance(address,address) view returns (uint256)", "function approve(address,uint256) returns (bool)", "function name() view returns (string)", "function symbol() view returns (string)", "function decimals() view returns (uint8)", "function totalSupply() view returns (uint256)"];
   function sect(k, runner) { return new E.Contract(k === "ethereum" ? SECT : addrOf("bsc"), ERC20, runner || rp(k)); }
   var EPABI = ["function eid() view returns (uint32)", "function defaultSendLibrary(uint32) view returns (address)", "function defaultReceiveLibrary(uint32) view returns (address)",
-    "function getConfig(address,address,uint32,uint32) view returns (bytes)", "function isDefaultSendLibrary(address,uint32) view returns (bool)", "function delegates(address) view returns (address)"];
+    "function getConfig(address,address,uint32,uint32) view returns (bytes)", "function isDefaultSendLibrary(address,uint32) view returns (bool)", "function getReceiveLibrary(address,uint32) view returns (address,bool)", "function delegates(address) view returns (address)"];
   function ep(k) { return new E.Contract(EP, EPABI, rp(k)); }
   var ULN = "tuple(uint64 confirmations,uint8 requiredDVNCount,uint8 optionalDVNCount,uint8 optionalDVNThreshold,address[] requiredDVNs,address[] optionalDVNs)";
   function decodeUln(raw) { return E.AbiCoder.defaultAbiCoder().decode([ULN], raw)[0]; }
   function b32(a) { return E.zeroPadValue(a, 32); }
   function sendParam(dstK, to, amountLD, minLD) { return { dstEid: C[dstK].eid, to: b32(to), amountLD: amountLD, minAmountLD: minLD, extraOptions: "0x", composeMsg: "0x", oftCmd: "0x" }; }
-  // the route this network's bridge contract needs, built from LayerZero's current defaults read on chain
+  // the route this network's bridge contract needs: the first time it pins LayerZero's current defaults
+  // (read on chain); once pinned, linking again only updates the peer, the delivery gas and the limit
   function routeFor(k, limitLD) {
     var e = ep(k), o = other(k), eid = C[o].eid, me = addrOf(k), peer = addrOf(o);
-    return Promise.all([e.defaultSendLibrary(eid), e.defaultReceiveLibrary(eid)]).then(function (libs) {
-      return Promise.all([e.getConfig(me, libs[0], eid, 1), e.getConfig(me, libs[0], eid, 2), e.getConfig(me, libs[1], eid, 2)]).then(function (cf) {
+    return Promise.all([e.defaultSendLibrary(eid), e.defaultReceiveLibrary(eid), e.isDefaultSendLibrary(me, eid), e.getReceiveLibrary(me, eid)]).then(function (r) {
+      var pinSend = r[2], pinRecv = r[3][1];
+      return Promise.all([pinSend ? e.getConfig(me, r[0], eid, 1) : null, pinSend ? e.getConfig(me, r[0], eid, 2) : null, pinRecv ? e.getConfig(me, r[1], eid, 2) : null]).then(function (cf) {
         return { eid: eid, peer: b32(peer), options: [{ eid: eid, msgType: 1, options: OPTS }, { eid: eid, msgType: 2, options: OPTS }], limit: limitLD, window: 86400,
-          sendLib: libs[0], receiveLib: libs[1],
-          sendConfig: [{ eid: eid, configType: 1, config: cf[0] }, { eid: eid, configType: 2, config: cf[1] }],
-          receiveConfig: [{ eid: eid, configType: 2, config: cf[2] }] };
+          sendLib: pinSend ? r[0] : E.ZeroAddress, receiveLib: pinRecv ? r[1] : E.ZeroAddress,
+          sendConfig: pinSend ? [{ eid: eid, configType: 1, config: cf[0] }, { eid: eid, configType: 2, config: cf[1] }] : [],
+          receiveConfig: pinRecv ? [{ eid: eid, configType: 2, config: cf[2] }] : [] };
       });
     });
   }
