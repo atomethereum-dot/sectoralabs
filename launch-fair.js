@@ -1522,7 +1522,7 @@
     init: function (helpers) { X = helpers; autoReconnect(); },
     chains: CHAINS, order: ORDER, isLive: isLive, deployed: deployed, liveChains: liveChains,
     defaultNet: function () { var l = liveChains(); return l.length ? l[0] : "sectora"; },
-    t: override, netChip: netChip, acctBtn: acctBtn, banner: banner, hud: hud, storyRaise: storyRaise,
+    t: override, netChip: netChip, acctBtn: acctBtn, banner: banner, hud: hud, storyRaise: storyRaise, factory: factoryOf, sizes: usdSizes,
     explore: explore, statTiles: statTiles, create: createView, token: tokenView, me: meView, stats: statsView,
     onAction: onAction, wire: wire, tick: tick, refresh: refresh,
     wallet: function () { return W.addr; }

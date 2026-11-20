@@ -40,7 +40,7 @@
   var T = {
     en: {
       hero_l1: "Launch coins and", hero_l2: "tokenize <b>real assets</b>", hero_l3: "<b class=\"k\">without rugs</b>.", viz_price: "Price", viz_sold: "Tokens sold", viz_launch: "Launch", viz_grad: "Graduation · Sectora DEX", viz_burn: "SECT burn", tag1: "Anti-sniper 5 min", tag2: "LP burned", tag3: "0.3 % → SECT burn", tag4: "Shield scan", eyebrow2: "Sectora Launch · SectoraEVM", live: "Testnet", film_eb: "The film", hf1: "Fair window · 5 min", hf2: "LP burned forever", hf3: "Creator vesting · 30 d", film_t: "Everything you can do on Sectora Launch.", film_s: "Launch, fair window, bonding curve, Shield, SECT burn and real-world assets — in 34 seconds.", film_play: "Play with sound", fc_fair: "Fair window", fc_cap: "1% cap per wallet", fc_shield: "Shield score", fc_grad: "To graduation", fc_burn: "SECT burned · testnet", fc_ex: "Example", fc_live: "Live", watch: "Watch with sound · 0:34", end_eb: "SectoraEVM mainnet", approx: "approx.", th_coin: "Coin", rwa_soon: "Real-world asset tokenization arrives with SectoraEVM, approximately on 22 March 2027. What you see here is the demo with test SECT.", end_t1: "Be first", end_t2: "on SectoraEVM.", end_s: "Sectora Launch opens with the SectoraEVM mainnet. Test every feature today on the testnet — launch, trade, graduate and tokenize.", end_in: "Mainnet in", d_d: "days", d_h: "hours", d_m: "min", d_s: "sec", close: "Close", banner: "SectoraEVM testnet preview — test SECT and test coins have no real value. Mainnet: approximately March 22, 2027.",
-      nav_explore: "Explore", nav_launch: "Launch", nav_tokenize: "Tokenize", nav_assets: "Real assets", nav_me: "Account", nav_stats: "Transparency",
+      nav_explore: "Explore", nav_launch: "Launch", nav_tokenize: "Tokenize", nav_assets: "Real assets", nav_me: "Account", nav_stats: "Transparency", nav_safety: "Security", why_more: "Every safety measure, explained",
       connect: "Create test account", connect_s: "Demo", net: "SectoraEVM · Testnet",
       eyebrow: "Sectora Launch · on SectoraEVM",
       hero_t: "Launch coins and tokenize real assets — <em>without rugs</em>.",
@@ -140,7 +140,7 @@
     },
     es: {
       hero_l1: "Lanza monedas y", hero_l2: "tokeniza <b>activos reales</b>", hero_l3: "<b class=\"k\">sin estafas</b>.", viz_price: "Precio", viz_sold: "Tokens vendidos", viz_launch: "Lanzamiento", viz_grad: "Graduación · Sectora DEX", viz_burn: "Quema SECT", tag1: "Anti-snipers 5 min", tag2: "LP quemado", tag3: "0,3 % → quema SECT", tag4: "Escáner Shield", eyebrow2: "Sectora Launch · SectoraEVM", live: "Testnet", film_eb: "El film", hf1: "Ventana justa · 5 min", hf2: "LP quemado para siempre", hf3: "Vesting del creador · 30 d", film_t: "Todo lo que puedes hacer en Sectora Launch.", film_s: "Lanzar, ventana justa, curva, Shield, quema de SECT y activos reales, en 34 segundos.", film_play: "Ver con sonido", fc_fair: "Ventana justa", fc_cap: "Máx. 1 % por cartera", fc_shield: "Puntuación Shield", fc_grad: "Hasta la graduación", fc_burn: "SECT quemado · testnet", fc_ex: "Ejemplo", fc_live: "En vivo", watch: "Ver con sonido · 0:34", end_eb: "Mainnet de SectoraEVM", approx: "aprox.", th_coin: "Moneda", rwa_soon: "La tokenización de activos reales llega con SectoraEVM, aproximadamente el 22 de marzo de 2027. Lo que ves aquí es la demo con SECT de prueba.", end_t1: "Sé el primero", end_t2: "en SectoraEVM.", end_s: "Sectora Launch abre con la mainnet de SectoraEVM. Prueba hoy todo en la testnet: lanzar, operar, graduar y tokenizar.", end_in: "Mainnet en", d_d: "días", d_h: "horas", d_m: "min", d_s: "seg", close: "Cerrar", banner: "Vista previa en la testnet de SectoraEVM: el SECT y las monedas de prueba no tienen valor real. Mainnet: aproximadamente el 22 de marzo de 2027.",
-      nav_explore: "Explorar", nav_launch: "Lanzar", nav_tokenize: "Tokenizar", nav_assets: "Activos reales", nav_me: "Cuenta", nav_stats: "Transparencia",
+      nav_explore: "Explorar", nav_launch: "Lanzar", nav_tokenize: "Tokenizar", nav_assets: "Activos reales", nav_me: "Cuenta", nav_stats: "Transparencia", nav_safety: "Seguridad", why_more: "Todas las medidas de seguridad, explicadas",
       connect: "Crear cuenta de prueba", connect_s: "Demo", net: "SectoraEVM · Testnet",
       eyebrow: "Sectora Launch · en SectoraEVM",
       hero_t: "Lanza monedas y tokeniza activos reales, <em>sin estafas</em>.",
@@ -240,7 +240,7 @@
     },
     pt: {
       hero_l1: "Lance moedas e", hero_l2: "tokenize <b>ativos reais</b>", hero_l3: "<b class=\"k\">sem golpes</b>.", viz_price: "Preço", viz_sold: "Tokens vendidos", viz_launch: "Lançamento", viz_grad: "Graduação · Sectora DEX", viz_burn: "Queima SECT", tag1: "Anti-snipers 5 min", tag2: "LP queimado", tag3: "0,3 % → queima SECT", tag4: "Verificação Shield", eyebrow2: "Sectora Launch · SectoraEVM", live: "Testnet", film_eb: "O filme", hf1: "Janela justa · 5 min", hf2: "LP queimado para sempre", hf3: "Vesting do criador · 30 d", film_t: "Tudo o que você pode fazer no Sectora Launch.", film_s: "Lançar, janela justa, curva, Shield, queima de SECT e ativos reais, em 34 segundos.", film_play: "Ver com som", fc_fair: "Janela justa", fc_cap: "Máx. 1 % por carteira", fc_shield: "Nota Shield", fc_grad: "Até a graduação", fc_burn: "SECT queimado · testnet", fc_ex: "Exemplo", fc_live: "Ao vivo", watch: "Ver com som · 0:34", end_eb: "Mainnet da SectoraEVM", approx: "aprox.", th_coin: "Moeda", rwa_soon: "A tokenização de ativos reais chega com a SectoraEVM, aproximadamente em 22 de março de 2027. O que você vê aqui é a demo com SECT de teste.", end_t1: "Seja o primeiro", end_t2: "na SectoraEVM.", end_s: "O Sectora Launch abre com a mainnet da SectoraEVM. Teste tudo hoje na testnet: lançar, negociar, graduar e tokenizar.", end_in: "Mainnet em", d_d: "dias", d_h: "horas", d_m: "min", d_s: "seg", close: "Fechar", banner: "Prévia na testnet da SectoraEVM: o SECT e as moedas de teste não têm valor real. Mainnet: aproximadamente em 22 de março de 2027.",
-      nav_explore: "Explorar", nav_launch: "Lançar", nav_tokenize: "Tokenizar", nav_assets: "Ativos reais", nav_me: "Conta", nav_stats: "Transparência",
+      nav_explore: "Explorar", nav_launch: "Lançar", nav_tokenize: "Tokenizar", nav_assets: "Ativos reais", nav_me: "Conta", nav_stats: "Transparência", nav_safety: "Segurança", why_more: "Todas as medidas de segurança, explicadas",
       connect: "Criar conta de teste", connect_s: "Demo", net: "SectoraEVM · Testnet",
       eyebrow: "Sectora Launch · na SectoraEVM",
       hero_t: "Lance moedas e tokenize ativos reais, <em>sem golpes</em>.",
@@ -744,7 +744,7 @@
   function parseRoute() {
     var h = (location.hash || "#/").replace(/^#\/?/, "").split("/");
     var v = h[0] || "home";
-    if (["home", "create", "coin", "t", "tokenize", "assets", "asset", "me", "stats"].indexOf(v) < 0) v = "home";
+    if (["home", "create", "coin", "t", "tokenize", "assets", "asset", "me", "stats", "safety"].indexOf(v) < 0) v = "home";
     return [v, h[1] || "", h[2] || ""];
   }
   function route() {
@@ -759,7 +759,7 @@
   }
   var NAV = [
     ["home", "#/", "nav_explore", "compass"], ["create", "#/create", "nav_launch", "rocket"], ["tokenize", "#/tokenize", "nav_tokenize", "building"],
-    ["assets", "#/assets", "nav_assets", "layers"], ["stats", "#/stats", "nav_stats", "fire"], ["me", "#/me", "nav_me", "user"]
+    ["assets", "#/assets", "nav_assets", "layers"], ["safety", "#/safety", "nav_safety", "shield"], ["stats", "#/stats", "nav_stats", "fire"], ["me", "#/me", "nav_me", "user"]
   ];
   function navOn(id) {
     if (id === view) return true;
@@ -779,7 +779,7 @@
       '<select class="sl-lang" data-a="lang" aria-label="Language">' + ["en", "es", "pt"].map(function (l) { return '<option value="' + l + '"' + (l === L ? " selected" : "") + ">" + l.toUpperCase() + "</option>"; }).join("") + "</select>" +
       accBtn + "</div>";
     document.getElementById("slBanner").innerHTML = live() ? LIVE.banner(NET) : '<span class="sl-dot" style="color:var(--live)"></span><span>' + esc(t("banner")) + "</span>";
-    document.getElementById("slTabbar").innerHTML = NAV.filter(function (n) { return n[0] !== "stats"; }).map(function (n) {
+    document.getElementById("slTabbar").innerHTML = NAV.filter(function (n) { return n[0] !== "stats" && n[0] !== "assets"; }).map(function (n) {
       return '<a href="' + n[1] + '"' + (navOn(n[0]) ? ' class="on"' : "") + ">" + ico(n[3]) + "<span>" + esc(t(n[2])) + "</span></a>";
     }).join("");
     var fnav = NAV.map(function (n) { return '<a href="' + n[1] + '">' + esc(t(n[2])) + "</a>"; }).join("");
@@ -806,6 +806,7 @@
     else if (view === "asset") h = vAsset(arg);
     else if (view === "me") h = live() ? LIVE.me(NET) : vMe();
     else if (view === "stats") h = live() ? LIVE.stats() : vStats();
+    else if (view === "safety") h = window.SLSafety ? window.SLSafety.view(NET) : "";
     if (live() && (view === "tokenize" || view === "assets" || view === "asset")) h = '<div class="sl-alert is-info" style="margin-bottom:18px">' + ico("info") + "<span>" + esc(t("rwa_soon")) + "</span></div>" + h;
     m.innerHTML = h;
     document.body.classList.toggle("lt", view !== "home");
@@ -950,7 +951,7 @@
     return '<section class="sl-sec"><div class="sl-head"><div><span class="sl-eyebrow"><i class="rule"></i>' + esc(t("ws_eb")) + "</span><h2>" + esc(t("why_t")) + '</h2></div></div><p class="sl-sec-sub">' + esc(t("why_s")) + '</p><div class="sl-why">' +
       why.map(function (w, j) {
         return '<div class="sl-why-i"><div class="top"><span class="n">' + String(j + 1).padStart(2, "0") + "</span>" + ico(w[0]) + "</div><h4>" + esc(t("w" + w[1] + "_t")) + "</h4><p>" + esc(t("w" + w[1] + "_p")) + '</p><span class="vs">' + esc(t("w" + w[1] + "_v")) + "</span></div>";
-      }).join("") + "</div></section>";
+      }).join("") + '</div><div class="sf-more"><a class="sl-btn sl-btn-p" href="#/safety">' + ico("shield") + esc(t("why_more")) + " →</a></div></section>";
   }
   function filmSec() {
     return '<section class="sl-sec sl-film"><div><span class="sl-eyebrow"><i class="rule"></i>' + esc(t("film_eb")) + " · 0:34</span><h2>" + esc(t("film_t")) + "</h2><p>" + esc(t("film_s")) + "</p>" +
