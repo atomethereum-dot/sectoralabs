@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#05070b">
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
 <link rel="preload" href="fonts/IBMPlexSans.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="launch.css?v=20261120c">
+<link rel="stylesheet" href="launch.css?v=20261121a">
 <style>
   body { padding-top: 0; }
   .dp { max-width: 980px; margin: 0 auto; padding: 40px var(--pad) 80px; }
@@ -31,7 +31,7 @@
   <a class="sl-back" href="./">← Sectora Launch</a>
   <span class="sl-eyebrow" style="display:flex;margin-top:22px"><i class="rule"></i>Solo para el equipo de Sectora</span>
   <h1>Activar Sectora Launch en una red</h1>
-  <p id="dpIntro">Esta página despliega el contrato de Sectora Launch desde tu wallet. Se hace una sola vez.</p>
+  <p id="dpIntro">Esta página despliega el contrato de Sectora Launch desde tu wallet. Se hace una sola vez. Antes de desplegar comprueba en la propia cadena el token SECT, Uniswap V2 (pool de cada moneda), la ruta ETH → USDT → SECT de Uniswap V3 (pago con ETH) y el oráculo de precio.</p>
 
   <div class="sl-panel">
     <h3>1 · Wallet y red</h3>
@@ -45,12 +45,13 @@
     <div class="dp-grid">
       <div class="sl-field"><label for="dpOwner">Dueño (solo puede cambiar a dónde va la parte no quemada de las comisiones)</label><input class="sl-input mono" id="dpOwner" placeholder="0x…"></div>
       <div class="sl-field"><label for="dpFee">Cartera que recibe las comisiones de la plataforma</label><input class="sl-input mono" id="dpFee" placeholder="0x…"></div>
-      <div class="sl-field"><label for="dpGU">Cada moneda se gradúa al reunir</label><div class="sl-input-wrap"><input class="sl-input num" id="dpGU" value="10000" inputmode="decimal"><span class="unit">USD</span></div><small id="dpGUu"></small></div>
-      <div class="sl-field"><label for="dpV0">Reserva de respaldo (solo si el oráculo no responde)</label><div class="sl-input-wrap"><input class="sl-input num" id="dpV0"><span class="unit" id="dpU1"></span></div><small id="dpGrad"></small></div>
-      <div class="sl-field"><label for="dpLF">Comisión por lanzar una moneda</label><div class="sl-input-wrap"><input class="sl-input num" id="dpLF"><span class="unit" id="dpU2"></span></div><small id="dpLFu"></small></div>
-      <div class="sl-field"><label for="dpBurn">Parte de los ingresos de la plataforma que se quema</label><div class="sl-input-wrap"><input class="sl-input num" id="dpBurn"><span class="unit">%</span></div><small id="dpBurnU"></small></div>
+      <div class="sl-field"><label for="dpTU">Objetivo de cada reserva</label><div class="sl-input-wrap"><input class="sl-input num" id="dpTU" value="15000" inputmode="decimal"><span class="unit">USD</span></div><small id="dpTUu"></small></div>
+      <div class="sl-field"><label for="dpCU">Máximo por wallet en cada reserva</label><div class="sl-input-wrap"><input class="sl-input num" id="dpCU" value="500" inputmode="decimal"><span class="unit">USD</span></div><small id="dpCUu"></small></div>
+      <div class="sl-field"><label for="dpTF">Objetivo de respaldo (solo si el oráculo no responde)</label><div class="sl-input-wrap"><input class="sl-input num" id="dpTF" inputmode="decimal"><span class="unit">SECT</span></div></div>
+      <div class="sl-field"><label for="dpCF">Máximo por wallet de respaldo</label><div class="sl-input-wrap"><input class="sl-input num" id="dpCF" inputmode="decimal"><span class="unit">SECT</span></div><small id="dpFBu"></small></div>
+      <div class="sl-field"><label for="dpBurn">Parte de los ingresos de la plataforma que se quema</label><div class="sl-input-wrap"><input class="sl-input num" id="dpBurn" value="50" inputmode="decimal"><span class="unit">%</span></div><small id="dpBurnU"></small></div>
     </div>
-    <p class="sl-note" id="dpNote">Todas las monedas cotizan en SECT y se gradúan en un pool MONEDA/SECT de Uniswap con el LP quemado. El dueño no puede pausar ni tocar las curvas, el SECT reunido, la ruta de compra con ETH ni ninguna moneda. Estos valores quedan fijos en el contrato.</p>
+    <p class="sl-note" id="dpNote">Crear una moneda es gratis. Todos los que entran en una reserva pagan el mismo precio; si no se llena a tiempo, cada uno recupera el 100 % sin comisiones. Al llegar al objetivo, el 98 % de la reserva forma un pool MONEDA/SECT en Uniswap que abre un 50 % por encima del precio de la reserva, con el LP quemado. Solo entonces se cobra: 1 % para el creador y 1 % para la plataforma. El dueño no puede pausar ni tocar las reservas, los pools, la ruta de pago con ETH ni ninguna moneda. Estos valores quedan fijos en el contrato.</p>
   </div>
 
   <div class="sl-panel">
@@ -60,10 +61,10 @@
   </div>
 </main>
 <script src="vendor/ethers-6.13.4.umd.min.js"></script>
-<script src="sl-abi.js?v=20261120c"></script>
-<script src="sl-bytecode.js?v=20261120c"></script>
-<script src="deployments.js?v=20261120c"></script>
-<script src="launch-live.js?v=20261120c"></script>
-<script src="deploy.js?v=20261120c"></script>
+<script src="sl-abi.js?v=20261121a"></script>
+<script src="sl-bytecode.js?v=20261121a"></script>
+<script src="deployments.js?v=20261121a"></script>
+<script src="launch-fair.js?v=20261121a"></script>
+<script src="deploy.js?v=20261121a"></script>
 </body>
 </html>

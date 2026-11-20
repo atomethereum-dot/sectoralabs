@@ -1166,3 +1166,15 @@ main:has(.sl-sheet) + .sl-foot { position: relative; z-index: 3; margin-top: -32
 .lt .sl-end .sl-btn:not(.sl-btn-p) { background: rgba(255, 255, 255, .08); border-color: rgba(255, 255, 255, .35); color: #fff; }
 .lt .sl-sheet-in > .sl-end { margin-top: clamp(48px, 8vh, 84px); }
 @media (max-width: 640px) { .sl-sheet { --rr: 24px; } }
+
+/* fair launch: chips, reserve meter */
+.sl-chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.sl-chips button { padding: 7px 12px; border: 1px solid var(--hair); color: var(--ink2); font-family: var(--mono); font-size: 10.5px; letter-spacing: .08em; transition: border-color .2s var(--ease); }
+.sl-chips button:hover { border-color: var(--rule); }
+.sl-chips button.on { border-color: var(--key); color: var(--ink); background: rgba(21, 105, 255, .1); }
+.sl-prog.is-exp i { background: var(--ink4); }
+.sl-meter .sl-prog { height: 8px; margin: 10px 0; }
+.sl-meter-row { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: 13px; }
+.sl-meter-row b { font-weight: 500; }
+.sl-meter-row.dim { color: var(--ink3); font-size: 12.5px; }
+.sl-meter-links { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }

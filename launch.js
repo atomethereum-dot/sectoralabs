@@ -492,7 +492,7 @@
     return MEM || fresh();
   }
   var S = load();
-  /* live networks (launch-live.js) vs the SectoraEVM demo */
+  /* live networks (launch-fair.js) vs the SectoraEVM demo */
   var LIVE = window.SLLive || null, NKEY = "sectoraLaunch.net";
   var NET = (function () {
     var s = null; try { s = localStorage.getItem(NKEY); } catch (e) {}
@@ -937,7 +937,7 @@
   // pinned, scroll-driven story: how a coin is born (canvas drawn by launch-scenes.js)
   function storySec() {
     var keys = ["sc_coin", "sc_tick", "sc_ini", "sc_supply", "sc_owner", "sc_none", "sc_creator", "sc_launch", "sc_fair", "sc_cap", "sc_blocked", "sc_raised", "sc_grad", "sc_dex", "sc_lp", "sc_ready"];
-    var lab = { loc: { es: "es-ES", pt: "pt-BR" }[L] || "en-US", gr: Math.round(GRAD_RAISE) };
+    var lab = { loc: { es: "es-ES", pt: "pt-BR" }[L] || "en-US", gr: (live() && LIVE.storyRaise && LIVE.storyRaise(NET)) || Math.round(GRAD_RAISE) };
     keys.forEach(function (k) { lab[k] = t(k); });
     return '<section class="sl-story" data-l="' + esc(JSON.stringify(lab)) + '"><div class="sl-story-pin"><div class="sl-story-txt">' +
       '<span class="sl-eyebrow"><i class="rule"></i>' + esc(t("st_eb")) + "</span><h2>" + t("st_t") + '</h2><ol class="sl-story-steps">' +
