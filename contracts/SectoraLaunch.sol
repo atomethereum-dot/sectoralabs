@@ -2,13 +2,18 @@
 pragma solidity 0.8.24;
 
 /*
- * Sectora Launch — fair coin launches priced in SECT.
+ * Sectora Launch — fair coin launches priced in SECT (or in the network's native coin
+ * where SECT is not available yet).
  *
  * Every coin is a fixed-supply ERC-20 (1,000,000,000 tokens, 18 decimals, no owner,
  * no mint, no tax). 800,000,000 are sold on a bonding curve priced in the quote token
- * (SECT). When the curve sells out the coin graduates: all the SECT raised plus the
- * remaining 200,000,000 tokens become a Uniswap-V2 COIN/SECT pool and the LP tokens
- * are sent to 0x…dEaD, so that liquidity can never be withdrawn by anyone.
+ * (SECT on Ethereum). When the curve sells out the coin graduates: all the quote raised
+ * plus the remaining 200,000,000 tokens become a Uniswap-V2-style COIN/QUOTE pool and the
+ * LP tokens are sent to 0x…dEaD, so that liquidity can never be withdrawn by anyone.
+ *
+ * Native mode: when the quote token is the wrapped native coin (e.g. WBNB on BNB Chain),
+ * buyers pay with the native coin (wrapped 1:1, no swap) and sellers, refunds and
+ * creator fees are paid back in the native coin. The platform share stays wrapped.
  *
  * Guarantees enforced by code:
  *  - Fair window: during the first 5 minutes a wallet can buy at most 1 % of supply.
@@ -20,7 +25,9 @@ pragma solidity 0.8.24;
  *    The launch fee also goes to the platform. A fixed share of everything the
  *    platform earns is burned (sent to 0x…dEaD) when it is withdrawn.
  *  - Buying with ETH swaps ETH → SECT on Uniswap V3 along a route fixed at deployment,
- *    with the buyer's own minimum-output protection, then buys on the curve.
+ *    with the buyer's own minimum-output protection, then buys on the curve. In native
+ *    mode the coin is only wrapped; payouts to accounts that refuse the native coin are
+ *    made in the wrapped coin.
  *  - The owner can only change where the platform's (non-burned) share is paid.
  *    It cannot pause, touch the curves, the raised SECT, the route or any coin.
  */
@@ -43,6 +50,7 @@ interface IV2Pair {
 
 interface IWNative {
     function deposit() external payable;
+    function withdraw(uint256 amount) external;
 }
 
 interface IV3SwapRouter {
@@ -162,6 +170,7 @@ contract SectoraLaunchFactory {
     uint256 public immutable burnShareBps;    // share of platform income burned on withdrawal
     address public immutable swapRouter;      // Uniswap V3 SwapRouter02 (ETH → SECT), 0 = off
     address public immutable wrappedNative;   // WETH
+    bool public immutable nativeQuote;        // quote == wrappedNative: pay and get paid in the native coin
     address public immutable tokenImplementation;
     bytes public swapPath;                    // WETH … SECT, fixed at deployment
 
@@ -235,7 +244,10 @@ contract SectoraLaunchFactory {
         require(cfg.quote.code.length > 0 && cfg.dexFactory.code.length > 0, "SL: DEX or quote not found");
         require(cfg.virtualQuote > 0, "SL: virtual reserve");
         require(cfg.burnShareBps <= 10_000, "SL: burn share");
-        if (cfg.swapRouter != address(0)) {
+        bool native_ = cfg.wrappedNative != address(0) && cfg.quote == cfg.wrappedNative;
+        if (native_) {
+            require(cfg.swapRouter == address(0), "SL: native quote needs no route");
+        } else if (cfg.swapRouter != address(0)) {
             require(cfg.swapRouter.code.length > 0 && cfg.wrappedNative.code.length > 0, "SL: router not found");
             uint256 n = cfg.swapPath.length;
             require(n >= 43 && (n - 20) % 23 == 0, "SL: swap path");
@@ -250,6 +262,7 @@ contract SectoraLaunchFactory {
         burnShareBps = cfg.burnShareBps;
         swapRouter = cfg.swapRouter;
         wrappedNative = cfg.wrappedNative;
+        nativeQuote = native_;
         swapPath = cfg.swapPath;
         tokenImplementation = address(new SectoraLaunchToken());
         emit OwnershipTransferred(address(0), cfg.owner);
@@ -284,7 +297,7 @@ contract SectoraLaunchFactory {
         if (dev > maxDevQuote) dev = maxDevQuote;
         token = _create(name_, symbol_, meta_, dev, minDevTokens);
         uint256 left = got - launchFee - dev;
-        if (left > 0) _pay(msg.sender, left);
+        if (left > 0) _payOut(msg.sender, left);
     }
 
     // ------------------------------------------------------------------ trade
@@ -304,7 +317,7 @@ contract SectoraLaunchFactory {
         uint256 used;
         (tokensOut, used) = _buy(token, msg.sender, got, minTokens);
         _afterBuy(token);
-        if (got > used) _pay(msg.sender, got - used);
+        if (got > used) _payOut(msg.sender, got - used);
     }
 
     /// Sells on the curve for SECT. No approval needed before graduation.
@@ -332,7 +345,7 @@ contract SectoraLaunchFactory {
         _splitFee(c.creator, fee);
 
         emit Trade(token, msg.sender, false, gross, tokensIn, fee, newVQuote, newVToken, block.timestamp);
-        _pay(msg.sender, quoteOut);
+        _payOut(msg.sender, quoteOut);
     }
 
     // ------------------------------------------------------------------ creator
@@ -362,7 +375,7 @@ contract SectoraLaunchFactory {
         require(amount > 0, "SL: nothing to claim");
         creatorFees[msg.sender] = 0;
         emit CreatorFeesClaimed(msg.sender, amount);
-        _pay(msg.sender, amount);
+        _payOut(msg.sender, amount);
     }
 
     // ------------------------------------------------------------------ platform
@@ -596,6 +609,12 @@ contract SectoraLaunchFactory {
 
     function _swapIn(uint256 ethIn, uint256 minQuoteOut) private returns (uint256 got) {
         require(ethIn > 0, "SL: zero amount");
+        if (nativeQuote) {
+            // native mode: the quote is the wrapped coin itself, 1:1
+            IWNative(quote).deposit{value: ethIn}();
+            require(ethIn >= minQuoteOut, "SL: swap slippage");
+            return ethIn;
+        }
         require(swapRouter != address(0), "SL: ETH buys off");
         uint256 before = IERC20Min(quote).balanceOf(address(this));
         IV3SwapRouter(swapRouter).exactInput{value: ethIn}(
@@ -617,6 +636,28 @@ contract SectoraLaunchFactory {
         uint256 before = IERC20Min(quote).balanceOf(address(this));
         _call(quote, abi.encodeWithSelector(IERC20Min.transferFrom.selector, from, address(this), amount));
         require(IERC20Min(quote).balanceOf(address(this)) - before == amount, "SL: quote transfer");
+    }
+
+    /// Pays a user: in native mode the wrapped coin is unwrapped and sent as the native coin.
+    /// If the receiver does not accept the native coin (a contract or a delegated account
+    /// without a payable fallback), it is paid in the wrapped coin instead, so nobody is
+    /// ever stuck. Every caller is nonReentrant and has already updated its state.
+    function _payOut(address to, uint256 amount) private {
+        if (!nativeQuote) {
+            _pay(to, amount);
+            return;
+        }
+        IWNative(quote).withdraw(amount);
+        (bool ok, ) = to.call{value: amount}("");
+        if (!ok) {
+            IWNative(quote).deposit{value: amount}();
+            _pay(to, amount);
+        }
+    }
+
+    /// Only the wrapped-native contract may send the native coin here (when unwrapping).
+    receive() external payable {
+        require(nativeQuote && msg.sender == wrappedNative, "SL: no direct payments");
     }
 
     function _pay(address to, uint256 amount) private {

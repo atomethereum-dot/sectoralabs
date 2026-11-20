@@ -13,7 +13,9 @@
     bsc: { id: 56, name: "BNB Chain", short: "BNB", sym: "BNB", col: "#f0b90b", ds: "bsc", exp: "https://bscscan.com",
       rpc: ["https://bsc-rpc.publicnode.com", "https://bsc-dataseed.bnbchain.org"],
       dex: "PancakeSwap", dexFactory: "0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73", router: "0x10ED43C718714eb63d5aA57B78B54704E256024E", wnative: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
-      swap: "https://pancakeswap.finance/swap?chain=bsc&outputCurrency=", quick: ["0.05", "0.1", "0.5", "1"] },
+      swap: "https://pancakeswap.finance/swap?chain=bsc&outputCurrency=", quick: ["0.05", "0.1", "0.5", "1"],
+      // every coin is priced in BNB: the factory holds WBNB and pays out native BNB
+      native: true, qs: "BNB", qaddr: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", qquick: ["0.05", "0.1", "0.5", "1"] },
     base: { id: 8453, name: "Base", short: "Base", sym: "ETH", col: "#0052ff", ds: "base", exp: "https://basescan.org",
       rpc: ["https://base-rpc.publicnode.com", "https://mainnet.base.org"],
       dex: "Uniswap V2", dexFactory: "0x8909Dc15e40173Ff4699343b6eB8132c65e18eC6", router: "0x4752ba5DBc23f44D87826276BF6Fd6b1C372aD24", wnative: "0x4200000000000000000000000000000000000006",
@@ -43,12 +45,16 @@
       dex: "Uniswap V2", dexFactory: "0x9e5A52f57b3038F1B8EeE45F28b3C1967e22799C", router: "0x4752ba5DBc23f44D87826276BF6Fd6b1C372aD24", wnative: "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7",
       swap: "https://app.uniswap.org/swap?chain=avalanche&outputCurrency=", quick: ["1", "5", "10", "25"] }
   };
-  var ORDER = ["ethereum", "bsc", "base", "arbitrum", "polygon", "optimism", "avalanche"];
+  var ORDER = ["ethereum", "bsc"];
+  // Solana runs a different program (not EVM); it is listed as coming soon until it is live
+  var SOL = { name: "Solana", col: "#9945ff" };
+  function solDot() { return '<i class="sl-cdot" style="--c:' + SOL.col + '"></i>'; }
   // Local development chain (hardhat / anvil) — only offered when the site runs on this machine.
   var LOCAL = /^(127\.0\.0\.1|localhost)$/.test(location.hostname);
   if (LOCAL) {
     CHAINS.local = Object.assign({}, CHAINS.ethereum, { id: 31337, name: "Localhost", short: "Local", col: "#9aa4b2", exp: "", rpc: ["http://127.0.0.1:8545"] });
-    ORDER.push("local");
+    CHAINS.localbsc = Object.assign({}, CHAINS.bsc, { id: 31337, name: "Localhost BNB", short: "LocalBNB", col: "#c9a227", exp: "", rpc: ["http://127.0.0.1:8546"] });
+    ORDER.push("local", "localbsc");
   }
   var MAINNET_TXT = "22.03.2027";
   var CURVE = 800e6, VT0 = 1073e6, FAIR_S = 300, FAIR_CAP = 10e6, DEV_CAP = 50e6, CLIFF_S = 7 * 86400, VEST_S = 30 * 86400;
@@ -56,7 +62,7 @@
 
   function overrides() { try { return JSON.parse(localStorage.getItem("sectoraLaunch.factories") || "{}") || {}; } catch (e) { return {}; } }
   function factoryOf(k) {
-    if (!CHAINS[k] || !CHAINS[k].qaddr) return ""; // this version runs where SECT is the quote coin
+    if (!CHAINS[k] || !CHAINS[k].qaddr) return ""; // runs where the quote coin is set: SECT on Ethereum, BNB on BNB Chain
     var o = overrides()[k];
     if (o && E.isAddress(o)) return E.getAddress(o);
     var d = DEP[k];
@@ -69,10 +75,10 @@
   /* ------------------------------------------------------------------ strings */
   var LS = {
     en: {
-      pay: "Pay with", route: "ETH → USDT → SECT on Uniswap, then the curve, in one transaction.", t_swap: "Swapped to SECT", t_recv_sect: "When you sell you receive SECT.", t_uni: "Buy with ETH on Uniswap", t_approve_q: "Approve {s}", c_route: "Your ETH is swapped to SECT on Uniswap (ETH → USDT → SECT). SECT left over is returned to you.", st_burned: "SECT burned", st_lp: "LP burned", sect_bal: "SECT balance", eth_bal: "ETH balance", burn_pending: "+{n} pending burn", burn_pend_l: "Pending burn", burn_btn: "Burn pending SECT", burn_p: "Anyone can run it: {b} % of the platform income is burned (sent to 0x…dEaD) and the rest goes to Sectora.", ok_burn: "SECT burned", net: "Network", net_t: "Choose network", net_live: "Live", net_soon: "Coming soon", sectora_demo: "SectoraEVM", sectora_note: "Mainnet approx. {d}", sectora_menu: "Demo · mainnet approx. {d}",
-      banner_live: "Real coins on {n}, priced in SECT. Sectora Launch arrives on SectoraEVM approximately on 22 March 2027.",
+      pay: "Pay with", route: "ETH → USDT → SECT on Uniswap, then the curve, in one transaction.", t_swap: "Swapped to SECT", t_recv_sect: "When you sell you receive {s}.", fees_btn: "Send to the fee wallet", fees_p: "Anyone can run it: the platform income on this network goes to the Sectora fee wallet as {s}.", ok_fees: "Sent to the fee wallet", t_dexlink: "Trade on {d} ↗", st_qprice: "{s} price", c_r4n: "Fee 1 % per curve trade: 0.5 % creator · 0.5 % Sectora", t_uni: "Buy with ETH on Uniswap", t_approve_q: "Approve {s}", c_route: "Your ETH is swapped to SECT on Uniswap (ETH → USDT → SECT). SECT left over is returned to you.", st_burned: "SECT burned", st_lp: "LP burned", sect_bal: "SECT balance", eth_bal: "{s} balance", burn_pending: "+{n} pending burn", burn_pend_l: "Pending burn", burn_btn: "Burn pending SECT", burn_p: "Anyone can run it: {b} % of the platform income is burned (sent to 0x…dEaD) and the rest goes to Sectora.", ok_burn: "SECT burned", net: "Network", net_t: "Choose network", net_live: "Live", net_soon: "Coming soon", sectora_demo: "SectoraEVM", sectora_note: "Mainnet approx. {d}", sectora_menu: "Demo · mainnet approx. {d}",
+      banner_live: "Real coins on {n}, priced in {s}. Sectora Launch arrives on SectoraEVM approximately on 22 March 2027.",
       banner_off: "Sectora Launch is not active on {n} yet. Choose an active network. SectoraEVM: approximately 22 March 2027.",
-      sectora_soon_t: "Coming to SectoraEVM", sectora_soon_p: "Sectora Launch will be available on SectoraEVM approximately on 22 March 2027, at mainnet. Until then it runs on Ethereum with real coins priced in SECT.",
+      sectora_soon_t: "Coming to SectoraEVM", sectora_soon_p: "Sectora Launch will be available on SectoraEVM approximately on 22 March 2027, at mainnet. Until then it runs with real coins on {c}.",
       w_connect: "Connect wallet", w_choose: "Choose your wallet", w_none_t: "No wallet found in this browser", w_none_p: "Open this page inside your wallet's browser, or install a wallet extension.",
       w_disconnect: "Disconnect", w_wrong: "Switch to {n}", w_addr: "Wallet",
       ex_t: "Explore coins", ex_sub: "{n} live coins on {c}", ex_loading: "Loading coins from {c}…", ex_err: "Could not reach {c}. Retrying…",
@@ -80,12 +86,12 @@
       off_t: "Sectora Launch is not active on {c} yet", off_p: "Pick one of the active networks to explore and launch coins.",
       st_coins: "Coins launched", st_grad: "Graduated to DEX", st_raised: "In bonding curves", st_nets: "Active networks",
       grad_dex: "On {d}", curve: "curve", mc: "Market cap", price: "Price",
-      c_t: "Launch a coin", c_s: "Your coin goes live on {c}, priced in SECT, with a fixed supply of 1,000,000,000 and every protection built into the contract.",
+      c_t: "Launch a coin", c_s: "Your coin goes live on {c}, priced in {s}, with a fixed supply of 1,000,000,000 and every protection built into the contract.",
       c_name: "Name", c_ticker: "Ticker", c_desc: "Description", c_img: "Image link", c_img_h: "https:// or ipfs:// link to a square image (PNG, JPG, GIF, WebP).",
       c_web: "Website", c_x: "X (Twitter)", c_tg: "Telegram", c_dev: "Your buy at launch (optional)", c_dev_h: "Up to 5 % of supply. Locked 7 days, then released over 30 days.",
       c_max: "Max 5 %", c_summary: "Summary", c_fee: "Launch fee", c_devbuy: "Your buy", c_total: "Total", c_get: "You get (locked)",
       c_rules: "Rules in the contract", c_r1: "Fixed supply 1,000,000,000 · no owner, no mint, no tax",
-      c_r2: "Anti-sniper: max 1 % per wallet for 5 minutes", c_r3: "Graduates at ~{g} SECT raised → COIN/SECT pool on {d}, LP burned forever",
+      c_r2: "Anti-sniper: max 1 % per wallet for 5 minutes", c_r3: "Graduates at ~{g} {s} raised → COIN/{s} pool on {d}, LP burned forever",
       c_r4: "Fee 1 % per curve trade: 0.5 % creator · 0.5 % Sectora ({b} % of it burned in SECT)", c_r5: "Until graduation it trades only on the curve",
       c_ack: "I understand this is a real transaction on {c} and that new coins are high risk.",
       c_btn: "Launch on {c}", c_need_wallet: "Connect your wallet to launch",
@@ -122,10 +128,10 @@
       block: "Block", usd: "≈ {u}", st_main: "SectoraEVM mainnet", days: "days", approx_d: "approx. {d}", bal_h: "Balance"
     },
     es: {
-      pay: "Pagar con", route: "ETH → USDT → SECT en Uniswap y luego la curva, en una sola transacción.", t_swap: "Cambiado a SECT", t_recv_sect: "Al vender recibes SECT.", t_uni: "Comprar con ETH en Uniswap", t_approve_q: "Aprobar {s}", c_route: "Tu ETH se cambia a SECT en Uniswap (ETH → USDT → SECT). El SECT que sobre te lo devuelve el contrato.", st_burned: "SECT quemado", st_lp: "LP quemado", sect_bal: "Saldo SECT", eth_bal: "Saldo ETH", burn_pending: "+{n} pendiente de quemar", burn_pend_l: "Pendiente de quemar", burn_btn: "Ejecutar la quema pendiente", burn_p: "Cualquiera puede ejecutarla: el {b} % de los ingresos de la plataforma se quema (se envía a 0x…dEaD) y el resto va a Sectora.", ok_burn: "SECT quemado", net: "Red", net_t: "Elige la red", net_live: "Activa", net_soon: "Próximamente", sectora_demo: "SectoraEVM", sectora_note: "Mainnet aprox. {d}", sectora_menu: "Demo · mainnet aprox. {d}",
-      banner_live: "Monedas reales en {n}, cotizadas en SECT. Sectora Launch llegará a SectoraEVM aproximadamente el 22 de marzo de 2027.",
+      pay: "Pagar con", route: "ETH → USDT → SECT en Uniswap y luego la curva, en una sola transacción.", t_swap: "Cambiado a SECT", t_recv_sect: "Al vender recibes {s}.", fees_btn: "Enviar a la cartera de comisiones", fees_p: "Cualquiera puede ejecutarlo: los ingresos de la plataforma en esta red van a la cartera de comisiones de Sectora en {s}.", ok_fees: "Enviado a la cartera de comisiones", t_dexlink: "Operar en {d} ↗", st_qprice: "Precio de {s}", c_r4n: "Comisión 1 % por operación en la curva: 0,5 % creador · 0,5 % Sectora", t_uni: "Comprar con ETH en Uniswap", t_approve_q: "Aprobar {s}", c_route: "Tu ETH se cambia a SECT en Uniswap (ETH → USDT → SECT). El SECT que sobre te lo devuelve el contrato.", st_burned: "SECT quemado", st_lp: "LP quemado", sect_bal: "Saldo SECT", eth_bal: "Saldo {s}", burn_pending: "+{n} pendiente de quemar", burn_pend_l: "Pendiente de quemar", burn_btn: "Ejecutar la quema pendiente", burn_p: "Cualquiera puede ejecutarla: el {b} % de los ingresos de la plataforma se quema (se envía a 0x…dEaD) y el resto va a Sectora.", ok_burn: "SECT quemado", net: "Red", net_t: "Elige la red", net_live: "Activa", net_soon: "Próximamente", sectora_demo: "SectoraEVM", sectora_note: "Mainnet aprox. {d}", sectora_menu: "Demo · mainnet aprox. {d}",
+      banner_live: "Monedas reales en {n}, cotizadas en {s}. Sectora Launch llegará a SectoraEVM aproximadamente el 22 de marzo de 2027.",
       banner_off: "Sectora Launch aún no está activo en {n}. Elige una red activa. SectoraEVM: aproximadamente el 22 de marzo de 2027.",
-      sectora_soon_t: "Llega a SectoraEVM", sectora_soon_p: "Sectora Launch estará disponible en SectoraEVM aproximadamente el 22 de marzo de 2027, con la mainnet. Mientras tanto funciona en Ethereum con monedas reales cotizadas en SECT.",
+      sectora_soon_t: "Llega a SectoraEVM", sectora_soon_p: "Sectora Launch estará disponible en SectoraEVM aproximadamente el 22 de marzo de 2027, con la mainnet. Mientras tanto funciona con monedas reales en {c}.",
       w_connect: "Conectar wallet", w_choose: "Elige tu wallet", w_none_t: "No hay ninguna wallet en este navegador", w_none_p: "Abre esta página dentro del navegador de tu wallet o instala una extensión.",
       w_disconnect: "Desconectar", w_wrong: "Cambiar a {n}", w_addr: "Wallet",
       ex_t: "Explorar monedas", ex_sub: "{n} monedas reales en {c}", ex_loading: "Cargando monedas de {c}…", ex_err: "No se pudo conectar con {c}. Reintentando…",
@@ -133,12 +139,12 @@
       off_t: "Sectora Launch aún no está activo en {c}", off_p: "Elige una de las redes activas para explorar y lanzar monedas.",
       st_coins: "Monedas lanzadas", st_grad: "Graduadas al DEX", st_raised: "En curvas de bonding", st_nets: "Redes activas",
       grad_dex: "En {d}", curve: "curva", mc: "Cap. de mercado", price: "Precio",
-      c_t: "Lanzar una moneda", c_s: "Tu moneda sale en {c}, cotizada en SECT, con un supply fijo de 1.000.000.000 y todas las protecciones escritas en el contrato.",
+      c_t: "Lanzar una moneda", c_s: "Tu moneda sale en {c}, cotizada en {s}, con un supply fijo de 1.000.000.000 y todas las protecciones escritas en el contrato.",
       c_name: "Nombre", c_ticker: "Ticker", c_desc: "Descripción", c_img: "Enlace de la imagen", c_img_h: "Enlace https:// o ipfs:// a una imagen cuadrada (PNG, JPG, GIF, WebP).",
       c_web: "Web", c_x: "X (Twitter)", c_tg: "Telegram", c_dev: "Tu compra al lanzar (opcional)", c_dev_h: "Hasta el 5 % del supply. Bloqueada 7 días y liberada durante 30 días.",
       c_max: "Máx. 5 %", c_summary: "Resumen", c_fee: "Comisión de lanzamiento", c_devbuy: "Tu compra", c_total: "Total", c_get: "Recibes (bloqueado)",
       c_rules: "Reglas del contrato", c_r1: "Supply fijo 1.000.000.000 · sin dueño, sin mint, sin impuestos",
-      c_r2: "Anti-snipers: máx. 1 % por cartera durante 5 minutos", c_r3: "Se gradúa al reunir ~{g} SECT → pool MONEDA/SECT en {d}, LP quemado para siempre",
+      c_r2: "Anti-snipers: máx. 1 % por cartera durante 5 minutos", c_r3: "Se gradúa al reunir ~{g} {s} → pool MONEDA/{s} en {d}, LP quemado para siempre",
       c_r4: "Comisión 1 % por operación en la curva: 0,5 % creador · 0,5 % Sectora (el {b} % se quema en SECT)", c_r5: "Hasta graduarse solo se opera en la curva",
       c_ack: "Entiendo que es una transacción real en {c} y que las monedas nuevas son de alto riesgo.",
       c_btn: "Lanzar en {c}", c_need_wallet: "Conecta tu wallet para lanzar",
@@ -175,10 +181,10 @@
       block: "Bloque", usd: "≈ {u}", st_main: "Mainnet SectoraEVM", days: "días", approx_d: "aprox. {d}", bal_h: "Saldo"
     },
     pt: {
-      pay: "Pagar com", route: "ETH → USDT → SECT na Uniswap e depois a curva, numa única transação.", t_swap: "Trocado por SECT", t_recv_sect: "Ao vender você recebe SECT.", t_uni: "Comprar com ETH na Uniswap", t_approve_q: "Aprovar {s}", c_route: "Seu ETH é trocado por SECT na Uniswap (ETH → USDT → SECT). O SECT que sobrar volta para você.", st_burned: "SECT queimado", st_lp: "LP queimado", sect_bal: "Saldo SECT", eth_bal: "Saldo ETH", burn_pending: "+{n} a queimar", burn_pend_l: "A queimar", burn_btn: "Executar a queima pendente", burn_p: "Qualquer pessoa pode executar: {b} % da receita da plataforma é queimada (enviada para 0x…dEaD) e o resto vai para a Sectora.", ok_burn: "SECT queimado", net: "Rede", net_t: "Escolha a rede", net_live: "Ativa", net_soon: "Em breve", sectora_demo: "SectoraEVM", sectora_note: "Mainnet aprox. {d}", sectora_menu: "Demo · mainnet aprox. {d}",
-      banner_live: "Moedas reais na {n}, cotadas em SECT. O Sectora Launch chega à SectoraEVM aproximadamente em 22 de março de 2027.",
+      pay: "Pagar com", route: "ETH → USDT → SECT na Uniswap e depois a curva, numa única transação.", t_swap: "Trocado por SECT", t_recv_sect: "Ao vender você recebe {s}.", fees_btn: "Enviar para a carteira de taxas", fees_p: "Qualquer pessoa pode executar: a receita da plataforma nesta rede vai para a carteira de taxas da Sectora em {s}.", ok_fees: "Enviado para a carteira de taxas", t_dexlink: "Negociar na {d} ↗", st_qprice: "Preço do {s}", c_r4n: "Taxa de 1 % por operação na curva: 0,5 % criador · 0,5 % Sectora", t_uni: "Comprar com ETH na Uniswap", t_approve_q: "Aprovar {s}", c_route: "Seu ETH é trocado por SECT na Uniswap (ETH → USDT → SECT). O SECT que sobrar volta para você.", st_burned: "SECT queimado", st_lp: "LP queimado", sect_bal: "Saldo SECT", eth_bal: "Saldo {s}", burn_pending: "+{n} a queimar", burn_pend_l: "A queimar", burn_btn: "Executar a queima pendente", burn_p: "Qualquer pessoa pode executar: {b} % da receita da plataforma é queimada (enviada para 0x…dEaD) e o resto vai para a Sectora.", ok_burn: "SECT queimado", net: "Rede", net_t: "Escolha a rede", net_live: "Ativa", net_soon: "Em breve", sectora_demo: "SectoraEVM", sectora_note: "Mainnet aprox. {d}", sectora_menu: "Demo · mainnet aprox. {d}",
+      banner_live: "Moedas reais na {n}, cotadas em {s}. O Sectora Launch chega à SectoraEVM aproximadamente em 22 de março de 2027.",
       banner_off: "O Sectora Launch ainda não está ativo na {n}. Escolha uma rede ativa. SectoraEVM: aproximadamente 22 de março de 2027.",
-      sectora_soon_t: "Chega à SectoraEVM", sectora_soon_p: "O Sectora Launch estará disponível na SectoraEVM aproximadamente em 22 de março de 2027, com a mainnet. Até lá funciona na Ethereum com moedas reais cotadas em SECT.",
+      sectora_soon_t: "Chega à SectoraEVM", sectora_soon_p: "O Sectora Launch estará disponível na SectoraEVM aproximadamente em 22 de março de 2027, com a mainnet. Até lá funciona com moedas reais em {c}.",
       w_connect: "Conectar carteira", w_choose: "Escolha sua carteira", w_none_t: "Nenhuma carteira neste navegador", w_none_p: "Abra esta página no navegador da sua carteira ou instale uma extensão.",
       w_disconnect: "Desconectar", w_wrong: "Mudar para {n}", w_addr: "Carteira",
       ex_t: "Explorar moedas", ex_sub: "{n} moedas reais na {c}", ex_loading: "Carregando moedas da {c}…", ex_err: "Não foi possível conectar à {c}. Tentando de novo…",
@@ -186,12 +192,12 @@
       off_t: "O Sectora Launch ainda não está ativo na {c}", off_p: "Escolha uma das redes ativas para explorar e lançar moedas.",
       st_coins: "Moedas lançadas", st_grad: "Graduadas para a DEX", st_raised: "Nas curvas de bonding", st_nets: "Redes ativas",
       grad_dex: "Na {d}", curve: "curva", mc: "Cap. de mercado", price: "Preço",
-      c_t: "Lançar uma moeda", c_s: "Sua moeda sai na {c}, cotada em SECT, com supply fixo de 1.000.000.000 e todas as proteções escritas no contrato.",
+      c_t: "Lançar uma moeda", c_s: "Sua moeda sai na {c}, cotada em {s}, com supply fixo de 1.000.000.000 e todas as proteções escritas no contrato.",
       c_name: "Nome", c_ticker: "Ticker", c_desc: "Descrição", c_img: "Link da imagem", c_img_h: "Link https:// ou ipfs:// para uma imagem quadrada (PNG, JPG, GIF, WebP).",
       c_web: "Site", c_x: "X (Twitter)", c_tg: "Telegram", c_dev: "Sua compra no lançamento (opcional)", c_dev_h: "Até 5 % do supply. Bloqueada 7 dias e liberada ao longo de 30 dias.",
       c_max: "Máx. 5 %", c_summary: "Resumo", c_fee: "Taxa de lançamento", c_devbuy: "Sua compra", c_total: "Total", c_get: "Você recebe (bloqueado)",
       c_rules: "Regras do contrato", c_r1: "Supply fixo 1.000.000.000 · sem dono, sem mint, sem impostos",
-      c_r2: "Anti-snipers: máx. 1 % por carteira durante 5 minutos", c_r3: "Gradua ao reunir ~{g} SECT → pool MOEDA/SECT na {d}, LP queimado para sempre",
+      c_r2: "Anti-snipers: máx. 1 % por carteira durante 5 minutos", c_r3: "Gradua ao reunir ~{g} {s} → pool MOEDA/{s} na {d}, LP queimado para sempre",
       c_r4: "Taxa de 1 % por operação na curva: 0,5 % criador · 0,5 % Sectora ({b} % queimado em SECT)", c_r5: "Até graduar só se negocia na curva",
       c_ack: "Entendo que é uma transação real na {c} e que moedas novas são de alto risco.",
       c_btn: "Lançar na {c}", c_need_wallet: "Conecte sua carteira para lançar",
@@ -290,7 +296,73 @@
     if (v) for (var x in v) s = s.split("{" + x + "}").join(v[x]);
     return s;
   }
-  function override(k) { var L = X.lang(); return (OVR[L] && OVR[L][k] != null) ? OVR[L][k] : (OVR.en[k] != null ? OVR.en[k] : null); }
+  var OVRM = {
+    "en": {
+      "st3_p": "Every buy moves the price up the curve. When the curve sells out, the coin graduates.",
+      "st4_p": "Liquidity moves to a pool on Uniswap (Ethereum) or PancakeSwap (BNB Chain) and the LP is burned at 0x…dEaD, so nobody can pull it.", "sc_dex": "Uniswap · PancakeSwap",
+      "eyebrow2": "Sectora Launch · Ethereum · BNB Chain",
+      "hero_s": "Fair launches on Ethereum, priced in SECT, and on BNB Chain, priced in BNB: anti-sniper limits, liquidity locked forever and creator tokens with vesting.",
+      "w3_p": "Before graduation the SECT or BNB sits inside the curve contract; at graduation the LP tokens are burned forever.",
+      "w4_p": "1 % per curve trade: 0.5 % to the creator and 0.5 % to Sectora. On Ethereum part of it is burned in SECT. Nothing hidden, nothing changeable.",
+      "w5_p": "When the curve sells out, the SECT or BNB raised and 200M tokens become a pool on Uniswap or PancakeSwap in the same transaction, with the LP burned.",
+      "w7_p": "Everything in SECT or BNB with its dollar value next to it, from live market data.",
+      "w9_p": "On Ethereum, to buy any coin you buy SECT first, and at graduation the SECT is locked forever in the pool. Part of the platform income is burned.",
+      "h1_p": "Name, ticker, image and links. On Ethereum pay with ETH or SECT, on BNB Chain with BNB, from your own wallet.",
+      "h3_p": "When the curve sells out, the SECT or BNB raised and 200M tokens become a pool on Uniswap or PancakeSwap and the LP is burned forever.",
+      "h4_p": "The creator earns 0.5 % of every curve trade, in SECT or BNB, and can claim it at any time.",
+      "f_tag": "Fair coin launches on Ethereum and BNB Chain.",
+      "lg8_p": "On the SectoraEVM testnet, SECT and test coins have no value. On Ethereum and BNB Chain, coins are real and every trade moves real funds.",
+      "footer_l": "Sectora Launch · real coins on Ethereum (priced in SECT) and BNB Chain (priced in BNB). SectoraEVM approx. 22 March 2027. Not financial advice: new coins are high risk.",
+      "end_s": "Sectora Launch arrives on SectoraEVM approximately on 22 March 2027. Today it already runs with real coins on Ethereum and BNB Chain."
+    },
+    "es": {
+      "st3_p": "Cada compra sube el precio por la curva. Cuando la curva se completa, la moneda se gradúa.",
+      "st4_p": "La liquidez pasa a un pool en Uniswap (Ethereum) o PancakeSwap (BNB Chain) y el LP se quema en 0x…dEaD: nadie puede retirarla.", "sc_dex": "Uniswap · PancakeSwap",
+      "eyebrow2": "Sectora Launch · Ethereum · BNB Chain",
+      "hero_s": "Lanzamientos justos en Ethereum, cotizados en SECT, y en BNB Chain, cotizados en BNB: límites anti-snipers, liquidez bloqueada para siempre y tokens del creador con vesting.",
+      "w3_p": "Antes de graduarse, el SECT o BNB está dentro del contrato de la curva; al graduarse, los LP se queman para siempre.",
+      "w4_p": "1 % por operación en la curva: 0,5 % para el creador y 0,5 % para Sectora. En Ethereum una parte se quema en SECT. Nada oculto y nada que se pueda cambiar.",
+      "w5_p": "Cuando la curva se completa, el SECT o BNB reunido y 200M de tokens forman un pool en Uniswap o PancakeSwap en la misma transacción, con el LP quemado.",
+      "w7_p": "Todo en SECT o BNB con su valor en dólares al lado, con datos reales del mercado.",
+      "w9_p": "En Ethereum, para comprar cualquier moneda primero se compra SECT, y al graduarse el SECT queda bloqueado para siempre en el pool. Parte de los ingresos de la plataforma se quema.",
+      "h1_p": "Nombre, ticker, imagen y enlaces. En Ethereum pagas con ETH o SECT y en BNB Chain con BNB, desde tu propia wallet.",
+      "h3_p": "Cuando la curva se completa, el SECT o BNB reunido y 200M de tokens forman un pool en Uniswap o PancakeSwap y el LP se quema para siempre.",
+      "h4_p": "El creador gana el 0,5 % de cada operación en la curva, en SECT o BNB, y lo cobra cuando quiera.",
+      "f_tag": "Lanzamientos justos de monedas en Ethereum y BNB Chain.",
+      "lg8_p": "En la testnet de SectoraEVM el SECT y las monedas de prueba no tienen valor. En Ethereum y BNB Chain las monedas son reales y cada operación mueve fondos reales.",
+      "footer_l": "Sectora Launch · monedas reales en Ethereum (cotizadas en SECT) y BNB Chain (cotizadas en BNB). SectoraEVM aprox. el 22 de marzo de 2027. No es asesoramiento financiero: las monedas nuevas son de alto riesgo.",
+      "end_s": "Sectora Launch llegará a SectoraEVM aproximadamente el 22 de marzo de 2027. Hoy ya funciona con monedas reales en Ethereum y BNB Chain."
+    },
+    "pt": {
+      "st3_p": "Cada compra sobe o preço pela curva. Quando a curva se completa, a moeda se gradua.",
+      "st4_p": "A liquidez vai para um pool na Uniswap (Ethereum) ou PancakeSwap (BNB Chain) e o LP é queimado em 0x…dEaD: ninguém pode retirá-la.", "sc_dex": "Uniswap · PancakeSwap",
+      "eyebrow2": "Sectora Launch · Ethereum · BNB Chain",
+      "hero_s": "Lançamentos justos na Ethereum, cotados em SECT, e na BNB Chain, cotados em BNB: limites anti-snipers, liquidez bloqueada para sempre e tokens do criador com vesting.",
+      "w3_p": "Antes da graduação o SECT ou BNB fica no contrato da curva; na graduação os LP são queimados para sempre.",
+      "w4_p": "1 % por operação na curva: 0,5 % para o criador e 0,5 % para a Sectora. Na Ethereum parte dela é queimada em SECT. Nada oculto, nada alterável.",
+      "w5_p": "Quando a curva se completa, o SECT ou BNB reunido e 200M de tokens viram um pool na Uniswap ou PancakeSwap na mesma transação, com o LP queimado.",
+      "w7_p": "Tudo em SECT ou BNB com o valor em dólares ao lado, com dados reais do mercado.",
+      "w9_p": "Na Ethereum, para comprar qualquer moeda primeiro se compra SECT, e na graduação o SECT fica bloqueado para sempre no pool. Parte da receita da plataforma é queimada.",
+      "h1_p": "Nome, ticker, imagem e links. Na Ethereum pague com ETH ou SECT e na BNB Chain com BNB, da sua própria carteira.",
+      "h3_p": "Quando a curva se completa, o SECT ou BNB reunido e 200M de tokens viram um pool na Uniswap ou PancakeSwap e o LP é queimado para sempre.",
+      "h4_p": "O criador ganha 0,5 % de cada operação na curva, em SECT ou BNB, e resgata quando quiser.",
+      "f_tag": "Lançamentos justos de moedas na Ethereum e na BNB Chain.",
+      "lg8_p": "Na testnet da SectoraEVM, o SECT e as moedas de teste não têm valor. Na Ethereum e na BNB Chain as moedas são reais e cada operação movimenta fundos reais.",
+      "footer_l": "Sectora Launch · moedas reais na Ethereum (cotadas em SECT) e na BNB Chain (cotadas em BNB). SectoraEVM aprox. 22 de março de 2027. Não é aconselhamento financeiro: moedas novas são de alto risco.",
+      "end_s": "O Sectora Launch chega à SectoraEVM aproximadamente em 22 de março de 2027. Hoje já funciona com moedas reais na Ethereum e na BNB Chain."
+    }
+  };
+  function override(k) {
+    var L = X.lang(), M = deployed("bsc") || (LOCAL && deployed("localbsc")) ? OVRM : null;
+    if (M && ((M[L] && M[L][k] != null) || M.en[k] != null)) return (M[L] && M[L][k] != null) ? M[L][k] : M.en[k];
+    return (OVR[L] && OVR[L][k] != null) ? OVR[L][k] : (OVR.en[k] != null ? OVR.en[k] : null);
+  }
+  // the networks that run today, with their quote coin: "Ethereum (SECT), BNB Chain (BNB)"
+  function netsTxt() {
+    var l = liveChains().filter(function (k) { return k.indexOf("local") !== 0; });
+    if (!l.length) l = ["ethereum"];
+    return l.map(function (k) { return CHAINS[k].name + " (" + CHAINS[k].qs + ")"; }).join(", ");
+  }
 
   /* ------------------------------------------------------------------ formatting */
   function fx(b) { try { return Number(E.formatEther(b || 0n)); } catch (e) { return 0; } }
@@ -369,9 +441,10 @@
   function qC(k, runner) { return new E.Contract(CHAINS[k].qaddr, ERC20_ABI, runner || rp(k)); }
   function pathBytes(k) { var pth = CHAINS[k].path; return E.solidityPacked(["address", "uint24", "address", "uint24", "address"], pth); }
   // SECT received for `wei` of ETH along the fixed route (Uniswap QuoterV2, read-only call)
-  function quoteEth(k, wei) { return withRpc(k, function (p) { return new E.Contract(CHAINS[k].quoter, QUOTER_ABI, p).quoteExactInput.staticCall(pathBytes(k), wei); }).then(function (r) { return r[0]; }); }
+  function quoteEth(k, wei) { if (CHAINS[k].native) return Promise.resolve(wei); return withRpc(k, function (p) { return new E.Contract(CHAINS[k].quoter, QUOTER_ABI, p).quoteExactInput.staticCall(pathBytes(k), wei); }).then(function (r) { return r[0]; }); }
   var RATE = {};
   function loadRate(k) {
+    if (CHAINS[k].native) { RATE[k] = { r: 1, at: Date.now() }; return Promise.resolve(1); }
     if (RATE[k] && Date.now() - RATE[k].at < 60000) return Promise.resolve(RATE[k].r);
     return quoteEth(k, E.parseEther("0.01")).then(function (out) { RATE[k] = { r: fx(out) / 0.01, at: Date.now() }; return RATE[k].r; });
   }
@@ -433,8 +506,9 @@
     if (!ch.qaddr || (NUSD[k] && Date.now() - NUSD[k].at < 120000)) return Promise.resolve();
     NUSD[k] = NUSD[k] || { p: 0, eth: 0, at: 0 }; NUSD[k].at = Date.now();
     var get = function (a) { return fetch("https://api.dexscreener.com/latest/dex/tokens/" + a, { cache: "no-store" }).then(function (r) { return r.json(); }); };
-    return Promise.all([get(ch.qaddr), get(ch.wnative)]).then(function (r) {
-      var q = bestUsd(r[0].pairs, ch.qaddr, "ethereum"), e = bestUsd(r[1].pairs, ch.wnative, "ethereum");
+    var toks = ch.native ? [ch.wnative] : [ch.qaddr, ch.wnative];
+    return Promise.all(toks.map(get)).then(function (r) {
+      var q = bestUsd(r[0].pairs, toks[0], ch.ds), e = bestUsd(r[r.length - 1].pairs, ch.wnative, ch.ds);
       if (q > 0) NUSD[k].p = q;
       if (e > 0) NUSD[k].eth = e;
       X.refreshLive && X.refreshLive("usd");
@@ -675,6 +749,7 @@
       var on = deployed(k);
       html += '<button role="menuitem" data-a="setnet" data-v="' + k + '"' + (k === net ? ' class="on"' : "") + (on ? "" : " disabled") + ">" + chainDot(k) + "<span>" + X.esc(CHAINS[k].name) + '</span><em class="' + (on ? "ok" : "") + '">' + X.esc(on ? lt("net_live") : lt("net_soon")) + "</em></button>";
     });
+    html += '<button role="menuitem" disabled>' + solDot() + "<span>" + SOL.name + "</span><em>" + X.esc(lt("net_soon")) + "</em></button>";
     html += '<button role="menuitem" data-a="setnet" data-v="sectora"' + (net === "sectora" ? ' class="on"' : "") + '><i class="sl-cdot is-sect"></i><span>' + X.esc(lt("sectora_demo")) + '</span><em class="soon">' + X.esc(lt("sectora_menu", { d: MAINNET_TXT })) + "</em></button></div>";
     return html;
   }
@@ -700,7 +775,7 @@
   }
   function banner(net) {
     var n = isLive(net) ? CHAINS[net].name : "SectoraEVM";
-    return '<span class="sl-dot" style="color:var(--live)"></span><span>' + X.esc(deployed(net) ? lt("banner_live", { n: n }) : lt("banner_off", { n: n })) + "</span>";
+    return '<span class="sl-dot" style="color:var(--live)"></span><span>' + X.esc(deployed(net) ? lt("banner_live", { n: n, s: CHAINS[net].qs }) : lt("banner_off", { n: n })) + "</span>";
   }
 
   /* ------------------------------------------------------------------ home */
@@ -746,7 +821,7 @@
     return '<div class="sl-netrow">' + ORDER.map(function (k) {
       var on = deployed(k);
       return '<button class="sl-netpill' + (k === net ? " on" : "") + '" data-a="setnet" data-v="' + k + '"' + (on ? "" : " disabled") + ">" + chainDot(k) + X.esc(CHAINS[k].name) + (on ? "" : ' <em>' + X.esc(lt("net_soon")) + "</em>") + "</button>";
-    }).join("") + '<button class="sl-netpill' + (net === "sectora" ? " on" : "") + '" data-a="setnet" data-v="sectora"><i class="sl-cdot is-sect"></i>SectoraEVM <em>' + X.esc(lt("sectora_note", { d: MAINNET_TXT })) + "</em></button></div>";
+    }).join("") + '<button class="sl-netpill" disabled>' + solDot() + SOL.name + " <em>" + X.esc(lt("net_soon")) + "</em></button>" + '<button class="sl-netpill' + (net === "sectora" ? " on" : "") + '" data-a="setnet" data-v="sectora"><i class="sl-cdot is-sect"></i>SectoraEVM <em>' + X.esc(lt("sectora_note", { d: MAINNET_TXT })) + "</em></button></div>";
   }
   function explore(net) {
     var st = chainState(net), ch = CHAINS[net];
@@ -759,7 +834,7 @@
       '<div class="sl-mkt" id="slLGrid">' + gridHtml(net) + "</div></section>" + soonBand();
   }
   function soonBand() {
-    return '<section class="sl-sec"><div class="sl-soon"><div class="sl-soon-ic"><i class="sl-cdot is-sect" style="--s:14px"></i></div><div><span class="sl-eyebrow"><i class="rule"></i>SectoraEVM · ' + X.esc(lt("sectora_note", { d: MAINNET_TXT })) + "</span><h3>" + X.esc(lt("sectora_soon_t")) + "</h3><p>" + X.esc(lt("sectora_soon_p")) + "</p></div></div></section>";
+    return '<section class="sl-sec"><div class="sl-soon"><div class="sl-soon-ic"><i class="sl-cdot is-sect" style="--s:14px"></i></div><div><span class="sl-eyebrow"><i class="rule"></i>SectoraEVM · ' + X.esc(lt("sectora_note", { d: MAINNET_TXT })) + "</span><h3>" + X.esc(lt("sectora_soon_t")) + "</h3><p>" + X.esc(lt("sectora_soon_p", { c: netsTxt() })) + "</p></div></div></section>";
   }
   function statTiles(net) {
     var st = chainState(net), ch = CHAINS[net], grads = st.coins.filter(function (c) { return c.grad; }).length;
@@ -770,7 +845,8 @@
       [lt("st_coins"), X.nf(st.count || 0, 0), "", ""],
       [lt("st_grad"), X.nf(grads, 0), ch.dex + " · " + lt("st_lp"), ""],
       [lt("st_raised"), amt(raised, ch.qs), usdOf(net, raised), ""],
-      [lt("st_burned"), amt(burned, ch.qs), pending > 0 ? lt("burn_pending", { n: amt(pending, ch.qs) }) : usdOf(net, burned), ""]
+      ch.native ? [lt("st_qprice", { s: ch.qs }), NUSD[net] && NUSD[net].p > 0 ? usdOf(net, 1) : "…", "DexScreener", ""]
+        : [lt("st_burned"), amt(burned, ch.qs), pending > 0 ? lt("burn_pending", { n: amt(pending, ch.qs) }) : usdOf(net, burned), ""]
     ];
     return '<div class="sl-stats is-live" id="slLStats">' + tiles.map(function (x) {
       var parts = String(x[1]).split(" "), big = x[3] === "is-net" ? X.esc(x[1]) : X.esc(parts[0]) + (parts[1] ? "<small>" + X.esc(parts.slice(1).join(" ")) + "</small>" : "");
@@ -821,10 +897,11 @@
     var v0 = fx(cf.vN), net = v0 * VT0 / (VT0 - DEV_CAP * 0.999) - v0;
     return Math.floor(net / 0.99 * 1e6) / 1e6;
   }
-  function rateOf(k) { return RATE[k] ? RATE[k].r : 0; }
+  function rateOf(k) { return CHAINS[k] && CHAINS[k].native ? 1 : RATE[k] ? RATE[k].r : 0; }
   // what the form means in SECT and in ETH, whichever coin the creator pays with
   function createPlan(k) {
     var cf = chainState(k).cfg, r = rateOf(k), d = X.num(draft.dev), fee = cf ? fx(cf.fee) : 0;
+    if (CHAINS[k].native) return { eth: true, native: true, fee: fee, feeEth: fee, dev: d, devSect: d, total: fee + d, ready: !!cf };
     if (draft.pay === "eth") {
       var feeEth = r ? fee / r * 1.03 : 0, devSect = r ? d * r : 0;
       return { eth: true, fee: fee, feeEth: feeEth, dev: d, devSect: devSect, total: feeEth + d, ready: !!(cf && r) };
@@ -850,7 +927,7 @@
   function createSummary(k) {
     var ch = CHAINS[k], cf = chainState(k).cfg, pl = createPlan(k), errs = createErrors(k), g = gradTarget(k), ms = meState(k);
     var rows;
-    if (pl.eth) {
+    if (pl.eth && !pl.native) {
       rows = [[lt("c_fee"), amt(pl.fee, ch.qs), pl.feeEth ? "≈ " + amt(pl.feeEth, ch.sym) : ""],
         [lt("c_devbuy"), pl.dev > 0 ? amt(pl.dev, ch.sym) : "—", pl.dev > 0 && pl.devSect ? "≈ " + amt(pl.devSect, ch.qs) : ""]];
     } else {
@@ -866,11 +943,11 @@
     var burn = cf ? Math.round(cf.burn / 100) : 0;
     return '<div class="sl-panel"><h3>' + X.ico("file") + X.esc(lt("c_summary")) + "</h3>" + chainDot(k) + ' <b style="font-size:13px">' + X.esc(ch.name) + " · " + X.esc(ch.qs) + "</b>" +
       rows.map(function (r) { return '<div class="sl-kv"><span>' + X.esc(r[0]) + '</span><b class="num">' + X.esc(r[1]) + (r[2] ? ' <small class="faint">' + X.esc(r[2]) + "</small>" : "") + "</b></div>"; }).join("") +
-      (pl.eth ? '<p class="sl-route">' + X.esc(lt("c_route")) + "</p>" : "") +
+      (pl.eth && !pl.native ? '<p class="sl-route">' + X.esc(lt("c_route")) + "</p>" : "") +
       '<h4 class="sl-sub">' + X.esc(lt("c_rules")) + '</h4><ul class="sl-rules">' +
-      ["c_r1", "c_r2", "c_r3", "c_r4", "c_r5"].map(function (r) { return "<li>" + X.ico("check") + "<span>" + X.esc(lt(r, { g: g ? X.nf(g, 0) : "…", s: ch.qs, d: ch.dex, b: burn })) + "</span></li>"; }).join("") + "</ul>" +
+      ["c_r1", "c_r2", "c_r3", burn > 0 ? "c_r4" : "c_r4n", "c_r5"].map(function (r) { return "<li>" + X.ico("check") + "<span>" + X.esc(lt(r, { g: g ? X.nf(g, g >= 100 ? 0 : 2) : "…", s: ch.qs, d: ch.dex, b: burn })) + "</span></li>"; }).join("") + "</ul>" +
       errList + '<div style="margin-top:14px">' + btn + "</div></div>" +
-      '<div class="sl-alert is-info">' + X.ico("info") + "<span>" + X.esc(lt("sectora_soon_p")) + "</span></div>";
+      '<div class="sl-alert is-info">' + X.ico("info") + "<span>" + X.esc(lt("sectora_soon_p", { c: netsTxt() })) + "</span></div>";
   }
   function createView(net) {
     if (!deployed(net)) return '<a class="sl-back" href="#/">' + X.ico("back") + X.esc(X.t("back")) + "</a>" + offHtml(net);
@@ -882,6 +959,7 @@
       if (!hadRate && draft.pay === "eth" && /#\/create/.test(location.hash) && !(ae && /INPUT|TEXTAREA/.test(ae.tagName))) X.render(); else X.refreshLive("summary");
     }, function () {});
     if (W.addr) loadMe(net).then(function () { X.refreshLive("summary"); }, function () {});
+    if (CHAINS[net].native) draft.pay = "eth";
     var ch = CHAINS[net], errs = createErrors(net), tch = draft.touched, sim = (draft.name || draft.sym) ? similar(net, draft.name, draft.sym, null) : null;
     function f(id, label, val, attrs, err, hint) {
       return '<div class="sl-field"><label for="' + id + '">' + X.esc(label) + '</label><input class="sl-input' + (err ? " is-bad" : "") + '" id="' + id + '" value="' + X.esc(val) + '" ' + (attrs || "") + ">" + (err ? '<small class="sl-err" style="color:var(--red)">' + X.esc(err) + "</small>" : hint ? "<small>" + X.esc(hint) + "</small>" : "") + "</div>";
@@ -890,7 +968,7 @@
     var r0 = rateOf(net), dmS = devMaxSect(net), dm = draft.pay === "eth" ? (r0 ? Math.floor(dmS / r0 * 1e5) / 1e5 : 0) : dmS;
     var devUnit = draft.pay === "eth" ? ch.sym : ch.qs, devQuick = draft.pay === "eth" ? ch.quick.slice(0, 3) : ch.qquick.slice(0, 3);
     return '<a class="sl-back" href="#/">' + X.ico("back") + X.esc(X.t("back")) + "</a>" +
-      '<div class="sl-pagehead"><span class="sl-eyebrow"><i class="rule"></i>Sectora Launch · ' + X.esc(ch.name) + "</span><h1>" + X.esc(lt("c_t")) + "</h1><p>" + X.esc(lt("c_s", { c: ch.name })) + "</p></div>" +
+      '<div class="sl-pagehead"><span class="sl-eyebrow"><i class="rule"></i>Sectora Launch · ' + X.esc(ch.name) + "</span><h1>" + X.esc(lt("c_t")) + "</h1><p>" + X.esc(lt("c_s", { c: ch.name, s: ch.qs })) + "</p></div>" +
       '<div class="sl-2col"><div><div class="sl-panel">' +
       '<div class="sl-field"><span class="sl-label">' + X.esc(lt("c_img")) + '</span><div class="sl-upload">' + prev + '<div style="flex:1;min-width:0"><input class="sl-input' + (tch.img && errs.img ? " is-bad" : "") + '" id="slLImg" inputmode="url" placeholder="https://… / ipfs://…" value="' + X.esc(draft.img) + '"><small style="display:block;margin-top:6px">' + X.esc(tch.img && errs.img ? errs.img : lt("c_img_h")) + "</small></div></div></div>" +
       '<div class="sl-row2">' + f("slLName", lt("c_name"), draft.name, 'maxlength="32" autocomplete="off"', tch.name && errs.name) +
@@ -898,7 +976,7 @@
       '<div class="sl-warn-list" id="slLSim">' + (sim ? '<div class="sl-alert">' + X.ico("alert") + "<span>" + X.esc(lt("e_similar", { n: sim })) + "</span></div>" : "") + "</div>" +
       '<div class="sl-field"><label for="slLDesc">' + X.esc(lt("c_desc")) + '</label><textarea class="sl-textarea" id="slLDesc" maxlength="500">' + X.esc(draft.desc) + "</textarea></div>" +
       '<div class="sl-row3">' + f("slLWeb", lt("c_web"), draft.web, 'inputmode="url" placeholder="https://"') + f("slLX", lt("c_x"), draft.x, 'inputmode="url" placeholder="https://x.com/…"') + f("slLTg", lt("c_tg"), draft.tg, 'inputmode="url" placeholder="https://t.me/…"') + "</div>" +
-      '<div class="sl-field"><span class="sl-label">' + X.esc(lt("pay")) + '</span><div class="sl-pay" style="margin:0">' + ["eth", "sect"].map(function (x) { return '<button type="button" data-a="lcpay" data-v="' + x + '"' + (draft.pay === x ? ' class="on"' : "") + ">" + X.esc(x === "eth" ? ch.sym : ch.qs) + "</button>"; }).join("") + "</div></div>" +
+      (ch.native ? "" : '<div class="sl-field"><span class="sl-label">' + X.esc(lt("pay")) + '</span><div class="sl-pay" style="margin:0">' + ["eth", "sect"].map(function (x) { return '<button type="button" data-a="lcpay" data-v="' + x + '"' + (draft.pay === x ? ' class="on"' : "") + ">" + X.esc(x === "eth" ? ch.sym : ch.qs) + "</button>"; }).join("") + "</div></div>") +
       '<div class="sl-field"><label for="slLDev">' + X.esc(lt("c_dev")) + '</label><div class="sl-input-wrap"><input class="sl-input num" id="slLDev" inputmode="decimal" placeholder="0" value="' + X.esc(draft.dev) + '"><span class="unit">' + X.esc(devUnit) + "</span></div>" +
       '<div class="sl-quick" style="margin:6px 0 0">' + devQuick.map(function (v) { return '<button type="button" data-a="ldev" data-v="' + v + '">' + v + "</button>"; }).join("") + (dm ? '<button type="button" data-a="ldev" data-v="' + dm + '">' + X.esc(lt("c_max")) + "</button>" : "") + "</div>" +
       "<small>" + X.esc(lt("c_dev_h")) + "</small></div>" +
@@ -953,6 +1031,13 @@
       }
       var minDev = devWei > 0n ? E.parseEther(String(Math.floor(devTokensFor(net, pl.dev) * 0.995))) : 0n;
       txFlow(net, function (s) { return fac(net, s).createCoin(name, sym, meta, devWei, minDev); }, done);
+      return;
+    }
+    // native quote (BNB): the exact launch fee plus the creator buy, no swap
+    if (pl.native) {
+      var dW = pl.dev > 0 ? E.parseEther(pl.dev.toFixed(18)) : 0n, val = cf.fee + dW;
+      var mDev = dW > 0n ? E.parseEther(String(Math.floor(devTokensFor(net, pl.dev) * 0.995))) : 0n;
+      txFlow(net, function (s) { return fac(net, s).createCoinWithETH(name, sym, meta, dW, val, mDev, { value: val }); }, done);
       return;
     }
     // paying ETH: swap ETH → SECT along the fixed route, launch fee first, the rest is the creator buy
@@ -1070,7 +1155,7 @@
     return html + "</div>";
   }
   function tradePanel(k, td) {
-    var c = td.c, ch = CHAINS[k], side = ui.side, m = td.mine, pay = c.grad ? "sect" : ui.pay;
+    var c = td.c, ch = CHAINS[k], side = ui.side, m = td.mine, pay = ch.native ? "eth" : c.grad ? "sect" : ui.pay;
     var head = '<div class="sl-trade-tabs"><button class="buy' + (side === "buy" ? " on" : "") + '" data-a="lside" data-v="buy">' + X.esc(lt("t_buy")) + '</button><button class="sell' + (side === "sell" ? " on" : "") + '" data-a="lside" data-v="sell">' + X.esc(lt("t_sell")) + "</button></div>";
     var fairLeft = c.created + FAIR_S * 1000 - chainNow(k);
     var fair = !c.grad && fairLeft > 0 ? '<div class="sl-alert is-info" style="margin-bottom:14px">' + X.ico("clock") + "<span>" + X.esc(lt("t_fair", { m: X.dur(fairLeft) })) + "</span></div>" : "";
@@ -1084,17 +1169,17 @@
     }
     var unit, balLine, quick, payRow = "", note = "";
     if (side === "buy") {
-      if (!c.grad) payRow = '<div class="sl-pay"><span>' + X.esc(lt("pay")) + "</span>" + ["eth", "sect"].map(function (x) { return '<button data-a="lpay" data-v="' + x + '"' + (pay === x ? ' class="on"' : "") + ">" + X.esc(x === "eth" ? ch.sym : ch.qs) + "</button>"; }).join("") + "</div>";
+      if (!c.grad && !ch.native) payRow = '<div class="sl-pay"><span>' + X.esc(lt("pay")) + "</span>" + ["eth", "sect"].map(function (x) { return '<button data-a="lpay" data-v="' + x + '"' + (pay === x ? ' class="on"' : "") + ">" + X.esc(x === "eth" ? ch.sym : ch.qs) + "</button>"; }).join("") + "</div>";
       unit = pay === "eth" ? ch.sym : ch.qs;
       balLine = '<div class="sl-bal"><span>' + X.esc(lt("t_bal")) + '</span><span class="num">' + (m ? X.esc(pay === "eth" ? amt(fx(m.native), ch.sym) : amt(fx(m.sect), ch.qs)) : "—") + "</span></div>";
       quick = (pay === "eth" ? ch.quick : ch.qquick).map(function (v) { return '<button data-a="lamt" data-v="' + v + '">' + v + "</button>"; }).join("");
-      if (pay === "eth" && !c.grad) note = '<p class="sl-route">' + X.esc(lt("route")) + "</p>";
-      if (c.grad && uni) note = '<p class="sl-route"><a href="' + X.esc(uni) + '" target="_blank" rel="noopener">' + X.esc(lt("t_uni")) + " ↗</a></p>";
+      if (pay === "eth" && !c.grad && !ch.native) note = '<p class="sl-route">' + X.esc(lt("route")) + "</p>";
+      if (c.grad && uni) note = '<p class="sl-route"><a href="' + X.esc(uni) + '" target="_blank" rel="noopener">' + X.esc(ch.native ? lt("t_dexlink", { d: ch.dex }) : lt("t_uni") + " ↗") + "</a></p>";
     } else {
       unit = "$" + c.sym;
       balLine = '<div class="sl-bal"><span>' + X.esc(lt("t_bal")) + '</span><span class="num">' + (m ? X.esc(X.compact(fx(m.bal))) + " " + X.esc(c.sym) : "—") + "</span></div>";
       quick = [0.25, 0.5, 0.75, 1].map(function (f) { return '<button data-a="lpct" data-v="' + f + '">' + (f === 1 ? X.esc(X.t("max")) : f * 100 + "%") + "</button>"; }).join("");
-      note = '<p class="sl-route">' + X.esc(lt("t_recv_sect")) + "</p>";
+      note = '<p class="sl-route">' + X.esc(lt("t_recv_sect", { s: ch.qs })) + "</p>";
     }
     var slip = '<div class="sl-slip"><span>' + X.esc(lt("t_slip")) + "</span>" + [1, 3, 5, 10].map(function (s2) { return '<button data-a="lslip" data-v="' + s2 + '"' + (ui.slip === s2 ? ' class="on"' : "") + ">" + s2 + " %</button>"; }).join("") + "</div>";
     var btn = !W.addr ? '<button class="sl-btn sl-btn-p sl-btn-w" data-a="wconnect">' + X.esc(lt("w_connect")) + "</button>"
@@ -1142,7 +1227,7 @@
     if (inp.value) upd();
   }
   function quote(k, td, v) {
-    var c = td.c, ch = CHAINS[k], m = td.mine, slip = BigInt(Math.round(ui.slip * 100)), pay = c.grad ? "sect" : ui.pay;
+    var c = td.c, ch = CHAINS[k], m = td.mine, slip = BigInt(Math.round(ui.slip * 100)), pay = ch.native ? "eth" : c.grad ? "sect" : ui.pay, swap = pay === "eth" && !ch.native;
     var wei;
     try { wei = E.parseEther(String(v)); } catch (e) { return Promise.reject(new Error("amount")); }
     var cut = function (x, n) { return x * (10000n - slip * BigInt(n || 1)) / 10000n; };
@@ -1153,9 +1238,9 @@
         return withRpc(k, function (p) { return fac(k, p).quoteBuy(c.addr, sq); }).then(function (r) {
           var out = r[0], fee = r[1], used = r[2], comp = r[3], tok = fx(out), spot = priceOf(c);
           var impact = tok > 0 ? (fx(used - fee) / tok) / spot - 1 : 0;
-          var minTok = comp ? 0n : cut(out, pay === "eth" ? 2 : 1);
+          var minTok = comp ? 0n : cut(out, swap ? 2 : 1);
           var rows = [[lt("t_you_get"), X.compact(tok) + " $" + c.sym]];
-          if (pay === "eth") rows.push([lt("t_swap"), amt(fx(sq), ch.qs)]);
+          if (swap) rows.push([lt("t_swap"), amt(fx(sq), ch.qs)]);
           rows.push([lt("t_fee"), amt(fx(fee), ch.qs)], [lt("t_impact"), X.nf(impact * 100, 2) + " %"], [lt("t_min"), comp ? "—" : X.compact(fx(minTok)) + " $" + c.sym]);
           if (comp) rows.push([lt("t_refund"), amt(fx(sq - used), ch.qs)]);
           var err = "";
@@ -1163,7 +1248,7 @@
           else if (m && pay === "sect" && wei > m.sect) err = lt("e_bal", { s: ch.qs });
           else err = fairErr(tok);
           var q = { rows: rows, err: err, note: comp ? lt("t_completes", { d: ch.dex }) : "", min: minTok };
-          if (pay === "eth") { q.kind = "buyeth"; q.value = wei; q.minQuote = cut(sq); }
+          if (pay === "eth") { q.kind = "buyeth"; q.value = wei; q.minQuote = swap ? cut(sq) : wei; }
           else { q.kind = "buysect"; q.amount = wei; q.approve = m && m.qAllow < wei; q.approveQ = true; q.spender = factoryOf(k); }
           return q;
         });
@@ -1176,8 +1261,17 @@
         return { rows: [[lt("t_you_get"), amt(fx(out), ch.qs)], [lt("t_fee"), amt(fx(fee), ch.qs)], [lt("t_min"), amt(fx(minOut), ch.qs)]], err: err, kind: "sell", amount: wei, min: minOut };
       });
     }
-    // graduated: COIN/SECT pool on Uniswap V2
+    // graduated: COIN/SECT pool on Uniswap V2 (Ethereum) or COIN/WBNB on PancakeSwap, traded with native BNB
     var path = ui.side === "buy" ? [ch.qaddr, c.addr] : [c.addr, ch.qaddr];
+    if (ch.native) {
+      return withRpc(k, function (p) { return new E.Contract(ch.router, ROUTER_ABI, p).getAmountsOut(wei, path); }).then(function (a) {
+        var out = a[1], minOut = cut(out), buy = ui.side === "buy";
+        var err = buy ? (m && wei > m.native ? lt("e_bal", { s: ch.sym }) : "") : (m && wei > m.bal ? (m.bal > 0n ? lt("r_bal") : lt("t_no_tokens", { s: c.sym })) : "");
+        return { rows: [[lt("t_you_get"), buy ? X.compact(fx(out)) + " $" + c.sym : amt(fx(out), ch.sym)], [lt("t_min"), buy ? X.compact(fx(minOut)) + " $" + c.sym : amt(fx(minOut), ch.sym)]],
+          err: err, kind: buy ? "dexbuyn" : "dexselln", amount: wei, min: minOut, path: path,
+          approve: !buy && m && m.tAllowR < wei, approveQ: false, spender: ch.router };
+      });
+    }
     return withRpc(k, function (p) { return new E.Contract(ch.router, ROUTER_ABI, p).getAmountsOut(wei, path); }).then(function (a) {
       var out = a[1], minOut = cut(out), buy = ui.side === "buy";
       var err = buy ? (m && wei > m.sect ? lt("e_bal", { s: ch.qs }) : "") : (m && wei > m.bal ? (m.bal > 0n ? lt("r_bal") : lt("t_no_tokens", { s: c.sym })) : "");
@@ -1196,12 +1290,14 @@
       if (q.kind === "buyeth") return fac(k, s).buyWithETH(c.addr, q.minQuote, q.min, { value: q.value });
       if (q.kind === "buysect") return fac(k, s).buy(c.addr, q.amount, q.min);
       if (q.kind === "sell") return fac(k, s).sell(c.addr, q.amount, q.min);
+      if (q.kind === "dexbuyn") return new E.Contract(ch.router, ROUTER_ABI, s).swapExactETHForTokensSupportingFeeOnTransferTokens(q.min, q.path, W.addr, dl, { value: q.amount });
+      if (q.kind === "dexselln") return new E.Contract(ch.router, ROUTER_ABI, s).swapExactTokensForETHSupportingFeeOnTransferTokens(q.amount, q.min, q.path, W.addr, dl);
       return new E.Contract(ch.router, ROUTER_ABI, s).swapExactTokensForTokens(q.amount, q.min, q.path, W.addr, dl);
     }, function () {
       td.at = 0; chainState(k).at = 0; ME[k] && (ME[k].at = 0);
       if (q.approve) return { html: X.esc(lt("ok_approve")) };
       ui.amt = "";
-      var buy = q.kind === "buyeth" || q.kind === "buysect" || q.kind === "dexbuy";
+      var buy = q.kind === "buyeth" || q.kind === "buysect" || q.kind === "dexbuy" || q.kind === "dexbuyn";
       return { html: X.esc(buy ? lt("ok_buy", { n: q.rows[0][1].replace(/ \$.*/, ""), s: c.sym }) : lt("ok_sell", { n: X.compact(fx(q.amount)), s: c.sym })) };
     });
   }
@@ -1265,15 +1361,15 @@
     return '<div class="sl-pagehead"><span class="sl-eyebrow"><i class="rule"></i>' + X.esc(W.info && W.info.name || "Wallet") + "</span><h1>" + X.esc(lt("me_t")) + "</h1></div>" +
       '<div class="sl-panel"><div class="sl-kv"><span>' + X.esc(lt("w_addr")) + '</span><b class="mono">' + (isLive(net) ? addrLink(net, W.addr, W.addr) : X.esc(W.addr)) + "</b></div>" +
       '<div class="sl-kv"><span>' + X.esc(lt("net")) + "</span><b>" + chainDot(net) + " " + X.esc(ch.name) + "</b></div>" +
-      '<div class="sl-kv"><span>' + X.esc(lt("eth_bal")) + '</span><b class="num">' + (ms.native != null ? X.esc(amt(fx(ms.native), ch.sym)) + ' <small class="faint">' + X.esc(ethUsd(net, fx(ms.native))) + "</small>" : "…") + "</b></div>" +
-      (ch.qaddr ? '<div class="sl-kv"><span>' + X.esc(lt("sect_bal")) + '</span><b class="num">' + (ms.sect != null ? X.esc(amt(fx(ms.sect), ch.qs)) + " " + usdLine(net, fx(ms.sect)) : "…") + "</b></div>" : "") +
+      '<div class="sl-kv"><span>' + X.esc(lt("eth_bal", { s: ch.sym })) + '</span><b class="num">' + (ms.native != null ? X.esc(amt(fx(ms.native), ch.sym)) + ' <small class="faint">' + X.esc(ethUsd(net, fx(ms.native))) + "</small>" : "…") + "</b></div>" +
+      (ch.qaddr && !ch.native ? '<div class="sl-kv"><span>' + X.esc(lt("sect_bal")) + '</span><b class="num">' + (ms.sect != null ? X.esc(amt(fx(ms.sect), ch.qs)) + " " + usdLine(net, fx(ms.sect)) : "…") + "</b></div>" : "") +
       (deployed(net) ? '<div class="sl-kv"><span>' + X.esc(lt("me_fees")) + '</span><b class="num">' + X.esc(amt(fx(ms.fees || 0n), ch.qs)) + "</b></div>" +
         '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px"><button class="sl-btn sl-btn-p" data-a="lclaimfees"' + (ms.fees > 0n ? "" : " disabled") + ">" + X.esc(lt("cr_claim")) + '</button><button class="sl-btn" data-a="wdisconnect">' + X.esc(lt("w_disconnect")) + "</button></div>" : '<button class="sl-btn" style="margin-top:12px" data-a="wdisconnect">' + X.esc(lt("w_disconnect")) + "</button>") + "</div>" +
       (deployed(net) ? '<section class="sl-sec"><div class="sl-head"><div><h2>' + X.esc(lt("me_hold")) + "</h2></div></div>" + list(held, true) + "</section>" +
         '<section class="sl-sec"><div class="sl-head"><div><h2>' + X.esc(lt("me_coins")) + "</h2></div></div>" + list(mine, false) + "</section>" : offHtml(net));
   }
   function burnPanel() {
-    var k = liveChains()[0]; if (!k) return "";
+    var k = liveChains().filter(function (x) { return !CHAINS[x].native; })[0]; if (!k) return "";
     var st = chainState(k), cf = st.cfg, ch = CHAINS[k];
     if (!st.at || !cf) return "";
     var fees = fx(st.fees || 0n), pend = fees * cf.burn / 10000;
@@ -1281,6 +1377,15 @@
       '<div class="sl-kv"><span>' + X.esc(lt("burn_pend_l")) + '</span><b class="num">' + X.esc(amt(pend, ch.qs)) + "</b></div>" +
       '<p class="sl-note">' + X.esc(lt("burn_p", { b: Math.round(cf.burn / 100) })) + "</p>" +
       '<button class="sl-btn sl-btn-p" style="margin-top:12px" data-a="lburn" data-v="' + k + '"' + (fees > 0 ? "" : " disabled") + ">" + X.ico("fire") + X.esc(lt("burn_btn")) + "</button></div>";
+  }
+  // networks without a burn (BNB Chain): the platform income simply goes to the fee wallet
+  function feePanel(k) {
+    var st = chainState(k), ch = CHAINS[k];
+    if (!st.at || !st.cfg) return "";
+    var fees = fx(st.fees || 0n);
+    return '<div class="sl-panel"><h3>' + X.ico("wallet") + X.esc(lt("stats_fees")) + " · " + X.esc(ch.name) + '</h3><div class="sl-kv"><span>' + X.esc(lt("stats_fees")) + '</span><b class="num">' + X.esc(amt(fees, ch.qs)) + " " + usdLine(k, fees) + "</b></div>" +
+      '<p class="sl-note">' + X.esc(lt("fees_p", { s: "W" + ch.qs })) + "</p>" +
+      '<button class="sl-btn sl-btn-p" style="margin-top:12px" data-a="lfees" data-v="' + k + '"' + (fees > 0 ? "" : " disabled") + ">" + X.esc(lt("fees_btn")) + "</button></div>";
   }
   function statsView() {
     var live = liveChains();
@@ -1291,9 +1396,10 @@
         var on = deployed(k), st = chainState(k), ch = CHAINS[k];
         if (!on) return '<tr><td>' + chainDot(k) + " " + X.esc(ch.name) + '</td><td class="r faint" colspan="4">' + X.esc(lt("net_soon")) + "</td></tr>";
         var g = st.coins.filter(function (c) { return c.grad; }).length, r = st.coins.reduce(function (s, c) { return s + (c.grad ? 0 : fx(c.real)); }, 0);
-        return '<tr><td><button class="sl-link" data-a="setnet" data-v="' + k + '">' + chainDot(k) + " " + X.esc(ch.name) + '</button></td><td class="r num">' + (st.at ? X.nf(st.count, 0) : "…") + '</td><td class="r num">' + (st.at ? X.nf(g, 0) : "…") + '</td><td class="r num">' + (st.at ? X.esc(amt(r, ch.qs)) : "…") + '</td><td class="r num sl-hide-sm">' + (st.at ? X.esc(amt(fx(st.burned || 0n), ch.qs)) : "…") + "</td></tr>";
+        return '<tr><td><button class="sl-link" data-a="setnet" data-v="' + k + '">' + chainDot(k) + " " + X.esc(ch.name) + '</button></td><td class="r num">' + (st.at ? X.nf(st.count, 0) : "…") + '</td><td class="r num">' + (st.at ? X.nf(g, 0) : "…") + '</td><td class="r num">' + (st.at ? X.esc(amt(r, ch.qs)) : "…") + '</td><td class="r num sl-hide-sm">' + (ch.native ? "—" : st.at ? X.esc(amt(fx(st.burned || 0n), ch.qs)) : "…") + "</td></tr>";
       }).join("") +
-      '<tr><td><i class="sl-cdot is-sect"></i> SectoraEVM</td><td class="r faint" colspan="4">' + X.esc(lt("sectora_note", { d: MAINNET_TXT })) + "</td></tr></tbody></table></div></div>" + burnPanel() + soonBand();
+      '<tr><td>' + solDot() + " " + SOL.name + '</td><td class="r faint" colspan="4">' + X.esc(lt("net_soon")) + "</td></tr>" +
+      '<tr><td><i class="sl-cdot is-sect"></i> SectoraEVM</td><td class="r faint" colspan="4">' + X.esc(lt("sectora_note", { d: MAINNET_TXT })) + "</td></tr></tbody></table></div></div>" + burnPanel() + live.filter(function (x) { return CHAINS[x].native; }).map(feePanel).join("") + soonBand();
   }
 
   /* ------------------------------------------------------------------ actions */
@@ -1326,6 +1432,12 @@
       if (!W.addr) { connect(); return true; }
       var bk = v || net;
       txFlow(bk, function (s2) { return fac(bk, s2).withdrawProtocolFees(); }, function () { chainState(bk).at = 0; return { html: X.esc(lt("ok_burn")) }; });
+      return true;
+    }
+    if (act === "lfees") {
+      if (!W.addr) { connect(); return true; }
+      var fk = v || net;
+      txFlow(fk, function (s2) { return fac(fk, s2).withdrawProtocolFees(); }, function () { chainState(fk).at = 0; return { html: X.esc(lt("ok_fees")) }; });
       return true;
     }
     if (act === "lclaimfees") {

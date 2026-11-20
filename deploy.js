@@ -1,8 +1,9 @@
-/* Sectora Launch — one-time factory deployment (team only). Coins are priced in SECT on Ethereum. */
+/* Sectora Launch — one-time factory deployment (team only).
+ * Ethereum: coins priced in SECT (buy with ETH through Uniswap V3). BNB Chain: coins priced in BNB (held as WBNB). */
 (function () {
   "use strict";
   var E = window.ethers, C = window.SLLive.chains, ORDER = window.SLLive.order.filter(function (k) { return C[k] && C[k].qaddr; });
-  var GRAD_X = 1073 / 273 - 1; // SECT raised at graduation = virtual reserve × 2.9304
+  var GRAD_X = 1073 / 273 - 1; // quote raised at graduation = virtual reserve × 2.9304
   var $ = function (id) { return document.getElementById(id); };
   var W = null, ok = false, px = { sect: 0, eth: 0 }, runId = 0;
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
@@ -19,27 +20,44 @@
   function net() { return $("dpNet").value; }
   function path(k) { return E.solidityPacked(["address", "uint24", "address", "uint24", "address"], C[k].path); }
   function setDefaults() {
-    $("dpV0").value = "30000"; $("dpLF").value = "10"; $("dpBurn").value = "50";
-    $("dpU1").textContent = C[net()].qs; $("dpU2").textContent = C[net()].qs;
+    var ch = C[net()];
+    if (ch.native) { $("dpV0").value = "5"; $("dpLF").value = "0.002"; $("dpBurn").value = "0"; }
+    else { $("dpV0").value = "30000"; $("dpLF").value = "10"; $("dpBurn").value = "50"; }
+    $("dpBurn").disabled = !!ch.native;
+    $("dpU1").textContent = ch.qs; $("dpU2").textContent = ch.qs;
+    $("dpIntro").textContent = ch.native
+      ? "Esta página despliega el contrato de Sectora Launch desde tu wallet en " + ch.name + ". Se hace una sola vez. Antes de desplegar comprueba en la propia cadena " + ch.dex + " (graduación) y W" + ch.qs + "."
+      : "Esta página despliega el contrato de Sectora Launch desde tu wallet en " + ch.name + ". Se hace una sola vez. Antes de desplegar comprueba en la propia cadena el token SECT, Uniswap V2 (graduación) y la ruta ETH → USDT → SECT de Uniswap V3 (compra con ETH).";
+    $("dpNote").textContent = ch.native
+      ? "Todas las monedas cotizan en " + ch.qs + ": se compra y se cobra en " + ch.qs + " y el contrato lo guarda como W" + ch.qs + ". Se gradúan en un pool MONEDA/W" + ch.qs + " de " + ch.dex + " con el LP quemado. En esta red no se quema nada: las comisiones de la plataforma van a la cartera de comisiones en W" + ch.qs + ". El dueño no puede pausar ni tocar las curvas, lo reunido ni ninguna moneda. Estos valores quedan fijos en el contrato."
+      : "Todas las monedas cotizan en SECT y se gradúan en un pool MONEDA/SECT de Uniswap con el LP quemado. El dueño no puede pausar ni tocar las curvas, el SECT reunido, la ruta de compra con ETH ni ninguna moneda. Estos valores quedan fijos en el contrato.";
     loadPx(); preview(); runChecks();
   }
-  function best(pairs, addr) {
+  function best(pairs, addr, ds) {
     var b = null;
-    (pairs || []).forEach(function (p) { if (p.chainId === "ethereum" && p.baseToken && p.baseToken.address.toLowerCase() === addr.toLowerCase()) { var l = (p.liquidity && p.liquidity.usd) || 0; if (!b || l > b.l) b = { l: l, p: +p.priceUsd }; } });
+    (pairs || []).forEach(function (p) { if (p.chainId === ds && p.baseToken && p.baseToken.address.toLowerCase() === addr.toLowerCase()) { var l = (p.liquidity && p.liquidity.usd) || 0; if (!b || l > b.l) b = { l: l, p: +p.priceUsd }; } });
     return b ? b.p : 0;
   }
   function loadPx() {
     var ch = C[net()];
     var get = function (a) { return fetch("https://api.dexscreener.com/latest/dex/tokens/" + a).then(function (r) { return r.json(); }); };
-    Promise.all([get(ch.qaddr), get(ch.wnative)]).then(function (r) { px.sect = best(r[0].pairs, ch.qaddr); px.eth = best(r[1].pairs, ch.wnative); preview(); }).catch(function () {});
+    var k = net();
+    px = { sect: 0, eth: 0 }; preview();
+    var toks = ch.native ? [ch.wnative] : [ch.qaddr, ch.wnative];
+    Promise.all(toks.map(get)).then(function (r) {
+      if (net() !== k) return;
+      px.sect = best(r[0].pairs, toks[0], ch.ds); px.eth = best(r[r.length - 1].pairs, ch.wnative, ch.ds); preview();
+    }).catch(function () {});
   }
   function fmtUsd(v) { return "$" + Math.round(v).toLocaleString("es-ES"); }
   function preview() {
-    var v0 = parseFloat($("dpV0").value) || 0, lf = parseFloat($("dpLF").value) || 0, b = parseFloat($("dpBurn").value) || 0, p = px.sect;
+    var ch = C[net()], q = ch.qs, v0 = parseFloat($("dpV0").value) || 0, lf = parseFloat($("dpLF").value) || 0, b = parseFloat($("dpBurn").value) || 0, p = px.sect;
+    var nf = function (v) { return v.toLocaleString("es-ES", { maximumFractionDigits: v >= 100 ? 0 : 3 }); };
     var g = v0 * GRAD_X, mc = v0 * 1073 / 273 / 273e6 * 1e9;
-    $("dpGrad").textContent = "Se gradúa al reunir ≈ " + Math.round(g).toLocaleString("es-ES") + " SECT" + (p ? " (≈ " + fmtUsd(g * p) + ")" : "") + " · cap. de mercado al graduar ≈ " + Math.round(mc).toLocaleString("es-ES") + " SECT" + (p ? " (≈ " + fmtUsd(mc * p) + ")" : "");
+    $("dpGrad").textContent = "Se gradúa al reunir ≈ " + nf(g) + " " + q + (p ? " (≈ " + fmtUsd(g * p) + ")" : "") + " · cap. de mercado al graduar ≈ " + nf(mc) + " " + q + (p ? " (≈ " + fmtUsd(mc * p) + ")" : "");
     $("dpLFu").textContent = p ? "≈ $" + (lf * p).toLocaleString("es-ES", { maximumFractionDigits: 2 }) + " por moneda" : "";
-    $("dpBurnU").textContent = "Del 0,5 % de la plataforma y de la comisión de lanzamiento se quema el " + b + " % y el " + (100 - b) + " % va a la cartera de comisiones.";
+    $("dpBurnU").textContent = ch.native ? "En " + ch.name + " no se quema nada: el 0,5 % de la plataforma y la comisión de lanzamiento van enteros a la cartera de comisiones (en W" + q + ")."
+      : "Del 0,5 % de la plataforma y de la comisión de lanzamiento se quema el " + b + " % y el " + (100 - b) + " % va a la cartera de comisiones.";
   }
   function row(st, txt, code) { return '<div class="dp-chk ' + st + '"><i>' + ICO[st] + "</i><div><span>" + esc(txt) + "</span>" + (code ? "<br><code>" + esc(code) + "</code>" : "") + "</div></div>"; }
   function reader(k) { return new E.JsonRpcProvider(C[k].rpc[0], C[k].id, { staticNetwork: E.Network.from(C[k].id) }); }
@@ -51,19 +69,24 @@
     var T = new E.Contract(ch.qaddr, ["function symbol() view returns (string)", "function decimals() view returns (uint8)"], p);
     var F = new E.Contract(ch.dexFactory, ["function allPairsLength() view returns (uint)"], p);
     var R = new E.Contract(ch.router, ["function factory() view returns (address)", "function WETH() view returns (address)"], p);
-    var R3 = new E.Contract(ch.v3router, ["function WETH9() view returns (address)"], p);
-    var Q = new E.Contract(ch.quoter, ["function quoteExactInput(bytes path, uint256 amountIn) returns (uint256 amountOut, uint160[], uint32[], uint256)"], p);
+    var R3 = ch.native ? null : new E.Contract(ch.v3router, ["function WETH9() view returns (address)"], p);
+    var Q = ch.native ? null : new E.Contract(ch.quoter, ["function quoteExactInput(bytes path, uint256 amountIn) returns (uint256 amountOut, uint160[], uint32[], uint256)"], p);
     var nope = function () { return null; };
     Promise.all([
       p.getNetwork().then(function (n) { return Number(n.chainId); }),
       T.symbol().catch(nope), T.decimals().catch(nope),
       F.allPairsLength().catch(function () { return -1n; }),
-      R.factory().catch(nope), R.WETH().catch(nope), R3.WETH9().catch(nope),
-      Q.quoteExactInput.staticCall(path(k), E.parseEther("0.01")).then(function (r) { return r[0]; }).catch(nope)
+      R.factory().catch(nope), R.WETH().catch(nope), R3 ? R3.WETH9().catch(nope) : null,
+      Q ? Q.quoteExactInput.staticCall(path(k), E.parseEther("0.01")).then(function (r) { return r[0]; }).catch(nope) : null
     ]).then(function (r) {
       if (id !== runId) return;
       var same = function (a, b) { return a && b && a.toLowerCase() === b.toLowerCase(); };
-      var c = [
+      var c = ch.native ? [
+        [r[0] === ch.id, "RPC conectado a " + ch.name + " (chain id " + r[0] + ")", ch.rpc[0]],
+        [r[1] === "W" + ch.qs && Number(r[2]) === 18 && same(ch.qaddr, ch.wnative), "Moneda de cotización: " + ch.qs + " (guardado como " + (r[1] || "no encontrado") + " · " + r[2] + " decimales)", ch.qaddr],
+        [r[3] > 0n, ch.dex + " V2 (graduación): fábrica con " + (r[3] > 0n ? Number(r[3]).toLocaleString("es-ES") + " pools" : "sin código"), ch.dexFactory],
+        [same(r[4], ch.dexFactory) && same(r[5], ch.wnative), "Router de " + ch.dex + " V2 apunta a la misma fábrica y a W" + ch.qs, ch.router]
+      ] : [
         [r[0] === ch.id, "RPC conectado a " + ch.name + " (chain id " + r[0] + ")", ch.rpc[0]],
         [r[1] === "SECT" && Number(r[2]) === 18, "Moneda de cotización: " + (r[1] || "no encontrada") + " · " + r[2] + " decimales", ch.qaddr],
         [r[3] > 0n, "Uniswap V2 (graduación): fábrica con " + (r[3] > 0n ? Number(r[3]).toLocaleString("es-ES") + " pools" : "sin código"), ch.dexFactory],
@@ -103,7 +126,7 @@
     var cfg = {
       owner: E.getAddress($("dpOwner").value.trim()), feeRecipient: E.getAddress($("dpFee").value.trim()), quote: ch.qaddr, dexFactory: ch.dexFactory,
       virtualQuote: E.parseEther($("dpV0").value.trim()), launchFee: E.parseEther($("dpLF").value.trim()), burnShareBps: Math.round(parseFloat($("dpBurn").value) * 100),
-      swapRouter: ch.v3router, wrappedNative: ch.wnative, swapPath: path(k)
+      swapRouter: ch.native ? E.ZeroAddress : ch.v3router, wrappedNative: ch.wnative, swapPath: ch.native ? "0x" : path(k)
     };
     btn.disabled = true; st.textContent = "Confirma en tu wallet…"; out.innerHTML = "";
     W.request({ method: "wallet_switchEthereumChain", params: [{ chainId: "0x" + ch.id.toString(16) }] }).then(function () {
@@ -123,8 +146,8 @@
           out.innerHTML = '<div class="sl-alert is-ok">' + ICO.ok.replace("<svg", '<svg width="15" height="15"') + "<span>Sectora Launch ya funciona en " + esc(ch.name) + " desde este navegador. Envía la dirección para publicarla en la web para todo el mundo.</span></div>" +
             '<div class="dp-out" style="margin-top:12px">' + esc(k) + ': "' + esc(addr) + '"</div>' +
             '<div class="sl-kv"><span>Moneda de cotización</span><b class="mono">' + esc(v[5]) + "</b></div>" +
-            '<div class="sl-kv"><span>Reserva virtual</span><b class="num">' + esc(E.formatEther(v[0])) + " SECT</b></div>" +
-            '<div class="sl-kv"><span>Comisión de lanzamiento</span><b class="num">' + esc(E.formatEther(v[1])) + " SECT</b></div>" +
+            '<div class="sl-kv"><span>Reserva virtual</span><b class="num">' + esc(E.formatEther(v[0])) + " " + esc(ch.qs) + "</b></div>" +
+            '<div class="sl-kv"><span>Comisión de lanzamiento</span><b class="num">' + esc(E.formatEther(v[1])) + " " + esc(ch.qs) + "</b></div>" +
             '<div class="sl-kv"><span>Parte quemada</span><b class="num">' + Number(v[2]) / 100 + " %</b></div>" +
             '<div class="sl-kv"><span>Dueño</span><b class="mono">' + esc(v[3]) + "</b></div>" +
             '<div class="sl-kv"><span>Comisiones a</span><b class="mono">' + esc(v[4]) + "</b></div>" +
