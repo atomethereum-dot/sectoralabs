@@ -341,9 +341,9 @@
   };
   var LOCALE = { en: "en-US", es: "es-ES", pt: "pt-BR" };
   var L = (function () {
-    try { var s = localStorage.getItem(LKEY); if (T[s]) return s; } catch (e) {}
-    var n = (navigator.language || "en").slice(0, 2).toLowerCase();
-    return T[n] ? n : "en";
+    /* English by default; a language picked by hand lasts for this visit */
+    try { var s = sessionStorage.getItem(LKEY); if (T[s]) return s; } catch (e) {}
+    return "en";
   })();
   function t(k, v) {
     var o = live() ? LIVE.t(k) : null;
@@ -1614,7 +1614,7 @@
   document.addEventListener("change", function (e) {
     var el = e.target;
     if (el && el.getAttribute && el.getAttribute("data-a") === "lang") {
-      L = el.value; try { localStorage.setItem(LKEY, L); } catch (x) {}
+      L = el.value; try { sessionStorage.setItem(LKEY, L); } catch (x) {}
       render();
     }
   });

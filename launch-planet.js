@@ -126,7 +126,7 @@
   }
 
   /* ---------- intro overlay: the name at the top ---------- */
-  var L = (function () { var s = ""; try { s = localStorage.getItem("sectoraLaunch.lang") || ""; } catch (e) {} s = s || (navigator.language || "en").slice(0, 2).toLowerCase(); return { es: 1, pt: 1 }[s] ? s : "en"; })();
+  var L = (function () { var s = ""; try { s = sessionStorage.getItem("sectoraLaunch.lang") || ""; } catch (e) {} return { es: 1, pt: 1 }[s] ? s : "en"; })();
   var TAG = { en: "Fair launches · Ethereum · SECT", es: "Lanzamientos justos · Ethereum · SECT", pt: "Lançamentos justos · Ethereum · SECT" }[L];
   var lock = null, lmark = null, lword = null, ltag = null;
   if (playIntro) {
