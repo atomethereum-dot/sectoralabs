@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Puente SECT · Despliegue</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#05070b">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
+<link rel="preload" href="fonts/IBMPlexSans.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="launch.css?v=20261120a">
+<style>
+  body { padding-top: 0; }
+  .dp { max-width: 980px; margin: 0 auto; padding: 40px var(--pad) 80px; }
+  .dp h1 { font-weight: 200; font-size: clamp(30px, 4vw, 46px); letter-spacing: -0.03em; margin: 14px 0 10px; }
+  .dp > p { color: var(--ink2); line-height: 1.7; max-width: 760px; }
+  .dp .sl-panel { margin-top: 18px; }
+  .dp h3 { display: flex; align-items: center; gap: 10px; }
+  .dp h3 .st { margin-left: auto; font-size: 12.5px; font-weight: 400; color: var(--ink3); }
+  .dp h3 .st.ok { color: var(--live); }
+  .dp-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 18px; }
+  .dp-chk { display: flex; gap: 10px; align-items: flex-start; padding: 9px 0; border-bottom: 1px solid var(--hair); font-size: 13.5px; }
+  .dp-chk i { width: 18px; height: 18px; flex: none; display: grid; place-items: center; }
+  .dp-chk i svg { width: 15px; height: 15px; }
+  .dp-chk.ok i { color: var(--live); } .dp-chk.bad i { color: var(--red); } .dp-chk.wait i { color: var(--ink3); }
+  .dp-chk span { color: var(--ink2); } .dp-chk code { font-family: var(--mono); font-size: 11.5px; color: var(--ink3); word-break: break-all; }
+  .dp-out { font-family: var(--mono); font-size: 12px; background: var(--surf2); border: 1px solid var(--hair); border-radius: 12px; padding: 14px; white-space: pre-wrap; word-break: break-all; color: var(--ink); margin-top: 10px; }
+  .dp-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 14px; }
+  .dp-note { font-size: 13px; color: var(--ink3); line-height: 1.6; margin-top: 10px; }
+  .dp-steps { margin: 18px 0 0; padding-left: 20px; color: var(--ink2); line-height: 1.8; font-size: 14px; }
+  @media (max-width: 700px) { .dp-grid { grid-template-columns: minmax(0, 1fr); } }
+</style>
+</head>
+<body>
+<main class="dp">
+  <a class="sl-back" href="./">← Sectora Launch</a>
+  <span class="sl-eyebrow" style="display:flex;margin-top:22px"><i class="rule"></i>Solo para el equipo de Sectora</span>
+  <h1>Puente SECT · Ethereum ⇄ BNB Chain</h1>
+  <p>Despliega el puente oficial de SECT con LayerZero. El contrato de SECT en Ethereum no se toca: el puente guarda el SECT que pasa a BNB Chain y allí se crea la misma cantidad. Al volver, se destruye en BNB Chain y se libera en Ethereum. El suministro total siempre es el mismo.</p>
+  <ol class="dp-steps">
+    <li>Conecta tu wallet (la que será dueña al principio).</li>
+    <li>Despliega en Ethereum y en BNB Chain.</li>
+    <li>Enlaza las dos redes (una transacción en cada una).</li>
+    <li>Prueba con poco en <a href="bridge.html" style="color:var(--blue)">bridge.html</a> desde este mismo navegador.</li>
+    <li>Cede el control a una multifirma (Safe) y envíame las dos direcciones para publicarlas.</li>
+  </ol>
+
+  <div class="sl-panel">
+    <h3>1 · Wallet</h3>
+    <div class="dp-row"><button class="sl-btn sl-btn-p" id="bdConnect">Conectar wallet</button><span class="mono dim" id="bdWho">—</span></div>
+    <div class="sl-field" style="margin-top:16px"><label for="bdOwner">Dueño inicial de los dos contratos (luego se cede a una multifirma)</label><input class="sl-input mono" id="bdOwner" placeholder="0x…" autocomplete="off"></div>
+  </div>
+
+  <div class="sl-panel">
+    <h3>2 · Ethereum <span class="st" id="bdStE">—</span></h3>
+    <div id="bdChkE"></div>
+    <div class="dp-row"><button class="sl-btn sl-btn-p" id="bdDepE" disabled>Desplegar en Ethereum</button><span class="dim" id="bdStateE"></span></div>
+    <div id="bdOutE"></div>
+  </div>
+
+  <div class="sl-panel">
+    <h3>3 · BNB Chain <span class="st" id="bdStB">—</span></h3>
+    <div id="bdChkB"></div>
+    <div class="dp-row"><button class="sl-btn sl-btn-p" id="bdDepB" disabled>Desplegar en BNB Chain</button><span class="dim" id="bdStateB"></span></div>
+    <div id="bdOutB"></div>
+  </div>
+
+  <div class="sl-panel">
+    <h3>4 · Enlazar las dos redes <span class="st" id="bdStL">—</span></h3>
+    <div class="dp-grid">
+      <div class="sl-field"><label for="bdAddrE">Puente en Ethereum</label><input class="sl-input mono" id="bdAddrE" placeholder="0x…" autocomplete="off"></div>
+      <div class="sl-field"><label for="bdAddrB">SECT en BNB Chain</label><input class="sl-input mono" id="bdAddrB" placeholder="0x…" autocomplete="off"></div>
+      <div class="sl-field"><label for="bdLimit">Máximo que puede llegar a cada red por día</label><div class="sl-input-wrap"><input class="sl-input num" id="bdLimit" value="2000000" inputmode="decimal"><span class="unit">SECT</span></div><small id="bdLimitU"></small></div>
+    </div>
+    <p class="dp-note">Cada enlace fija el par, el gas de entrega (150.000), el límite diario y la seguridad de LayerZero: las librerías y los verificadores de hoy quedan escritos en el contrato, así un cambio futuro de los valores por defecto no cambia el puente. Para poner la liquidez inicial en BNB puedes subir el límite un rato y volver a bajarlo después (vuelve a pulsar "Enlazar" con otro valor).</p>
+    <div class="dp-row"><button class="sl-btn sl-btn-p" id="bdLinkE" disabled>Enlazar en Ethereum</button><button class="sl-btn sl-btn-p" id="bdLinkB" disabled>Enlazar en BNB Chain</button><span class="dim" id="bdStateL"></span></div>
+    <div id="bdChkL" style="margin-top:12px"></div>
+  </div>
+
+  <div class="sl-panel">
+    <h3>5 · Ceder el control a una multifirma <span class="st">recomendado</span></h3>
+    <p class="dp-note" style="margin-top:0">El dueño puede cambiar el par, el límite y la seguridad del puente: si su clave se pierde o la roban, el puente corre peligro. Cédelo a una Safe (multifirma) que controles en cada red. Es irreversible: comprueba bien la dirección.</p>
+    <div class="dp-grid">
+      <div class="sl-field"><label for="bdSafeE">Safe en Ethereum</label><input class="sl-input mono" id="bdSafeE" placeholder="0x…" autocomplete="off"><small id="bdSafeEu"></small></div>
+      <div class="sl-field"><label for="bdSafeB">Safe en BNB Chain</label><input class="sl-input mono" id="bdSafeB" placeholder="0x…" autocomplete="off"><small id="bdSafeBu"></small></div>
+    </div>
+    <div class="dp-row"><button class="sl-btn" id="bdHandE" disabled>Ceder en Ethereum</button><button class="sl-btn" id="bdHandB" disabled>Ceder en BNB Chain</button><span class="dim" id="bdStateH"></span></div>
+  </div>
+
+  <div class="sl-panel">
+    <h3>6 · Publicar y verificar</h3>
+    <div id="bdPub" class="dp-note" style="margin-top:0">Cuando esté enlazado aparecerán aquí las direcciones para enviármelas y los datos para verificar el código en Etherscan y BscScan.</div>
+  </div>
+</main>
+<script src="vendor/ethers-6.13.4.umd.min.js"></script>
+<script src="sb-abi.js?v=20261120a"></script>
+<script src="sb-bytecode.js?v=20261120a"></script>
+<script src="bridge-config.js?v=20261120a"></script>
+<script src="sb-core.js?v=20261120a"></script>
+<script src="bridge-deploy.js?v=20261120a"></script>
+</body>
+</html>
