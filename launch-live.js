@@ -47,16 +47,15 @@
       dex: "Uniswap V2", dexFactory: "0x9e5A52f57b3038F1B8EeE45F28b3C1967e22799C", router: "0x4752ba5DBc23f44D87826276BF6Fd6b1C372aD24", wnative: "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7",
       swap: "https://app.uniswap.org/swap?chain=avalanche&outputCurrency=", quick: ["1", "5", "10", "25"] }
   };
-  var ORDER = ["ethereum", "bsc"];
-  // Solana runs a different program (not EVM); it is listed as coming soon until it is live
-  var SOL = { name: "Solana", col: "#9945ff" };
-  function solDot() { return '<i class="sl-cdot" style="--c:' + SOL.col + '"></i>'; }
+  // For now Sectora Launch runs only on Ethereum, where every coin is priced in SECT.
+  // The BNB Chain configuration above stays in the code but is not offered.
+  var ORDER = ["ethereum"];
   // Local development chain (hardhat / anvil) — only offered when the site runs on this machine.
   var LOCAL = /^(127\.0\.0\.1|localhost)$/.test(location.hostname);
   if (LOCAL) {
     CHAINS.local = Object.assign({}, CHAINS.ethereum, { id: 31337, name: "Localhost", short: "Local", col: "#9aa4b2", exp: "", rpc: ["http://127.0.0.1:8545"] });
     CHAINS.localbsc = Object.assign({}, CHAINS.bsc, { id: 31337, name: "Localhost BNB", short: "LocalBNB", col: "#c9a227", exp: "", rpc: ["http://127.0.0.1:8546"] });
-    ORDER.push("local", "localbsc");
+    ORDER.push("local");
   }
   var MAINNET_TXT = "22.03.2027";
   var CURVE = 800e6, VT0 = 1073e6, FAIR_S = 300, FAIR_CAP = 10e6, DEV_CAP = 50e6, CLIFF_S = 7 * 86400, VEST_S = 30 * 86400;
@@ -70,7 +69,7 @@
     var d = DEP[k];
     return d && E.isAddress(d) ? E.getAddress(d) : "";
   }
-  function isLive(k) { return !!(k && CHAINS[k]); }
+  function isLive(k) { return !!(k && CHAINS[k] && ORDER.indexOf(k) >= 0); }
   function deployed(k) { return isLive(k) && !!factoryOf(k); }
   function liveChains() { return ORDER.filter(deployed); }
 
@@ -763,7 +762,6 @@
       var on = deployed(k);
       html += '<button role="menuitem" data-a="setnet" data-v="' + k + '"' + (k === net ? ' class="on"' : "") + (on ? "" : " disabled") + ">" + chainDot(k) + "<span>" + X.esc(CHAINS[k].name) + '</span><em class="' + (on ? "ok" : "") + '">' + X.esc(on ? lt("net_live") : lt("net_soon")) + "</em></button>";
     });
-    html += '<button role="menuitem" disabled>' + solDot() + "<span>" + SOL.name + "</span><em>" + X.esc(lt("net_soon")) + "</em></button>";
     html += '<button role="menuitem" data-a="setnet" data-v="sectora"' + (net === "sectora" ? ' class="on"' : "") + '><i class="sl-cdot is-sect"></i><span>' + X.esc(lt("sectora_demo")) + '</span><em class="soon">' + X.esc(lt("sectora_menu", { d: MAINNET_TXT })) + "</em></button></div>";
     return html;
   }
@@ -835,7 +833,7 @@
     return '<div class="sl-netrow">' + ORDER.map(function (k) {
       var on = deployed(k);
       return '<button class="sl-netpill' + (k === net ? " on" : "") + '" data-a="setnet" data-v="' + k + '"' + (on ? "" : " disabled") + ">" + chainDot(k) + X.esc(CHAINS[k].name) + (on ? "" : ' <em>' + X.esc(lt("net_soon")) + "</em>") + "</button>";
-    }).join("") + '<button class="sl-netpill" disabled>' + solDot() + SOL.name + " <em>" + X.esc(lt("net_soon")) + "</em></button>" + '<button class="sl-netpill' + (net === "sectora" ? " on" : "") + '" data-a="setnet" data-v="sectora"><i class="sl-cdot is-sect"></i>SectoraEVM <em>' + X.esc(lt("sectora_note", { d: MAINNET_TXT })) + "</em></button></div>";
+    }).join("") + '<button class="sl-netpill' + (net === "sectora" ? " on" : "") + '" data-a="setnet" data-v="sectora"><i class="sl-cdot is-sect"></i>SectoraEVM <em>' + X.esc(lt("sectora_note", { d: MAINNET_TXT })) + "</em></button></div>";
   }
   function explore(net) {
     var st = chainState(net), ch = CHAINS[net];
@@ -1412,7 +1410,6 @@
         var g = st.coins.filter(function (c) { return c.grad; }).length, r = st.coins.reduce(function (s, c) { return s + (c.grad ? 0 : fx(c.real)); }, 0);
         return '<tr><td><button class="sl-link" data-a="setnet" data-v="' + k + '">' + chainDot(k) + " " + X.esc(ch.name) + '</button></td><td class="r num">' + (st.at ? X.nf(st.count, 0) : "…") + '</td><td class="r num">' + (st.at ? X.nf(g, 0) : "…") + '</td><td class="r num">' + (st.at ? X.esc(amt(r, ch.qs)) : "…") + '</td><td class="r num sl-hide-sm">' + (ch.native ? "—" : st.at ? X.esc(amt(fx(st.burned || 0n), ch.qs)) : "…") + "</td></tr>";
       }).join("") +
-      '<tr><td>' + solDot() + " " + SOL.name + '</td><td class="r faint" colspan="4">' + X.esc(lt("net_soon")) + "</td></tr>" +
       '<tr><td><i class="sl-cdot is-sect"></i> SectoraEVM</td><td class="r faint" colspan="4">' + X.esc(lt("sectora_note", { d: MAINNET_TXT })) + "</td></tr></tbody></table></div></div>" + burnPanel() + live.filter(function (x) { return CHAINS[x].native; }).map(feePanel).join("") + soonBand();
   }
 

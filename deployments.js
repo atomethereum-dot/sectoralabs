@@ -1,8 +1,7 @@
-/* Sectora Launch factory addresses per network.
- * Empty = not deployed yet on that network (the site shows it as "coming soon").
- * Ethereum: coins priced in SECT. BNB Chain: coins priced in BNB.
- * Fill in each address after deploying from deploy.html. */
+/* Sectora Launch factory address.
+ * Empty = not deployed yet (the site runs the SectoraEVM demo).
+ * For now Sectora Launch runs only on Ethereum, with every coin priced in SECT.
+ * Fill in the address after deploying from deploy.html. */
 window.SL_DEPLOYMENTS = {
-  ethereum: "",
-  bsc: ""
+  ethereum: ""
 };
