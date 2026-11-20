@@ -203,7 +203,7 @@
     ["p5", "shield", [[25, "id", "setFeeRecipient()"], [26, "lock", "nonReentrant · Solidity 0.8.24"], [27, "file", "SectoraFairLaunch.sol"], [28, "wallet", "EIP-1193 · EIP-6963"], [29, "info", "Ethereum RPC · DexScreener"]]]
   ];
   function view(net) {
-    var X = window.SLX, LV = window.SLLive, L = X.lang(), D = S[L] || S.en;
+    var X = window.SLX, LV = window.SLLive, L = X.lang(), XS = window.SL_I18N && window.SL_I18N[L], D = S[L] || (XS && XS.safety) || S.en;
     var z = LV && LV.sizes ? LV.sizes() : { g: 15000, cap: 500 }, dol = function (n) { return "$" + X.nf(n, 0); };
     function s(k) { var v = D[k] != null ? D[k] : S.en[k]; return String(v).split("{G}").join(dol(z.g)).split("{CAP}").join(dol(z.cap)); }
     var e = X.esc, ico = X.ico;

@@ -126,8 +126,11 @@
   }
 
   /* ---------- intro overlay: the name at the top ---------- */
-  var L = (function () { var s = ""; try { s = sessionStorage.getItem("sectoraLaunch.lang") || ""; } catch (e) {} return { es: 1, pt: 1 }[s] ? s : "en"; })();
-  var TAG = { en: "Fair launches · Ethereum · SECT", es: "Lanzamientos justos · Ethereum · SECT", pt: "Lançamentos justos · Ethereum · SECT" }[L];
+  var TAGS = { en: "Fair launches · Ethereum · SECT", es: "Lanzamientos justos · Ethereum · SECT", pt: "Lançamentos justos · Ethereum · SECT",
+    zh: "公平发行 · Ethereum · SECT", ru: "Честные запуски · Ethereum · SECT", fr: "Lancements équitables · Ethereum · SECT", ja: "公正なローンチ · Ethereum · SECT",
+    ko: "공정한 출시 · Ethereum · SECT", ar: "إطلاقات عادلة · Ethereum · SECT", de: "Faire Launches · Ethereum · SECT", hi: "निष्पक्ष लॉन्च · Ethereum · SECT" };
+  var L = (function () { var s = ""; try { s = sessionStorage.getItem("sectoraLaunch.lang") || ""; } catch (e) {} return TAGS[s] ? s : "en"; })();
+  var TAG = TAGS[L];
   var lock = null, lmark = null, lword = null, ltag = null;
   if (playIntro) {
     cover.innerHTML = "";

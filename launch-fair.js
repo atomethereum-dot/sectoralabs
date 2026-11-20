@@ -208,8 +208,10 @@
       r_closed: "Esta reserva está fechada", r_max: "Sua carteira já está no máximo para esta moeda", r_launched: "Esta moeda já está na Uniswap", r_slip: "O preço mudou mais que seu slippage. Tente de novo.", r_bal: "Saldo insuficiente", r_nothing: "Ainda não há nada a fazer"
     }
   };
+  // extra languages (zh, ru, fr, ja, ko, ar, de, hi) come from i18n/<code>.js
+  function xd(L, part) { var x = window.SL_I18N && window.SL_I18N[L]; return x && x[part] || null; }
   function lt(k, v) {
-    var L = X.lang(), s = (LS[L] && LS[L][k] != null) ? LS[L][k] : (LS.en[k] != null ? LS.en[k] : k);
+    var L = X.lang(), d = LS[L] || xd(L, "live"), s = (d && d[k] != null) ? d[k] : (LS.en[k] != null ? LS.en[k] : k);
     if (v) for (var x in v) s = s.split("{" + x + "}").join(v[x]);
     return s;
   }
@@ -310,7 +312,7 @@
   }
   function dollars(n) { return "$" + X.nf(n, 0); }
   function override(k) {
-    var L = X.lang(), s = (OVR[L] && OVR[L][k] != null) ? OVR[L][k] : (OVR.en[k] != null ? OVR.en[k] : null);
+    var L = X.lang(), d = OVR[L] || xd(L, "ovr"), s = (d && d[k] != null) ? d[k] : (OVR.en[k] != null ? OVR.en[k] : null);
     if (s == null) return null;
     var z = usdSizes();
     return s.split("{G}").join(dollars(z.g)).split("{CAP}").join(dollars(z.cap));

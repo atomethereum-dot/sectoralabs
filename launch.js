@@ -339,15 +339,47 @@
       acct_n: "Conta {n}"
     }
   };
-  var LOCALE = { en: "en-US", es: "es-ES", pt: "pt-BR" };
+  /* the 11 languages of sectoraorg.com; en/es/pt are built in, the rest load from i18n/<code>.js when chosen */
+  var LANGS = ["en", "es", "zh", "pt", "ru", "fr", "ja", "ko", "ar", "de", "hi"];
+  var LNAME = { en: "English", es: "Español", zh: "中文", pt: "Português", ru: "Русский", fr: "Français", ja: "日本語", ko: "한국어", ar: "العربية", de: "Deutsch", hi: "हिन्दी" };
+  var LOCALE = { en: "en-US", es: "es-ES", pt: "pt-BR", zh: "zh-CN", ru: "ru-RU", fr: "fr-FR", ja: "ja-JP", ko: "ko-KR", ar: "ar-u-nu-latn", de: "de-DE", hi: "hi-IN" };
+  var FLAGS = {
+    en: '<rect width="24" height="16" fill="#b22234"/><path d="M0 1.85h24M0 4.31h24M0 6.77h24M0 9.23h24M0 11.69h24M0 14.15h24" stroke="#fff" stroke-width="1.23"/><rect width="9.6" height="8.6" fill="#3c3b6e"/>',
+    es: '<rect width="24" height="16" fill="#c60b1e"/><rect y="4" width="24" height="8" fill="#ffc400"/>',
+    zh: '<rect width="24" height="16" fill="#de2910"/><circle cx="5" cy="4.4" r="2.1" fill="#ffde00"/><circle cx="9.4" cy="2.2" r=".8" fill="#ffde00"/><circle cx="11" cy="4.6" r=".8" fill="#ffde00"/><circle cx="10.6" cy="7.6" r=".8" fill="#ffde00"/><circle cx="8.4" cy="9.4" r=".8" fill="#ffde00"/>',
+    pt: '<rect width="24" height="16" fill="#009c3b"/><path d="M12 2.2 22 8l-10 5.8L2 8z" fill="#ffdf00"/><circle cx="12" cy="8" r="3.1" fill="#002776"/>',
+    ru: '<rect width="24" height="16" fill="#fff"/><rect y="5.33" width="24" height="5.34" fill="#0039a6"/><rect y="10.67" width="24" height="5.33" fill="#d52b1e"/>',
+    fr: '<rect width="24" height="16" fill="#fff"/><rect width="8" height="16" fill="#002395"/><rect x="16" width="8" height="16" fill="#ed2939"/>',
+    ja: '<rect width="24" height="16" fill="#fff"/><circle cx="12" cy="8" r="4.6" fill="#bc002d"/>',
+    ko: '<rect width="24" height="16" fill="#fff"/><path d="M12 3.6a4.4 4.4 0 0 1 0 8.8 2.2 2.2 0 0 0 0-4.4 2.2 2.2 0 0 1 0-4.4z" fill="#cd2e3a"/><path d="M12 3.6a2.2 2.2 0 0 1 0 4.4 2.2 2.2 0 0 0 0 4.4 4.4 4.4 0 0 1 0-8.8z" fill="#0047a0"/>',
+    ar: '<rect width="24" height="16" fill="#165d31"/><rect x="4" y="6.6" width="16" height="1.5" fill="#fff"/><rect x="4" y="9.4" width="11" height="1.2" fill="#fff"/>',
+    de: '<rect width="24" height="16" fill="#000"/><rect y="5.33" width="24" height="5.34" fill="#dd0000"/><rect y="10.67" width="24" height="5.33" fill="#ffce00"/>',
+    hi: '<rect width="24" height="16" fill="#ff9933"/><rect y="5.33" width="24" height="5.34" fill="#fff"/><rect y="10.67" width="24" height="5.33" fill="#138808"/><circle cx="12" cy="8" r="2" fill="none" stroke="#000080" stroke-width="1"/>'
+  };
+  function flag(c) { return '<svg class="fl" viewBox="0 0 24 16" aria-hidden="true">' + (FLAGS[c] || "") + "</svg>"; }
   var L = (function () {
     /* English by default; a language picked by hand lasts for this visit */
-    try { var s = sessionStorage.getItem(LKEY); if (T[s]) return s; } catch (e) {}
+    try { var s = sessionStorage.getItem(LKEY); if (LANGS.indexOf(s) >= 0) return s; } catch (e) {}
     return "en";
   })();
+  function xdict(l, part) { var x = window.SL_I18N && window.SL_I18N[l]; return x && x[part] || null; }
+  function dict(l) { return T[l] || xdict(l, "core"); }
+  // loads i18n/<code>.js once; English stays as the fallback for anything missing
+  function loadLang(l, done) {
+    if (T[l] || xdict(l, "core")) { done(); return; }
+    var s = document.createElement("script");
+    s.src = "i18n/" + l + ".js?v=20261121c";
+    s.onload = s.onerror = function () { done(); };
+    document.head.appendChild(s);
+  }
+  function applyDir() { document.documentElement.lang = L; document.documentElement.dir = L === "ar" ? "rtl" : "ltr"; }
+  function setLang(l) {
+    if (LANGS.indexOf(l) < 0) return;
+    loadLang(l, function () { L = l; try { sessionStorage.setItem(LKEY, L); } catch (x) {} applyDir(); render(); });
+  }
   function t(k, v) {
-    var o = live() ? LIVE.t(k) : null;
-    var s = o != null ? o : (T[L] && T[L][k] != null) ? T[L][k] : (T.en[k] != null ? T.en[k] : k);
+    var o = live() ? LIVE.t(k) : null, d = dict(L);
+    var s = o != null ? o : (d && d[k] != null) ? d[k] : (T.en[k] != null ? T.en[k] : k);
     if (v) for (var x in v) s = s.split("{" + x + "}").join(v[x]);
     return s;
   }
@@ -776,7 +808,8 @@
       '<a class="sl-brand" href="#/" aria-label="Sectora Launch"><span class="sl-mark"><i></i></span><span class="sl-word">SECTORA <em>LAUNCH</em></span></a>' +
       '<nav class="sl-nav">' + NAV.map(function (n) { return '<a href="' + n[1] + '"' + (navOn(n[0]) ? ' class="on"' : "") + ">" + esc(t(n[2])) + "</a>"; }).join("") + "</nav>" +
       '<div class="sl-top-r">' + (LIVE ? LIVE.netChip(NET) : '<span class="sl-pill live"><span class="sl-dot"></span>SectoraEVM · ' + esc(t("live")) + "</span>") +
-      '<select class="sl-lang" data-a="lang" aria-label="Language">' + ["en", "es", "pt"].map(function (l) { return '<option value="' + l + '"' + (l === L ? " selected" : "") + ">" + l.toUpperCase() + "</option>"; }).join("") + "</select>" +
+      '<div class="sl-lp" id="slLp"><button type="button" class="sl-lp-b" data-a="langmenu" aria-haspopup="listbox" aria-expanded="false" aria-label="Language">' + flag(L) + '<span class="nm">' + esc(LNAME[L]) + '</span><span class="cd">' + L.toUpperCase() + '</span><svg class="cv" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9.5l6 6 6-6"/></svg></button>' +
+      '<ul class="sl-lp-l" role="listbox">' + LANGS.map(function (l) { return '<li role="option" data-a="setlang" data-v="' + l + '" aria-selected="' + (l === L) + '" lang="' + l + '">' + flag(l) + "<span>" + LNAME[l] + "</span></li>"; }).join("") + "</ul></div>" +
       accBtn + "</div>";
     document.getElementById("slBanner").innerHTML = live() ? LIVE.banner(NET) : '<span class="sl-dot" style="color:var(--live)"></span><span>' + esc(t("banner")) + "</span>";
     document.getElementById("slTabbar").innerHTML = NAV.filter(function (n) { return n[0] !== "stats" && n[0] !== "assets"; }).map(function (n) {
@@ -791,7 +824,7 @@
       [1, 2, 3, 4, 5, 6, 7, 8].map(function (i) { return "<p><b>" + esc(t("lg" + i + "_t")) + ".</b> " + esc(t("lg" + i + "_p")) + "</p>"; }).join("") +
       '</div><p class="more">' + esc(t("lg_more")) + ' <a href="https://sectoraorg.com/legal" target="_blank" rel="noopener">sectoraorg.com/legal</a></p></div>' +
       '<div class="sl-foot-bot"><span>' + esc(t("footer_l")) + "</span><span>© 2026 Sectora Launch</span></div></div>";
-    document.documentElement.lang = L;
+    applyDir();
   }
 
   function render() {
@@ -938,7 +971,7 @@
   // pinned, scroll-driven story: how a coin is born (canvas drawn by launch-scenes.js)
   function storySec() {
     var keys = ["sc_coin", "sc_tick", "sc_ini", "sc_supply", "sc_owner", "sc_none", "sc_creator", "sc_launch", "sc_fair", "sc_cap", "sc_blocked", "sc_raised", "sc_grad", "sc_dex", "sc_lp", "sc_ready"];
-    var lab = { loc: { es: "es-ES", pt: "pt-BR" }[L] || "en-US", gr: (live() && LIVE.storyRaise && LIVE.storyRaise(NET)) || Math.round(GRAD_RAISE) };
+    var lab = { loc: LOCALE[L] || "en-US", gr: (live() && LIVE.storyRaise && LIVE.storyRaise(NET)) || Math.round(GRAD_RAISE) };
     keys.forEach(function (k) { lab[k] = t(k); });
     return '<section class="sl-story" data-l="' + esc(JSON.stringify(lab)) + '"><div class="sl-story-pin"><div class="sl-story-txt">' +
       '<span class="sl-eyebrow"><i class="rule"></i>' + esc(t("st_eb")) + "</span><h2>" + t("st_t") + '</h2><ol class="sl-story-steps">' +
@@ -1570,6 +1603,8 @@
     var el = e.target.closest("[data-a]"); if (!el) return;
     var act = el.getAttribute("data-a"), v = el.getAttribute("data-v");
     if (el.tagName === "SELECT") return;
+    if (act === "langmenu") { var lp = document.getElementById("slLp"); if (lp) { var on = !lp.classList.contains("on"); lp.classList.toggle("on", on); el.setAttribute("aria-expanded", on ? "true" : "false"); } return; }
+    if (act === "setlang") { var lp2 = document.getElementById("slLp"); if (lp2) lp2.classList.remove("on"); setLang(v); return; }
     if (LIVE && LIVE.onAction(act, v, el, NET, view, [arg, arg2])) { if (el.tagName === "A") e.preventDefault(); return; }
     if (act === "newacct") { e.preventDefault(); newAccount(); }
     else if (act === "tab") { ui.tab = v; render(); }
@@ -1612,13 +1647,9 @@
     else if (act === "rbuy") doRwaBuy(v);
     else if (act === "film") openFilm();
   });
-  document.addEventListener("change", function (e) {
-    var el = e.target;
-    if (el && el.getAttribute && el.getAttribute("data-a") === "lang") {
-      L = el.value; try { sessionStorage.setItem(LKEY, L); } catch (x) {}
-      render();
-    }
-  });
+  // the language list closes on any click outside it, or with Escape
+  document.addEventListener("click", function (e) { var lp = document.getElementById("slLp"); if (lp && lp.classList.contains("on") && !lp.contains(e.target)) lp.classList.remove("on"); });
+  document.addEventListener("keydown", function (e) { var lp = document.getElementById("slLp"); if (e.key === "Escape" && lp) lp.classList.remove("on"); });
 
   function doLaunch() {
     var a = acct(); if (!a) return;
@@ -1753,6 +1784,6 @@
     refreshLive: function (part) { if (live()) LIVE.refresh(part, NET); }
   };
   if (LIVE) LIVE.init(window.SLX);
-  route();
+  loadLang(L, function () { applyDir(); route(); });
   fetchSectPrice();
 })();

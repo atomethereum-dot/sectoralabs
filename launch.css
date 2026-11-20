@@ -1244,3 +1244,36 @@ main:has(.sl-sheet) + .sl-foot { position: relative; z-index: 3; margin-top: -32
   .sf-cards, .sf-roles, .sf-risks { grid-template-columns: minmax(0, 1fr); }
   .sf-jump button { font-size: 12px; }
 }
+
+/* language picker with flags (same as sectoraorg.com) */
+.sl-lp { position: relative; flex: none; }
+.sl-lp-b { display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 13px; border: 1px solid var(--hair); border-radius: var(--pill); background: var(--surf2); color: var(--ink2); font-family: var(--sans); font-size: 13px; white-space: nowrap; cursor: pointer; transition: border-color .2s var(--ease), color .2s var(--ease); }
+html:not(.sl-ondark) .sl-lp-b { background: #fff; }
+.sl-lp-b:hover, .sl-lp.on .sl-lp-b { border-color: var(--blue); color: var(--ink); }
+.sl-lp .fl { display: block; width: 19px; height: 13px; flex: none; border-radius: 1px; box-shadow: 0 0 0 .5px rgba(0, 0, 0, .32); }
+.sl-lp-b .cd { display: none; font-family: var(--mono); font-size: 11px; letter-spacing: .1em; }
+.sl-lp-b .cv { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: .7; transition: transform .28s ease; }
+.sl-lp.on .sl-lp-b .cv { transform: rotate(180deg); }
+.sl-lp-l { position: absolute; top: calc(100% + 8px); inset-inline-end: 0; z-index: 120; margin: 0; padding: 5px; list-style: none; min-width: 176px; max-height: 62vh; overflow: auto; background: var(--surf); border: 1px solid var(--rule); border-radius: 12px; box-shadow: 0 18px 40px rgba(0, 0, 0, .3); opacity: 0; visibility: hidden; transform: translateY(-5px); transition: opacity .2s ease, transform .2s ease, visibility .2s; }
+.sl-lp.on .sl-lp-l { opacity: 1; visibility: visible; transform: none; }
+.sl-lp-l li { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; cursor: pointer; color: var(--ink2); font-size: 13.5px; transition: background .16s ease, color .16s ease; }
+.sl-lp-l li:hover { background: rgba(21, 105, 255, .1); color: var(--ink); }
+.sl-lp-l li[aria-selected="true"] { color: var(--blue); }
+@media (max-width: 1240px) { .sl-lp-b .nm { display: none; } .sl-lp-b .cd { display: inline; } }
+/* phones: the header always fits the screen, so the page (and the globe) never slides sideways */
+@media (max-width: 640px) {
+  .sl-lp-b { height: 34px; padding: 0 9px; gap: 6px; }
+  .sl-lp-b .cd, .sl-lp-b .cv { display: none; }
+  .sl-net .nm { display: none; }
+  .sl-net .sh { display: inline; }
+}
+@media (max-width: 380px) {
+  .sl-top-r { gap: 5px; }
+  .sl-net { padding: 7px 8px; }
+  .sl-acct { padding: 8px 10px; }
+}
+@supports (overflow-x: clip) { html, body { overflow-x: clip; } }
+/* right-to-left (Arabic): code, addresses and amounts keep their left-to-right order */
+[dir="rtl"] .sf-code, [dir="rtl"] .mono, [dir="rtl"] code { direction: ltr; unicode-bidi: isolate; }
+[dir="rtl"] .sf-card dd.sf-code { text-align: right; }
+[dir="rtl"] .num { unicode-bidi: isolate; }
