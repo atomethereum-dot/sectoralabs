@@ -1,6 +1,7 @@
 /* Sectora Launch — हिन्दी */
 (window.SL_I18N = window.SL_I18N || {}).hi = {
   core: {
+    f_copy: "© 2026 Sectora Foundation IL. सर्वाधिकार सुरक्षित।",
     f_loc: "शिकागो, इलिनॉय, अमेरिका", f_file: "इलिनॉय फ़ाइल नंबर", f_regv: "पंजीकरण जाँचें",
     hero_l1: "कॉइन लॉन्च करें और", hero_l2: "<b>वास्तविक संपत्तियों</b> को टोकन बनाएँ", hero_l3: "<b class=\"k\">बिना रग पुल के</b>।",
     viz_price: "कीमत", viz_sold: "बिके टोकन", viz_launch: "लॉन्च", viz_grad: "ग्रेजुएशन · Sectora DEX", viz_burn: "SECT बर्न",

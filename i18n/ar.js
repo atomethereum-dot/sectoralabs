@@ -1,6 +1,7 @@
 /* Sectora Launch — العربية */
 (window.SL_I18N = window.SL_I18N || {}).ar = {
   core: {
+    f_copy: "© 2026 Sectora Foundation IL. جميع الحقوق محفوظة.",
     f_loc: "شيكاغو، إلينوي، الولايات المتحدة", f_file: "رقم ملف إلينوي", f_regv: "التحقق من التسجيل",
     hero_l1: "أطلق عملات", hero_l2: "وحوّل <b>الأصول الحقيقية</b> إلى رموز", hero_l3: "<b class=\"k\">بلا احتيال</b>.",
     viz_price: "السعر", viz_sold: "الرموز المباعة", viz_launch: "الإطلاق", viz_grad: "التخرّج · Sectora DEX", viz_burn: "حرق SECT",

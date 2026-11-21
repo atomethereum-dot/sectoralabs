@@ -1,6 +1,7 @@
 /* Sectora Launch — 中文 */
 (window.SL_I18N = window.SL_I18N || {}).zh = {
   core: {
+    f_copy: "© 2026 Sectora Foundation IL. 版权所有，保留所有权利。",
     f_loc: "美国伊利诺伊州芝加哥", f_file: "伊利诺伊州登记号", f_regv: "核实注册",
     hero_l1: "发行代币，", hero_l2: "将<b>真实资产</b>代币化，", hero_l3: "<b class=\"k\">杜绝跑路</b>。",
     viz_price: "价格", viz_sold: "已售代币", viz_launch: "发行", viz_grad: "毕业 · Sectora DEX", viz_burn: "SECT 销毁",
