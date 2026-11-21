@@ -628,7 +628,7 @@ html.sl-top0 .sl-top { background: transparent; border-bottom-color: transparent
 html.sl-top0 .sl-banner { background: transparent; }
 
 /* ---------- hero: centred headline, the planet rises faded beneath it ---------- */
-.sl-hero { display: block; position: relative; text-align: center; padding: clamp(40px, 9vh, 104px) 0 clamp(170px, 28vh, 290px); }
+.sl-hero { --orb: clamp(280px, 44vh, 500px); display: block; position: relative; text-align: center; padding: clamp(36px, 7vh, 88px) 0 var(--orb); }
 .sl-hero-txt { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; }
 .sl-hero h1 { font-size: clamp(36px, 5.2vw, 76px); }
 .sl-hero-p { margin: 0 auto; max-width: 60ch; }
@@ -636,7 +636,7 @@ html.sl-top0 .sl-banner { background: transparent; }
 .sl-hero-facts { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px 22px; margin-top: 30px; }
 .sl-hero-facts span { display: inline-flex; align-items: center; gap: 9px; font-family: var(--mono); font-size: 9.5px; letter-spacing: .17em; text-transform: uppercase; color: var(--ink3); white-space: nowrap; }
 .sl-hero-facts span i { width: 5px; height: 5px; background: var(--key); display: block; flex: none; }
-.sl-orbit { position: absolute; left: 0; right: 0; bottom: 0; height: 27%; pointer-events: none; }
+.sl-orbit { position: absolute; left: 0; right: 0; bottom: 0; height: var(--orb); pointer-events: none; }
 html:not(.sl-gl) .sl-hero { padding-bottom: clamp(30px, 5vh, 52px); }
 .sl-hero-stats .sl-stat { background: rgba(10, 13, 19, .86); }
 .sl-filmbox { border: 1px solid var(--hair); background: var(--surf); }
@@ -719,8 +719,7 @@ html.sl-lb-open, html.sl-lb-open body { overflow: hidden; }
 .sl-cd-row .lbl { margin: 10px 0 0; font-size: 9px; }
 
 @media (max-width: 960px) {
-  .sl-hero { padding: 34px 0 clamp(150px, 48vw, 250px); }
-  .sl-orbit { height: 24%; }
+  .sl-hero { --orb: clamp(230px, 74vw, 360px); padding: 30px 0 var(--orb); }
   .sl-film { grid-template-columns: minmax(0, 1fr); }
   .sl-end { grid-template-columns: minmax(0, 1fr); }
   .sl-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
