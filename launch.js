@@ -368,7 +368,7 @@
   function loadLang(l, done) {
     if (T[l] || xdict(l, "core")) { done(); return; }
     var s = document.createElement("script");
-    s.src = "i18n/" + l + ".js?v=20261121f";
+    s.src = "i18n/" + l + ".js?v=20261121h";
     s.onload = s.onerror = function () { done(); };
     document.head.appendChild(s);
   }
@@ -528,7 +528,7 @@
   var LIVE = window.SLLive || null, NKEY = "sectoraLaunch.net";
   var NET = (function () {
     var s = null; try { s = localStorage.getItem(NKEY); } catch (e) {}
-    if (s === "sectora") return s;
+    // SectoraEVM is "coming soon": an old preference for its demo opens Ethereum instead
     if (LIVE && s && LIVE.deployed(s)) return s;
     return LIVE ? LIVE.defaultNet() : "sectora";
   })();
@@ -1773,7 +1773,8 @@
     if (view === "asset") { var x = S.assets[arg]; if (x && x.status !== "approved") render(); }
   }, 1000);
   function setNet(k) {
-    if (k !== "sectora" && !(LIVE && LIVE.deployed(k))) return;
+    // Ethereum is the network the platform starts on; SectoraEVM is shown as coming soon
+    if (!(LIVE && LIVE.isLive(k))) return;
     NET = k; try { localStorage.setItem(NKEY, k); } catch (e) {}
     if (view === "t" || view === "coin") location.hash = "#/";
     else { entering = true; render(); }

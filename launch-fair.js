@@ -52,16 +52,17 @@
   /* ------------------------------------------------------------------ strings */
   var LS = {
     en: {
+      net_on: "Connected",
       bonus_up: "Bonus up to +25 %", r_p1: "{r} of {g} · 1 wallet", 
       j_sect: "SECT from your ETH", j_in: "Goes into the reserve", j_back: "Returned to you", 
       pay: "Pay with", banner_live: "Fair launches on {n}: one price for everyone, 100 % back if a reserve does not fill. Every coin is priced in {s}.",
-      banner_off: "Sectora Launch is not active on {n} yet. SectoraEVM: approximately 22 March 2027.",
+      banner_off: "Sectora Launch opens on {n} very soon: one price for everyone and 100 % back if a reserve does not fill.",
       sectora_soon_t: "Coming to SectoraEVM", sectora_soon_p: "Sectora Launch will be available on SectoraEVM approximately on 22 March 2027, at mainnet. Until then it runs with real coins on Ethereum, priced in SECT.",
-      sectora_note: "Mainnet approx. {d}", sectora_menu: "Demo · mainnet approx. {d}", sectora_demo: "SectoraEVM",
+      sectora_note: "Mainnet approx. {d}", sectora_menu: "Coming soon · mainnet approx. {d}", sectora_demo: "SectoraEVM",
       w_connect: "Connect wallet", w_choose: "Choose your wallet", w_none_t: "No wallet found in this browser", w_none_p: "Open this page inside your wallet's browser, or install a wallet extension.",
       w_disconnect: "Disconnect", w_wrong: "Switch to {n}", w_addr: "Wallet", net: "Network", net_t: "Choose network", net_live: "Live", net_soon: "Coming soon", block: "Block", usd: "≈ {u}",
       ex_t: "Explore coins", ex_sub: "{n} coins on {c}", ex_loading: "Loading coins from {c}…", ex_err: "Could not reach {c}. Retrying…",
-      ex_empty_t: "No coins yet on {c}", ex_empty_p: "Be the first: create a coin and open its reserve. Creating is free.", off_t: "Sectora Launch is not active on {c} yet", off_p: "Come back soon.",
+      ex_empty_t: "No coins yet on {c}", ex_empty_p: "Be the first: create a coin and open its reserve. Creating is free.", off_t: "Sectora Launch opens on {c} very soon", off_p: "The first reserves open as soon as the contract is live. Meanwhile, see how every reserve protects you.",
       st_coins: "Coins", st_open: "Open reserves", st_inres: "In reserves", st_live: "Live on Uniswap", st_lp: "LP burned forever", st_burned: "SECT burned", burn_pending: "+{n} pending burn", th_raised: "Raised", th_reserve: "Reserve", th_time: "Time", s_open: "Reserve open", s_live: "Live", s_exp: "Expired", left: "{t} left",
       c_t: "Create a coin", c_s: "Your coin opens a reserve on {c}. Everyone who joins pays the same price. At {g} it goes live on Uniswap with its liquidity burned forever. If it does not fill in time, everyone gets 100 % back.",
       c_img: "Image link", c_img_h: "https:// or ipfs:// link to a square image (PNG, JPG, GIF, WebP).", c_name: "Name", c_ticker: "Ticker", c_desc: "Description", c_web: "Website", c_x: "X (Twitter)", c_tg: "Telegram",
@@ -104,16 +105,17 @@
       r_closed: "This reserve is closed", r_max: "Your wallet is at the maximum for this coin", r_launched: "This coin is already live", r_slip: "Price moved more than your slippage. Try again.", r_bal: "Not enough balance", r_nothing: "Nothing to do yet"
     },
     es: {
+      net_on: "Conectada",
       bonus_up: "Bonus de hasta +25 %", r_p1: "{r} de {g} · 1 wallet", 
       j_sect: "SECT por tu ETH", j_in: "Entra en la reserva", j_back: "Se te devuelve", 
       pay: "Pagar con", banner_live: "Lanzamientos justos en {n}: mismo precio para todos y 100 % de vuelta si la reserva no se llena. Todas las monedas cotizan en {s}.",
-      banner_off: "Sectora Launch aún no está activo en {n}. SectoraEVM: aproximadamente el 22 de marzo de 2027.",
+      banner_off: "Sectora Launch abre muy pronto en {n}: mismo precio para todos y 100 % de vuelta si la reserva no se llena.",
       sectora_soon_t: "Llega a SectoraEVM", sectora_soon_p: "Sectora Launch estará disponible en SectoraEVM aproximadamente el 22 de marzo de 2027, con la mainnet. Mientras tanto funciona con monedas reales en Ethereum, cotizadas en SECT.",
-      sectora_note: "Mainnet aprox. {d}", sectora_menu: "Demo · mainnet aprox. {d}", sectora_demo: "SectoraEVM",
+      sectora_note: "Mainnet aprox. {d}", sectora_menu: "Próximamente · mainnet aprox. {d}", sectora_demo: "SectoraEVM",
       w_connect: "Conectar wallet", w_choose: "Elige tu wallet", w_none_t: "No hay ninguna wallet en este navegador", w_none_p: "Abre esta página en el navegador de tu wallet o instala una extensión de wallet.",
       w_disconnect: "Desconectar", w_wrong: "Cambiar a {n}", w_addr: "Wallet", net: "Red", net_t: "Elige la red", net_live: "Activa", net_soon: "Próximamente", block: "Bloque", usd: "≈ {u}",
       ex_t: "Explorar monedas", ex_sub: "{n} monedas en {c}", ex_loading: "Cargando monedas de {c}…", ex_err: "No se pudo conectar con {c}. Reintentando…",
-      ex_empty_t: "Aún no hay monedas en {c}", ex_empty_p: "Sé el primero: crea una moneda y abre su reserva. Crear es gratis.", off_t: "Sectora Launch aún no está activo en {c}", off_p: "Vuelve pronto.",
+      ex_empty_t: "Aún no hay monedas en {c}", ex_empty_p: "Sé el primero: crea una moneda y abre su reserva. Crear es gratis.", off_t: "Sectora Launch abre muy pronto en {c}", off_p: "Las primeras reservas se abren en cuanto el contrato esté activo. Mientras tanto, mira cómo te protege cada reserva.",
       st_coins: "Monedas", st_open: "Reservas abiertas", st_inres: "En reservas", st_live: "En Uniswap", st_lp: "LP quemado para siempre", st_burned: "SECT quemado", burn_pending: "+{n} pendiente de quemar", th_raised: "Reunido", th_reserve: "Reserva", th_time: "Tiempo", s_open: "Reserva abierta", s_live: "En Uniswap", s_exp: "Caducada", left: "quedan {t}",
       c_t: "Crear una moneda", c_s: "Tu moneda abre una reserva en {c}. Todos los que entran pagan el mismo precio. Al llegar a {g} sale a Uniswap con la liquidez quemada para siempre. Si no se llena a tiempo, a todos se les devuelve el 100 %.",
       c_img: "Enlace de la imagen", c_img_h: "Enlace https:// o ipfs:// a una imagen cuadrada (PNG, JPG, GIF, WebP).", c_name: "Nombre", c_ticker: "Ticker", c_desc: "Descripción", c_web: "Web", c_x: "X (Twitter)", c_tg: "Telegram",
@@ -156,16 +158,17 @@
       r_closed: "Esta reserva está cerrada", r_max: "Tu wallet ya está en el máximo para esta moneda", r_launched: "Esta moneda ya está en Uniswap", r_slip: "El precio se movió más que tu deslizamiento. Vuelve a intentarlo.", r_bal: "Saldo insuficiente", r_nothing: "Aún no hay nada que hacer"
     },
     pt: {
+      net_on: "Conectada",
       bonus_up: "Bônus de até +25 %", r_p1: "{r} de {g} · 1 carteira", 
       j_sect: "SECT pelo seu ETH", j_in: "Entra na reserva", j_back: "Volta para você", 
       pay: "Pagar com", banner_live: "Lançamentos justos na {n}: mesmo preço para todos e 100 % de volta se a reserva não encher. Todas as moedas são cotadas em {s}.",
-      banner_off: "O Sectora Launch ainda não está ativo na {n}. SectoraEVM: aproximadamente em 22 de março de 2027.",
+      banner_off: "O Sectora Launch abre em breve na {n}: mesmo preço para todos e 100 % de volta se a reserva não encher.",
       sectora_soon_t: "Chega à SectoraEVM", sectora_soon_p: "O Sectora Launch estará disponível na SectoraEVM aproximadamente em 22 de março de 2027, com a mainnet. Até lá funciona com moedas reais na Ethereum, cotadas em SECT.",
-      sectora_note: "Mainnet aprox. {d}", sectora_menu: "Demo · mainnet aprox. {d}", sectora_demo: "SectoraEVM",
+      sectora_note: "Mainnet aprox. {d}", sectora_menu: "Em breve · mainnet aprox. {d}", sectora_demo: "SectoraEVM",
       w_connect: "Conectar carteira", w_choose: "Escolha sua carteira", w_none_t: "Nenhuma carteira neste navegador", w_none_p: "Abra esta página no navegador da sua carteira ou instale uma extensão de carteira.",
       w_disconnect: "Desconectar", w_wrong: "Mudar para {n}", w_addr: "Carteira", net: "Rede", net_t: "Escolha a rede", net_live: "Ativa", net_soon: "Em breve", block: "Bloco", usd: "≈ {u}",
       ex_t: "Explorar moedas", ex_sub: "{n} moedas na {c}", ex_loading: "Carregando moedas da {c}…", ex_err: "Não foi possível conectar à {c}. Tentando de novo…",
-      ex_empty_t: "Ainda não há moedas na {c}", ex_empty_p: "Seja o primeiro: crie uma moeda e abra a reserva. Criar é grátis.", off_t: "O Sectora Launch ainda não está ativo na {c}", off_p: "Volte em breve.",
+      ex_empty_t: "Ainda não há moedas na {c}", ex_empty_p: "Seja o primeiro: crie uma moeda e abra a reserva. Criar é grátis.", off_t: "O Sectora Launch abre em breve na {c}", off_p: "As primeiras reservas abrem assim que o contrato estiver ativo. Enquanto isso, veja como cada reserva protege você.",
       st_coins: "Moedas", st_open: "Reservas abertas", st_inres: "Em reservas", st_live: "Na Uniswap", st_lp: "LP queimado para sempre", st_burned: "SECT queimado", burn_pending: "+{n} a queimar", th_raised: "Reunido", th_reserve: "Reserva", th_time: "Tempo", s_open: "Reserva aberta", s_live: "Na Uniswap", s_exp: "Expirada", left: "faltam {t}",
       c_t: "Criar uma moeda", c_s: "Sua moeda abre uma reserva na {c}. Todos que entram pagam o mesmo preço. Ao chegar a {g} ela vai para a Uniswap com a liquidez queimada para sempre. Se não encher a tempo, todos recebem 100 % de volta.",
       c_img: "Link da imagem", c_img_h: "Link https:// ou ipfs:// para uma imagem quadrada (PNG, JPG, GIF, WebP).", c_name: "Nome", c_ticker: "Ticker", c_desc: "Descrição", c_web: "Site", c_x: "X (Twitter)", c_tg: "Telegram",
@@ -726,13 +729,16 @@
     return '<div class="sl-netwrap"><button class="sl-net" data-a="netmenu" aria-haspopup="true" aria-label="' + X.esc(lt("net")) + '">' + (isLive(net) ? chainDot(net) : '<i class="sl-cdot is-sect"></i>') +
       '<span class="nm">' + X.esc(label) + '</span><span class="sh">' + X.esc(isLive(net) ? CHAINS[net].short : "SEVM") + '</span><svg viewBox="0 0 24 24" width="12" height="12" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2"/></svg></button></div>';
   }
+  // the network a visitor can use today: deployed, or the home network (Ethereum) while its contract is being published
+  function usable(k) { return deployed(k) || k === ORDER[0]; }
+  function netTag(k) { return deployed(k) ? lt("net_live") : k === ORDER[0] ? lt("net_on") : lt("net_soon"); }
   function netMenu(net) {
     var html = '<div class="sl-netmenu" id="slNetMenu" role="menu"><span class="lbl">' + X.esc(lt("net_t")) + "</span>";
     ORDER.forEach(function (k) {
-      var on = deployed(k);
-      html += '<button role="menuitem" data-a="setnet" data-v="' + k + '"' + (k === net ? ' class="on"' : "") + (on ? "" : " disabled") + ">" + chainDot(k) + "<span>" + X.esc(CHAINS[k].name) + '</span><em class="' + (on ? "ok" : "") + '">' + X.esc(on ? lt("net_live") : lt("net_soon")) + "</em></button>";
+      var on = usable(k);
+      html += '<button role="menuitem" data-a="setnet" data-v="' + k + '"' + (k === net ? ' class="on"' : "") + (on ? "" : " disabled") + ">" + chainDot(k) + "<span>" + X.esc(CHAINS[k].name) + '</span><em class="' + (on ? "ok" : "") + '">' + X.esc(netTag(k)) + "</em></button>";
     });
-    html += '<button role="menuitem" data-a="setnet" data-v="sectora"' + (net === "sectora" ? ' class="on"' : "") + '><i class="sl-cdot is-sect"></i><span>' + X.esc(lt("sectora_demo")) + '</span><em class="soon">' + X.esc(lt("sectora_menu", { d: MAINNET_TXT })) + "</em></button></div>";
+    html += '<button role="menuitem" disabled><i class="sl-cdot is-sect"></i><span>' + X.esc(lt("sectora_demo")) + '</span><em class="soon">' + X.esc(lt("net_soon")) + "</em></button></div>";
     return html;
   }
   function toggleNetMenu(net, anchor) {
@@ -840,14 +846,15 @@
   }
   function offHtml(k) {
     var live = liveChains();
-    return '<div class="sl-empty sl-off">' + X.ico("clock") + "<h3>" + X.esc(lt("off_t", { c: isLive(k) ? CHAINS[k].name : "SectoraEVM" })) + "</h3><p>" + X.esc(lt("off_p")) + "</p>" +
+    return '<div class="sl-empty sl-off">' + X.ico("rocket") + "<h3>" + X.esc(lt("off_t", { c: isLive(k) ? CHAINS[k].name : "SectoraEVM" })) + "</h3><p>" + X.esc(lt("off_p")) + "</p>" +
+      '<a class="sl-btn sl-btn-p" href="#/safety">' + X.esc(X.t("why_more")) + "</a>" +
       (live.length ? '<div class="sl-netrow">' + live.map(function (x) { return '<button class="sl-netpill" data-a="setnet" data-v="' + x + '">' + chainDot(x) + X.esc(CHAINS[x].name) + "</button>"; }).join("") + "</div>" : "") + "</div>";
   }
   function netRow(net) {
     return '<div class="sl-netrow">' + ORDER.map(function (k) {
-      var on = deployed(k);
-      return '<button class="sl-netpill' + (k === net ? " on" : "") + '" data-a="setnet" data-v="' + k + '"' + (on ? "" : " disabled") + ">" + chainDot(k) + X.esc(CHAINS[k].name) + (on ? "" : " <em>" + X.esc(lt("net_soon")) + "</em>") + "</button>";
-    }).join("") + '<button class="sl-netpill' + (net === "sectora" ? " on" : "") + '" data-a="setnet" data-v="sectora"><i class="sl-cdot is-sect"></i>SectoraEVM <em>' + X.esc(lt("sectora_note", { d: MAINNET_TXT })) + "</em></button></div>";
+      var on = usable(k);
+      return '<button class="sl-netpill' + (k === net ? " on" : "") + '" data-a="setnet" data-v="' + k + '"' + (on ? "" : " disabled") + ">" + chainDot(k) + X.esc(CHAINS[k].name) + (deployed(k) ? "" : " <em>" + X.esc(netTag(k)) + "</em>") + "</button>";
+    }).join("") + '<button class="sl-netpill" disabled><i class="sl-cdot is-sect"></i>SectoraEVM <em>' + X.esc(lt("net_soon")) + "</em></button></div>";
   }
   function explore(net) {
     var st = chainState(net), ch = CHAINS[net];
@@ -1431,11 +1438,11 @@
   function statsView() {
     var live = liveChains();
     live.forEach(function (k) { if (!chainState(k).at || !chainState(k).cfg) loadChain(k).then(function () { if (/#\/stats/.test(location.hash)) X.render(); }, function () {}); });
-    return '<div class="sl-pagehead"><span class="sl-eyebrow"><i class="rule"></i>Sectora Launch</span><h1>' + X.esc(lt("stats_t")) + "</h1><p>" + X.esc(lt("soon_on", { n: live.length })) + "</p></div>" +
+    return '<div class="sl-pagehead"><span class="sl-eyebrow"><i class="rule"></i>Sectora Launch</span><h1>' + X.esc(lt("stats_t")) + "</h1><p>" + X.esc(live.length ? lt("soon_on", { n: live.length }) : lt("off_t", { c: CHAINS[ORDER[0]].name })) + "</p></div>" +
       '<div class="sl-panel"><div class="sl-table-wrap"><table class="sl-table"><thead><tr><th>' + X.esc(lt("net")) + '</th><th class="r">' + X.esc(lt("st_coins")) + '</th><th class="r">' + X.esc(lt("st_open")) + '</th><th class="r">' + X.esc(lt("st_live")) + '</th><th class="r sl-hide-sm">' + X.esc(lt("st_inres")) + '</th><th class="r sl-hide-sm">' + X.esc(lt("st_burned")) + "</th></tr></thead><tbody>" +
       ORDER.map(function (k) {
         var on = deployed(k), st = chainState(k), ch = CHAINS[k];
-        if (!on) return "<tr><td>" + chainDot(k) + " " + X.esc(ch.name) + '</td><td class="r faint" colspan="5">' + X.esc(lt("net_soon")) + "</td></tr>";
+        if (!on) return "<tr><td>" + chainDot(k) + " " + X.esc(ch.name) + '</td><td class="r faint" colspan="5">' + X.esc(netTag(k)) + "</td></tr>";
         var n = counts(k), ok = !!st.at;
         return '<tr><td><button class="sl-link" data-a="setnet" data-v="' + k + '">' + chainDot(k) + " " + X.esc(ch.name) + '</button></td><td class="r num">' + (ok ? X.nf(st.count, 0) : "…") + '</td><td class="r num">' + (ok ? X.nf(n.open, 0) : "…") + '</td><td class="r num">' + (ok ? X.nf(n.live, 0) : "…") +
           '</td><td class="r num sl-hide-sm">' + (ok ? X.esc(amt(n.inres, ch.qs)) : "…") + '</td><td class="r num sl-hide-sm">' + (ok ? X.esc(amt(fx(st.burned || 0n), ch.qs)) : "…") + "</td></tr>";
@@ -1523,7 +1530,7 @@
   window.SLLive = {
     init: function (helpers) { X = helpers; autoReconnect(); },
     chains: CHAINS, order: ORDER, isLive: isLive, deployed: deployed, liveChains: liveChains,
-    defaultNet: function () { var l = liveChains(); return l.length ? l[0] : "sectora"; },
+    defaultNet: function () { var l = liveChains(); return l.length ? l[0] : ORDER[0]; },
     t: override, netChip: netChip, acctBtn: acctBtn, banner: banner, hud: hud, storyRaise: storyRaise, factory: factoryOf, sizes: usdSizes,
     explore: explore, statTiles: statTiles, create: createView, token: tokenView, me: meView, stats: statsView,
     onAction: onAction, wire: wire, tick: tick, refresh: refresh,

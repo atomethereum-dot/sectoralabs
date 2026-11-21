@@ -1286,3 +1286,5 @@ html:not(.sl-ondark) .sl-lp-b { background: #fff; }
 button[disabled] .sl-cdot, .sl-cdot.is-off { animation: none; opacity: .55; }
 @keyframes cdotPulse { 0% { box-shadow: 0 0 0 0 rgba(62, 207, 142, .55); } 70% { box-shadow: 0 0 0 7px rgba(62, 207, 142, 0); } 100% { box-shadow: 0 0 0 0 rgba(62, 207, 142, 0); } }
 @media (prefers-reduced-motion: reduce) { .sl-cdot, .sl-cdot.is-sect { animation: none; } }
+/* "opening soon" card: its button wraps on phones instead of overflowing */
+.sl-off .sl-btn { white-space: normal; max-width: 100%; text-align: center; line-height: 1.35; }
