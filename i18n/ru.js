@@ -1,6 +1,7 @@
 /* Sectora Launch — русский */
 (window.SL_I18N = window.SL_I18N || {}).ru = {
   core: {
+    f_loc: "Чикаго, Иллинойс, США", f_file: "Номер в реестре Иллинойса", f_regv: "Проверить регистрацию",
     hero_l1: "Запускайте монеты и", hero_l2: "токенизируйте <b>реальные активы</b>", hero_l3: "<b class=\"k\">без рагпулов</b>.",
     viz_price: "Цена", viz_sold: "Продано токенов", viz_launch: "Запуск", viz_grad: "Выпуск · Sectora DEX", viz_burn: "Сжигание SECT",
     tag1: "Анти-снайпер 5 мин", tag2: "LP сожжён", tag3: "0,3 % → сжигание SECT", tag4: "Проверка Shield",

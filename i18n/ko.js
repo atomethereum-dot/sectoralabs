@@ -1,6 +1,7 @@
 /* Sectora Launch — 한국어 */
 (window.SL_I18N = window.SL_I18N || {}).ko = {
   core: {
+    f_loc: "미국 일리노이주 시카고", f_file: "일리노이주 등록번호", f_regv: "등록 확인",
     hero_l1: "코인을 발행하고", hero_l2: "<b>실물 자산</b>을 토큰화하세요,", hero_l3: "<b class=\"k\">러그풀 없이</b>.",
     viz_price: "가격", viz_sold: "판매된 토큰", viz_launch: "출시", viz_grad: "졸업 · Sectora DEX", viz_burn: "SECT 소각",
     tag1: "스나이퍼 방지 5분", tag2: "LP 소각", tag3: "0.3 % → SECT 소각", tag4: "Shield 검사",

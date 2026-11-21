@@ -1277,3 +1277,7 @@ html:not(.sl-ondark) .sl-lp-b { background: #fff; }
 [dir="rtl"] .sf-code, [dir="rtl"] .mono, [dir="rtl"] code { direction: ltr; unicode-bidi: isolate; }
 [dir="rtl"] .sf-card dd.sf-code { text-align: right; }
 [dir="rtl"] .num { unicode-bidi: isolate; }
+/* the company behind Sectora Launch, with its public registration */
+.sl-foot-entity { margin: 22px 0 0; font-size: 12.5px; line-height: 1.7; color: var(--ink3); overflow-wrap: anywhere; }
+.sl-foot-entity b { font-weight: 500; color: var(--ink2); }
+.sl-foot-entity a { color: var(--blue); white-space: nowrap; }

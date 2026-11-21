@@ -1,6 +1,7 @@
 /* Sectora Launch — français */
 (window.SL_I18N = window.SL_I18N || {}).fr = {
   core: {
+    f_loc: "Chicago, Illinois, États-Unis", f_file: "Dossier Illinois", f_regv: "Vérifier l’immatriculation",
     hero_l1: "Lancez des monnaies et", hero_l2: "tokenisez des <b>actifs réels</b>", hero_l3: "<b class=\"k\">sans arnaques</b>.",
     viz_price: "Prix", viz_sold: "Tokens vendus", viz_launch: "Lancement", viz_grad: "Graduation · Sectora DEX", viz_burn: "Brûlage de SECT",
     tag1: "Anti-sniper 5 min", tag2: "LP brûlé", tag3: "0,3 % → brûlage de SECT", tag4: "Analyse Shield",
