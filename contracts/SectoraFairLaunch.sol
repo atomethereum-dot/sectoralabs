@@ -6,9 +6,9 @@ pragma solidity 0.8.24;
  *
  * 1. Anyone creates a coin for free: name, ticker, supply (1,000 … 10^15 tokens, 18 decimals,
  *    no owner, no mint, no tax) and how long its reserve stays open (1 hour … 7 days).
- * 2. Reserve: everyone pays the same price. The target is $15,000 worth of SECT and each wallet
- *    can put at most $500 worth, both converted to SECT when the coin is created with the
- *    30-minute average price of the SECT/USDT pool. Paying with ETH swaps it to SECT on a route
+ * 2. Reserve: everyone pays the same price. The creator picks the graduation target, $3,000,
+ *    $7,000 or $15,000 worth of SECT, and each wallet can put at most $500 worth, both converted to
+ *    SECT when the coin is created with the 30-minute average price of the SECT/USDT pool. Paying with ETH swaps it to SECT on a route
  *    fixed at deployment. Until the target is reached anyone can take their SECT back; if the
  *    deadline passes first, everyone takes back 100 % and no fee is charged.
  * 3. Launch, in the transaction that reaches the target: 1 % of the reserve goes to the creator and
@@ -145,6 +145,7 @@ contract SectoraFairLaunch {
     uint256 public constant MAX_META = 1024;
     uint32 public constant TWAP_WINDOW = 30 minutes;
     uint256 public constant ORACLE_RANGE = 50;            // sized amounts stay within fallback / 50 … × 50
+    uint8 public constant TIERS = 3;                      // graduation targets the creator can pick (0, 1, 2)
     address public constant DEAD = 0x000000000000000000000000000000000000dEaD;
 
     // ---- configuration, fixed at deployment ----
@@ -153,9 +154,13 @@ contract SectoraFairLaunch {
     address public immutable swapRouter;       // Uniswap V3 SwapRouter02 (ETH → SECT)
     address public immutable wrappedNative;    // WETH
     address public immutable oraclePool;       // Uniswap V3 SECT/USDT pool (30-minute average price)
-    uint256 public immutable targetUsd;        // reserve target in dollars (18 decimals)
+    uint256 private immutable targetUsd0;      // graduation targets in dollars (18 decimals), smallest first
+    uint256 private immutable targetUsd1;
+    uint256 private immutable targetUsd2;
+    uint256 private immutable targetFallback0; // the same targets in SECT, used only if the oracle cannot answer
+    uint256 private immutable targetFallback1;
+    uint256 private immutable targetFallback2;
     uint256 public immutable capUsd;           // per-wallet maximum in dollars (18 decimals)
-    uint256 public immutable targetFallback;   // target in SECT if the oracle cannot answer
     uint256 public immutable capFallback;      // per-wallet maximum in SECT if the oracle cannot answer
     uint256 public immutable burnShareBps;     // share of platform income burned on withdrawal
     address public immutable tokenImplementation;
@@ -193,13 +198,14 @@ contract SectoraFairLaunch {
     }
 
     mapping(address => Launch) public launches;
+    mapping(address => uint8) public tierOf;   // graduation target chosen by the creator (0, 1 or 2)
     mapping(address => string) public meta;
     mapping(address => mapping(address => Seat)) public seats;
     address[] public allTokens;
 
     uint256 private _lock = 1;
 
-    event CoinCreated(address indexed token, address indexed creator, uint256 supply, uint256 target, uint256 cap, uint256 deadline);
+    event CoinCreated(address indexed token, address indexed creator, uint256 supply, uint8 tier, uint256 target, uint256 cap, uint256 deadline);
     event Contributed(address indexed token, address indexed account, uint256 amount, bool locked, uint256 raised);
     event Withdrawn(address indexed token, address indexed account, uint256 amount, uint256 raised);
     event Locked(address indexed token, address indexed account);
@@ -227,9 +233,9 @@ contract SectoraFairLaunch {
         address wrappedNative;
         bytes swapPath;
         address oraclePool;
-        uint256 targetUsd;
+        uint256[3] targetsUsd;
         uint256 capUsd;
-        uint256 targetFallback;
+        uint256[3] targetFallbacks;
         uint256 capFallback;
         uint256 burnShareBps;
     }
@@ -241,8 +247,11 @@ contract SectoraFairLaunch {
         uint256 n = cfg.swapPath.length;
         require(n >= 43 && (n - 20) % 23 == 0, "SF: swap path");
         require(_pathToken(cfg.swapPath, 0) == cfg.wrappedNative && _pathToken(cfg.swapPath, n - 20) == cfg.quote, "SF: swap path ends");
-        require(cfg.targetUsd > 0 && cfg.capUsd > 0 && cfg.capUsd <= cfg.targetUsd, "SF: dollar amounts");
-        require(cfg.targetFallback > 0 && cfg.capFallback > 0 && cfg.capFallback <= cfg.targetFallback, "SF: fallback amounts");
+        require(cfg.capUsd > 0 && cfg.capUsd <= cfg.targetsUsd[0] && cfg.targetsUsd[0] < cfg.targetsUsd[1] && cfg.targetsUsd[1] < cfg.targetsUsd[2], "SF: dollar amounts");
+        require(
+            cfg.capFallback > 0 && cfg.capFallback <= cfg.targetFallbacks[0] && cfg.targetFallbacks[0] < cfg.targetFallbacks[1] && cfg.targetFallbacks[1] < cfg.targetFallbacks[2],
+            "SF: fallback amounts"
+        );
         require(cfg.burnShareBps <= 10_000, "SF: burn share");
         address t0 = IV3PoolOracle(cfg.oraclePool).token0();
         address t1 = IV3PoolOracle(cfg.oraclePool).token1();
@@ -260,9 +269,13 @@ contract SectoraFairLaunch {
         wrappedNative = cfg.wrappedNative;
         swapPath = cfg.swapPath;
         oraclePool = cfg.oraclePool;
-        targetUsd = cfg.targetUsd;
+        targetUsd0 = cfg.targetsUsd[0];
+        targetUsd1 = cfg.targetsUsd[1];
+        targetUsd2 = cfg.targetsUsd[2];
         capUsd = cfg.capUsd;
-        targetFallback = cfg.targetFallback;
+        targetFallback0 = cfg.targetFallbacks[0];
+        targetFallback1 = cfg.targetFallbacks[1];
+        targetFallback2 = cfg.targetFallbacks[2];
         capFallback = cfg.capFallback;
         burnShareBps = cfg.burnShareBps;
         quoteIsToken0 = q0;
@@ -275,18 +288,21 @@ contract SectoraFairLaunch {
 
     // ------------------------------------------------------------------ create
 
+    /// What the creator chooses: name, ticker, metadata (JSON), supply (whole tokens, 18 decimals),
+    /// how long the reserve stays open and the graduation target (`tier`: 0, 1 or 2, see targetsUsd()).
+    struct NewCoin {
+        string name;
+        string symbol;
+        string meta;
+        uint256 supply;
+        uint256 duration;
+        uint8 tier;
+    }
+
     /// Creates a coin and opens its reserve. Optionally the creator joins the reserve with
     /// `contribution` SECT (needs an approval) in the same transaction.
-    function createCoin(
-        string calldata name_,
-        string calldata symbol_,
-        string calldata meta_,
-        uint256 supply,
-        uint256 duration,
-        uint256 contribution,
-        bool lock
-    ) external nonReentrant returns (address token) {
-        token = _create(name_, symbol_, meta_, supply, duration);
+    function createCoin(NewCoin calldata c, uint256 contribution, bool lock) external nonReentrant returns (address token) {
+        token = _create(c);
         if (contribution > 0) {
             _pull(msg.sender, contribution);
             uint256 used = _contribute(token, msg.sender, contribution, lock);
@@ -295,16 +311,8 @@ contract SectoraFairLaunch {
     }
 
     /// Same, joining the reserve with ETH (swapped to SECT; SECT that does not fit is returned).
-    function createCoinWithETH(
-        string calldata name_,
-        string calldata symbol_,
-        string calldata meta_,
-        uint256 supply,
-        uint256 duration,
-        uint256 minQuoteOut,
-        bool lock
-    ) external payable nonReentrant returns (address token) {
-        token = _create(name_, symbol_, meta_, supply, duration);
+    function createCoinWithETH(NewCoin calldata c, uint256 minQuoteOut, bool lock) external payable nonReentrant returns (address token) {
+        token = _create(c);
         uint256 got = _swapIn(msg.value, minQuoteOut);
         uint256 used = _contribute(token, msg.sender, got, lock);
         if (used < got) _pay(msg.sender, got - used);
@@ -467,6 +475,7 @@ contract SectoraFairLaunch {
         uint256 lockedRaised;
         uint256 bonusRate;
         uint256 creatorClaimed;
+        uint8 tier;
     }
 
     function coinsCount() external view returns (uint256) {
@@ -493,6 +502,7 @@ contract SectoraFairLaunch {
         v.lockedRaised = l.lockedRaised;
         v.bonusRate = l.bonusRate;
         v.creatorClaimed = l.creatorClaimed;
+        v.tier = tierOf[token];
     }
 
     /// Newest first: index 0 is the most recent coin.
@@ -512,11 +522,24 @@ contract SectoraFairLaunch {
 
     // ------------------------------------------------------------------ dollar sizing
 
-    /// Reserve target and per-wallet maximum (in SECT) for a coin created now.
-    function sizesNow() public view returns (uint256 target, uint256 cap) {
+    /// The graduation targets in dollars (18 decimals), smallest first.
+    function targetsUsd() external view returns (uint256[3] memory) {
+        return [targetUsd0, targetUsd1, targetUsd2];
+    }
+
+    /// The graduation targets in SECT used only if the oracle cannot answer.
+    function targetFallbacks() external view returns (uint256[3] memory) {
+        return [targetFallback0, targetFallback1, targetFallback2];
+    }
+
+    /// Reserve target and per-wallet maximum (in SECT) for a coin created now with this tier.
+    function sizesNow(uint8 tier) public view returns (uint256 target, uint256 cap) {
+        require(tier < TIERS, "SF: tier");
+        uint256 tUsd = tier == 0 ? targetUsd0 : tier == 1 ? targetUsd1 : targetUsd2;
+        uint256 tFallback = tier == 0 ? targetFallback0 : tier == 1 ? targetFallback1 : targetFallback2;
         uint256 price = quoteUsdPrice();
-        if (price == 0) return (targetFallback, capFallback);
-        target = _clamp((targetUsd * quoteUnit) / price, targetFallback);
+        if (price == 0) return (tFallback, capFallback);
+        target = _clamp((tUsd * quoteUnit) / price, tFallback);
         cap = _clamp((capUsd * quoteUnit) / price, capFallback);
         if (cap > target) cap = target;
     }
@@ -544,31 +567,29 @@ contract SectoraFairLaunch {
 
     // ------------------------------------------------------------------ internal
 
-    function _create(string calldata name_, string calldata symbol_, string calldata meta_, uint256 supply, uint256 duration)
-        private
-        returns (address token)
-    {
-        uint256 nb = bytes(name_).length;
-        uint256 sb = bytes(symbol_).length;
+    function _create(NewCoin calldata c) private returns (address token) {
+        uint256 nb = bytes(c.name).length;
+        uint256 sb = bytes(c.symbol).length;
         require(nb > 0 && nb <= MAX_NAME, "SF: name length");
         require(sb > 0 && sb <= MAX_SYMBOL, "SF: symbol length");
-        require(bytes(meta_).length <= MAX_META, "SF: meta too long");
-        require(supply >= MIN_SUPPLY && supply <= MAX_SUPPLY && supply % 1 ether == 0, "SF: supply");
-        require(duration >= MIN_DURATION && duration <= MAX_DURATION, "SF: duration");
+        require(bytes(c.meta).length <= MAX_META, "SF: meta too long");
+        require(c.supply >= MIN_SUPPLY && c.supply <= MAX_SUPPLY && c.supply % 1 ether == 0, "SF: supply");
+        require(c.duration >= MIN_DURATION && c.duration <= MAX_DURATION, "SF: duration");
 
         token = _clone(tokenImplementation);
-        SectoraFairToken(token).initialize(name_, symbol_, supply);
-        (uint256 target, uint256 cap) = sizesNow();
+        SectoraFairToken(token).initialize(c.name, c.symbol, c.supply);
+        (uint256 target, uint256 cap) = sizesNow(c.tier);
         Launch storage l = launches[token];
         l.creator = msg.sender;
+        tierOf[token] = c.tier;
         l.createdAt = uint64(block.timestamp);
-        l.deadline = uint64(block.timestamp + duration);
-        l.supply = supply;
+        l.deadline = uint64(block.timestamp + c.duration);
+        l.supply = c.supply;
         l.target = target;
         l.cap = cap;
-        meta[token] = meta_;
+        meta[token] = c.meta;
         allTokens.push(token);
-        emit CoinCreated(token, msg.sender, supply, target, cap, l.deadline);
+        emit CoinCreated(token, msg.sender, c.supply, c.tier, target, cap, l.deadline);
     }
 
     function _contribute(address token, address account, uint256 amount, bool lock) private returns (uint256 used) {

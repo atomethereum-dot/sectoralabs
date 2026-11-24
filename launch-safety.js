@@ -204,8 +204,8 @@
   ];
   function view(net) {
     var X = window.SLX, LV = window.SLLive, L = X.lang(), XS = window.SL_I18N && window.SL_I18N[L], D = S[L] || (XS && XS.safety) || S.en;
-    var z = LV && LV.sizes ? LV.sizes() : { g: 15000, cap: 500 }, dol = function (n) { return "$" + X.nf(n, 0); };
-    function s(k) { var v = D[k] != null ? D[k] : S.en[k]; return String(v).split("{G}").join(dol(z.g)).split("{CAP}").join(dol(z.cap)); }
+    var z = LV && LV.sizes ? LV.sizes() : { g: 15000, gtxt: "$7,000 / $15,000", cap: 500 }, dol = function (n) { return "$" + X.nf(n, 0); };
+    function s(k) { var v = D[k] != null ? D[k] : S.en[k]; return String(v).split("{G}").join(z.gtxt || dol(z.g)).split("{CAP}").join(dol(z.cap)); }
     var e = X.esc, ico = X.ico;
     var k = LV && LV.liveChains ? LV.liveChains()[0] : null, ch = k && LV.chains[k], fac = k && LV.factory ? LV.factory(k) : "";
     var facUrl = fac && ch && ch.exp ? ch.exp + "/address/" + fac + "#readContract" : "";

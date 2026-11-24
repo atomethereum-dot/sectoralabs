@@ -368,7 +368,7 @@
   function loadLang(l, done) {
     if (T[l] || xdict(l, "core")) { done(); return; }
     var s = document.createElement("script");
-    s.src = "i18n/" + l + ".js?v=20261121h";
+    s.src = "i18n/" + l + ".js?v=20261124a";
     s.onload = s.onerror = function () { done(); };
     document.head.appendChild(s);
   }
@@ -963,7 +963,7 @@
       "<h1>" + ["hero_l1", "hero_l2", "hero_l3"].map(function (k, i) { return '<span class="ln"><span style="--i:' + i + '">' + t(k) + "</span></span>"; }).join("") + "</h1>" +
       '<p class="sl-hero-p fade-in" style="--d:.42s">' + esc(t("hero_s")) + "</p>" +
       '<div class="sl-hero-cta fade-in" style="--d:.55s"><a class="sl-btn sl-btn-p" href="#/create">' + ico("rocket") + esc(t("cta_launch")) + '</a><a class="sl-btn" href="#/tokenize">' + ico("building") + esc(t("cta_tokenize")) + "</a></div>" +
-      '<div class="sl-hero-facts fade-in" style="--d:.68s">' + ["hf1", "hf2", "hf3"].map(function (k) { return "<span><i></i>" + esc(t(k)) + "</span>"; }).join("") +
+      '<div class="sl-hero-facts fade-in" style="--d:.68s">' + (live() ? ["hf0", "hf1", "hf2", "hf3"] : ["hf1", "hf2", "hf3"]).map(function (k) { return "<span><i></i>" + esc(t(k)) + "</span>"; }).join("") +
       '<button class="sl-play" type="button" data-a="film"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg>' + esc(t("film_eb")) + " · 0:34</button></div></div>" +
       '<div class="sl-orbit" id="slOrbit" aria-hidden="true"></div></section>' +
       (live() ? '<div class="sl-hero-stats fade-in" style="--d:.75s">' + LIVE.statTiles(NET) + "</div>" : "") +

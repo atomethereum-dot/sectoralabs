@@ -108,6 +108,7 @@
     ev_launch: "Lancement", ev_grad: "Graduation", ref: "≈ {u} au prix réel du SECT", footer_l: "Aperçu de Sectora Launch sur le testnet SectoraEVM. Pas un conseil financier. Les tokens du testnet n’ont aucune valeur.", acct_n: "Compte {n}"
   },
   live: {
+    c_grad: "Objectif de graduation", c_grad_h: "Quand la réserve l’atteint, le coin passe en direct sur Uniswap. Même prix pour tous et jusqu’à {cap} par wallet dans les trois cas.", g0: "Rapide", g0_p: "Rempli dès {n} wallets", g1: "Équilibré", g1_p: "Dès {n} wallets · plus de liquidité", g2: "Solide", g2_p: "Dès {n} wallets · liquidité maximale", c_minw: "Wallets nécessaires (min.)", goal: "Graduation {g}",
     net_on: "Connecté",
     bonus_up: "Bonus jusqu’à +25 %", r_p1: "{r} sur {g} · 1 wallet", j_sect: "SECT pour votre ETH", j_in: "Entre dans la réserve", j_back: "Vous est rendu", pay: "Payer avec",
     banner_live: "Lancements équitables sur {n} : même prix pour tous, 100 % remboursé si la réserve ne se remplit pas. Toutes les monnaies sont cotées en {s}.",
@@ -161,6 +162,7 @@
     r_closed: "Cette réserve est fermée", r_max: "Votre wallet a atteint le maximum pour cette monnaie", r_launched: "Cette monnaie est déjà en ligne", r_slip: "Le prix a bougé plus que votre slippage. Réessayez.", r_bal: "Solde insuffisant", r_nothing: "Rien à faire pour l’instant"
   },
   ovr: {
+    hf0: "Graduation à $3K, $7K ou $15K",
     eyebrow2: "Sectora Launch · Ethereum · SECT",
     hero_s: "Des lancements équitables sur Ethereum, cotés en SECT : même prix pour tous, {CAP} par wallet, 100 % remboursé si une réserve ne se remplit pas, et une liquidité bloquée pour toujours sur Uniswap. Payez en ETH ou en SECT.",
     hf1: "Même prix · max. {CAP}", hf2: "LP brûlé pour toujours", hf3: "100 % remboursé si elle ne se remplit pas",

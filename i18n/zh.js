@@ -108,6 +108,7 @@
     ev_launch: "发行", ev_grad: "毕业", ref: "按实时 SECT 价格 ≈ {u}", footer_l: "Sectora Launch 在 SectoraEVM 测试网上的预览。不构成财务建议。测试网代币没有价值。", acct_n: "账户 {n}"
   },
   live: {
+    c_grad: "毕业目标", c_grad_h: "储备达到目标后，代币即在 Uniswap 上线。三种目标都是人人同价，每个钱包最多 {cap}。", g0: "快速", g0_p: "至少 {n} 个钱包即可填满", g1: "均衡", g1_p: "至少 {n} 个钱包 · 流动性更多", g2: "强势", g2_p: "至少 {n} 个钱包 · 流动性最深", c_minw: "所需钱包（最少）", goal: "毕业目标 {g}",
     net_on: "已连接",
     bonus_up: "奖励最高 +25 %", r_p1: "{r} / {g} · 1 个钱包", j_sect: "你的 ETH 可换 SECT", j_in: "进入储备", j_back: "退还给你", pay: "支付方式",
     banner_live: "{n} 上的公平发行：所有人同一价格，储备未满则 100 % 退款。所有代币均以 {s} 计价。",
@@ -161,6 +162,7 @@
     r_closed: "该储备已关闭", r_max: "你的钱包已达到该代币的上限", r_launched: "该代币已上线", r_slip: "价格变动超过你的滑点设置，请重试。", r_bal: "余额不足", r_nothing: "暂无可操作内容"
   },
   ovr: {
+    hf0: "$3K、$7K 或 $15K 毕业",
     eyebrow2: "Sectora Launch · Ethereum · SECT",
     hero_s: "Ethereum 上以 SECT 计价的公平发行：所有人同一价格，每个钱包最多 {CAP}，储备未满 100 % 退款，Uniswap 上的流动性永久锁定。可用 ETH 或 SECT 支付。",
     hf1: "同一价格 · 最多 {CAP}", hf2: "LP 永久销毁", hf3: "未募满 100 % 退款",

@@ -108,6 +108,7 @@
     ev_launch: "Launch", ev_grad: "Graduierung", ref: "≈ {u} zum aktuellen SECT-Kurs", footer_l: "Vorschau von Sectora Launch im SectoraEVM-Testnet. Keine Finanzberatung. Tokens im Testnet haben keinen Wert.", acct_n: "Konto {n}"
   },
   live: {
+    c_grad: "Graduierungsziel", c_grad_h: "Erreicht die Reserve das Ziel, geht der Coin auf Uniswap live. Gleicher Preis für alle und bis zu {cap} pro Wallet bei allen drei.", g0: "Schnell", g0_p: "Voll ab {n} Wallets", g1: "Ausgewogen", g1_p: "Ab {n} Wallets · mehr Liquidität", g2: "Stark", g2_p: "Ab {n} Wallets · tiefste Liquidität", c_minw: "Benötigte Wallets (min.)", goal: "Graduierung {g}",
     net_on: "Verbunden",
     bonus_up: "Bonus bis zu +25 %", r_p1: "{r} von {g} · 1 Wallet", j_sect: "SECT für dein ETH", j_in: "Geht in die Reserve", j_back: "Geht an dich zurück", pay: "Zahlen mit",
     banner_live: "Faire Launches auf {n}: ein Preis für alle, 100 % zurück, wenn sich eine Reserve nicht füllt. Jeder Coin ist in {s} bepreist.",
@@ -161,6 +162,7 @@
     r_closed: "Diese Reserve ist geschlossen", r_max: "Deine Wallet hat das Maximum für diesen Coin erreicht", r_launched: "Dieser Coin ist bereits live", r_slip: "Der Preis hat sich stärker als deine Slippage bewegt. Versuch es erneut.", r_bal: "Guthaben reicht nicht", r_nothing: "Noch nichts zu tun"
   },
   ovr: {
+    hf0: "Graduiert bei $3K, $7K oder $15K",
     eyebrow2: "Sectora Launch · Ethereum · SECT",
     hero_s: "Faire Launches auf Ethereum, bepreist in SECT: ein Preis für alle, {CAP} pro Wallet, 100 % zurück, wenn sich eine Reserve nicht füllt, und für immer gesperrte Liquidität auf Uniswap. Zahle mit ETH oder SECT.",
     hf1: "Ein Preis · max. {CAP}", hf2: "LP für immer verbrannt", hf3: "100 % zurück, wenn sie sich nicht füllt",

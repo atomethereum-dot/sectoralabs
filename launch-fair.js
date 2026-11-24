@@ -14,7 +14,7 @@
     ethereum: { id: 1, name: "Ethereum", short: "ETH", sym: "ETH", col: "#627eea", ds: "ethereum", exp: "https://etherscan.io",
       rpc: ["https://ethereum-rpc.publicnode.com", "https://eth.llamarpc.com"],
       dex: "Uniswap", dexFactory: "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f", router: "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D", wnative: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
-      swap: "https://app.uniswap.org/swap?chain=mainnet&inputCurrency=ETH&outputCurrency=", quick: ["0.01", "0.05", "0.1", "0.25"],
+      swap: "https://app.uniswap.org/swap?chain=ethereum&inputCurrency=ETH&outputCurrency=", quick: ["0.01", "0.05", "0.1", "0.25"],
       // every coin is priced in SECT; paying with ETH swaps ETH → USDT → SECT on Uniswap V3
       qs: "SECT", qaddr: "0x8C9984B06281f1CA9416e493c2E602AaB08513db", qquick: ["500", "1000", "2500", "4700"],
       v3router: "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45", quoter: "0x61fFE014bA17989E743c5F6cB21bF9697530B21e",
@@ -67,6 +67,7 @@
       c_t: "Create a coin", c_s: "Your coin opens a reserve on {c}. Everyone who joins pays the same price. At {g} it goes live on Uniswap with its liquidity burned forever. If it does not fill in time, everyone gets 100 % back.",
       c_img: "Image link", c_img_h: "https:// or ipfs:// link to a square image (PNG, JPG, GIF, WebP).", c_name: "Name", c_ticker: "Ticker", c_desc: "Description", c_web: "Website", c_x: "X (Twitter)", c_tg: "Telegram",
       c_supply: "Supply", c_supply_h: "How many tokens exist, forever. The value is the same with any supply: only the price per token changes.",
+      c_grad: "Graduation target", c_grad_h: "When the reserve reaches it, the coin goes live on Uniswap. Same price for everyone and up to {cap} per wallet in all three.", g0: "Quick", g0_p: "Fills from {n} wallets", g1: "Balanced", g1_p: "From {n} wallets · more liquidity", g2: "Strong", g2_p: "From {n} wallets · deepest liquidity", c_minw: "Wallets needed (min.)", goal: "Graduation {g}",
       c_dur: "Reserve open for", c_dur_h: "If {g} is not reached in time, everyone takes back 100 %.", c_join: "Join your own reserve (optional)", c_join_h: "Same price as everyone, up to {cap} per wallet.",
       c_lock: "Lock my tokens 30 days for a bonus (up to +25 %)", c_lock_h: "Everything, bonus included, arrives 30 days after launch.",
       c_ack: "I understand this is a real transaction on {c} and that new coins are high risk.", c_btn: "Create on {c}", c_need_wallet: "Connect your wallet",
@@ -120,6 +121,7 @@
       c_t: "Crear una moneda", c_s: "Tu moneda abre una reserva en {c}. Todos los que entran pagan el mismo precio. Al llegar a {g} sale a Uniswap con la liquidez quemada para siempre. Si no se llena a tiempo, a todos se les devuelve el 100 %.",
       c_img: "Enlace de la imagen", c_img_h: "Enlace https:// o ipfs:// a una imagen cuadrada (PNG, JPG, GIF, WebP).", c_name: "Nombre", c_ticker: "Ticker", c_desc: "Descripción", c_web: "Web", c_x: "X (Twitter)", c_tg: "Telegram",
       c_supply: "Supply", c_supply_h: "Cuántos tokens existen, para siempre. El valor es el mismo con cualquier supply: solo cambia el precio por token.",
+      c_grad: "Meta de graduación", c_grad_h: "Cuando la reserva la alcanza, la moneda sale a Uniswap. Mismo precio para todos y hasta {cap} por wallet en las tres.", g0: "Rápida", g0_p: "Se llena desde {n} wallets", g1: "Equilibrada", g1_p: "Desde {n} wallets · más liquidez", g2: "Fuerte", g2_p: "Desde {n} wallets · máxima liquidez", c_minw: "Wallets necesarias (mín.)", goal: "Graduación {g}",
       c_dur: "Reserva abierta durante", c_dur_h: "Si no se llega a {g} a tiempo, cada uno recupera el 100 %.", c_join: "Entrar en tu propia reserva (opcional)", c_join_h: "Mismo precio que todos, hasta {cap} por wallet.",
       c_lock: "Bloquear mis tokens 30 días a cambio de un bonus (hasta +25 %)", c_lock_h: "Todo, bonus incluido, llega 30 días después del lanzamiento.",
       c_ack: "Entiendo que es una transacción real en {c} y que las monedas nuevas son de alto riesgo.", c_btn: "Crear en {c}", c_need_wallet: "Conecta tu wallet",
@@ -173,6 +175,7 @@
       c_t: "Criar uma moeda", c_s: "Sua moeda abre uma reserva na {c}. Todos que entram pagam o mesmo preço. Ao chegar a {g} ela vai para a Uniswap com a liquidez queimada para sempre. Se não encher a tempo, todos recebem 100 % de volta.",
       c_img: "Link da imagem", c_img_h: "Link https:// ou ipfs:// para uma imagem quadrada (PNG, JPG, GIF, WebP).", c_name: "Nome", c_ticker: "Ticker", c_desc: "Descrição", c_web: "Site", c_x: "X (Twitter)", c_tg: "Telegram",
       c_supply: "Supply", c_supply_h: "Quantos tokens existem, para sempre. O valor é o mesmo com qualquer supply: só muda o preço por token.",
+      c_grad: "Meta de graduação", c_grad_h: "Quando a reserva chega lá, a moeda vai para a Uniswap. Mesmo preço para todos e até {cap} por carteira nas três.", g0: "Rápida", g0_p: "Enche a partir de {n} carteiras", g1: "Equilibrada", g1_p: "A partir de {n} carteiras · mais liquidez", g2: "Forte", g2_p: "A partir de {n} carteiras · liquidez máxima", c_minw: "Carteiras necessárias (mín.)", goal: "Graduação {g}",
       c_dur: "Reserva aberta por", c_dur_h: "Se não chegar a {g} a tempo, cada um recebe 100 % de volta.", c_join: "Entrar na sua própria reserva (opcional)", c_join_h: "Mesmo preço de todos, até {cap} por carteira.",
       c_lock: "Bloquear meus tokens por 30 dias em troca de um bônus (até +25 %)", c_lock_h: "Tudo, bônus incluído, chega 30 dias depois do lançamento.",
       c_ack: "Entendo que é uma transação real na {c} e que moedas novas são de alto risco.", c_btn: "Criar na {c}", c_need_wallet: "Conecte sua carteira",
@@ -221,6 +224,7 @@
   // home copy for the fair model ({G} = reserve target, {CAP} = maximum per wallet, both in dollars)
   var OVR = {
     en: {
+      hf0: "Graduates at $3K, $7K or $15K",
       eyebrow2: "Sectora Launch · Ethereum · SECT",
       hero_s: "Fair launches on Ethereum, priced in SECT: one price for everyone, {CAP} per wallet, 100 % back if a reserve does not fill, and liquidity locked forever on Uniswap. Pay with ETH or SECT.",
       hf1: "One price · max {CAP}", hf2: "LP burned forever", hf3: "100 % back if it does not fill",
@@ -250,6 +254,7 @@
       end_s: "Sectora Launch arrives on SectoraEVM approximately on 22 March 2027. Today it already runs on Ethereum with real coins priced in SECT."
     },
     es: {
+      hf0: "Gradúa en $3K, $7K o $15K",
       eyebrow2: "Sectora Launch · Ethereum · SECT",
       hero_s: "Lanzamientos justos en Ethereum, cotizados en SECT: mismo precio para todos, {CAP} por wallet, 100 % de vuelta si la reserva no se llena y liquidez bloqueada para siempre en Uniswap. Paga con ETH o con SECT.",
       hf1: "Mismo precio · máx. {CAP}", hf2: "LP quemado para siempre", hf3: "100 % de vuelta si no se llena",
@@ -279,6 +284,7 @@
       end_s: "Sectora Launch llegará a SectoraEVM aproximadamente el 22 de marzo de 2027. Hoy ya funciona en Ethereum con monedas reales cotizadas en SECT."
     },
     pt: {
+      hf0: "Gradua em $3K, $7K ou $15K",
       eyebrow2: "Sectora Launch · Ethereum · SECT",
       hero_s: "Lançamentos justos na Ethereum, cotados em SECT: mesmo preço para todos, {CAP} por carteira, 100 % de volta se a reserva não encher e liquidez bloqueada para sempre na Uniswap. Pague com ETH ou SECT.",
       hf1: "Mesmo preço · máx. {CAP}", hf2: "LP queimado para sempre", hf3: "100 % de volta se não encher",
@@ -309,16 +315,22 @@
     }
   };
   // reserve target and per-wallet maximum in dollars, from the deployed contract (defaults until it answers)
+  // three graduation targets: the creator picks one ($3,000, $7,000 or $15,000); the per-wallet maximum is the same
+  var TIER_USD = [3000, 7000, 15000];
   function usdSizes() {
     var k = liveChains()[0], cf = k && chainState(k).cfg;
-    return { g: cf && cf.targetUsd > 0 ? cf.targetUsd : 15000, cap: cf && cf.capUsd > 0 ? cf.capUsd : 500 };
+    var t = TIER_USD.map(function (d, i) { return cf && cf.tiers && cf.tiers[i].usd > 0 ? cf.tiers[i].usd : d; });
+    return { g: t[2], t: t, gtxt: t.map(dollars).join(" / "), cap: cf && cf.capUsd > 0 ? cf.capUsd : 500 };
   }
+  // target of the tier being created (SECT and dollars)
+  function tierCfg(cf, i) { var t = cf && cf.tiers ? cf.tiers[i == null ? draft.tier : i] : null; return t || { target: 0n, cap: 0n, usd: TIER_USD[i == null ? draft.tier : i] }; }
+  function usdOfTier(i) { return usdSizes().t[i] || TIER_USD[i] || TIER_USD[2]; }
   function dollars(n) { return "$" + X.nf(n, 0); }
   function override(k) {
     var L = X.lang(), d = OVR[L] || xd(L, "ovr"), s = (d && d[k] != null) ? d[k] : (OVR.en[k] != null ? OVR.en[k] : null);
     if (s == null) return null;
     var z = usdSizes();
-    return s.split("{G}").join(dollars(z.g)).split("{CAP}").join(dollars(z.cap));
+    return s.split("{G}").join(z.gtxt).split("{CAP}").join(dollars(z.cap));
   }
   /* ------------------------------------------------------------------ formatting */
   function fx(b) { try { return Number(E.formatEther(b || 0n)); } catch (e) { return 0; } }
@@ -331,6 +343,16 @@
     return v >= 1 ? "$" + X.nf(v, v >= 1000 ? 0 : 2) : (v > 0 ? "$" + X.fmtPrice(v) : "$0");
   }
   function usdLine(k, n) { var u = usdOf(k, n); return u ? '<small class="faint">' + X.esc(lt("usd", { u: u })) + "</small>" : ""; }
+  // network logos: Ethereum (live) and SectoraEVM (coming soon)
+  var LOGOS = {
+    ethereum: '<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="#627EEA"/><g fill="#FFF"><path fill-opacity=".602" d="M16.498 4v8.87l7.497 3.35z"/><path d="M16.498 4 9 16.22l7.498-3.35z"/><path fill-opacity=".602" d="M16.498 21.968v6.027L24 17.616z"/><path d="M16.498 27.995v-6.028L9 17.616z"/><path fill-opacity=".2" d="m16.498 20.573 7.497-4.353-7.497-3.348z"/><path fill-opacity=".602" d="m9 16.22 7.498 4.353v-7.701z"/></g></svg>',
+    sectora: '<svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#1569ff"/><rect width="32" height="32" rx="9" fill="#fff" fill-opacity=".12" transform="translate(0 -16)"/><circle cx="16" cy="16" r="7.4" fill="none" stroke="#fff" stroke-width="3"/></svg>'
+  };
+  window.SL_LOGOS = LOGOS;
+  function chainLogo(k, size) {
+    var svg = LOGOS[k === "local" ? "ethereum" : k] || LOGOS.sectora;
+    return '<i class="sl-clogo' + (k === "sectora" ? " is-soon" : "") + '"' + (size ? ' style="--s:' + size + 'px"' : "") + ">" + svg + "</i>";
+  }
   function chainDot(k, size) {
     var ch = CHAINS[k] || { col: "#1569ff" };
     return '<i class="sl-cdot" style="--c:' + ch.col + (size ? ";--s:" + size + "px" : "") + '"></i>';
@@ -446,7 +468,7 @@
       addr: E.getAddress(v.token), name: String(v.name), sym: String(v.symbol), meta: parseMeta(v.meta), creator: E.getAddress(v.creator),
       created: Number(v.createdAt) * 1000, deadline: Number(v.deadline) * 1000, launched: Number(v.launchedAt) * 1000,
       wallets: Number(v.contributors), pair: v.pair, supply: sup, target: v.target, cap: v.cap, raised: v.raised, lockedRaised: v.lockedRaised,
-      bonus: fx(v.bonusRate), creatorClaimed: v.creatorClaimed, res: res, pool: pool,
+      bonus: fx(v.bonusRate), creatorClaimed: v.creatorClaimed, res: res, pool: pool, tier: Number(v.tier || 0),
       rprice: tgt / fx(res),            // SECT per token, the same for everyone in the reserve
       oprice: tgt * 0.98 / fx(pool)     // SECT per token when the pool opens (98 % of the reserve, +50 %)
     };
@@ -461,9 +483,10 @@
     if (!st.cfgLoading) {
       st.cfgLoading = withRpc(k, function (p) {
         var f = fac(k, p);
-        return Promise.all([f.sizesNow(), f.quoteUsdPrice(), f.burnShareBps(), f.targetUsd(), f.capUsd()]);
+        return Promise.all([f.sizesNow(0), f.sizesNow(1), f.sizesNow(2), f.quoteUsdPrice(), f.burnShareBps(), f.targetsUsd(), f.capUsd()]);
       }).then(function (r) {
-        st.cfg = { target: r[0][0], cap: r[0][1], px: fx(r[1]), burn: Number(r[2]), targetUsd: fx(r[3]), capUsd: fx(r[4]), at: Date.now() };
+        st.cfg = { tiers: [0, 1, 2].map(function (i) { return { target: r[i][0], cap: r[i][1], usd: fx(r[5][i]) }; }), cap: r[0][1],
+          px: fx(r[3]), burn: Number(r[4]), capUsd: fx(r[6]), at: Date.now() };
         // dollar values come from DexScreener; until it answers, the contract's own 30-minute SECT price is used
         if (st.cfg.px > 0) { NUSD[k] = NUSD[k] || { p: 0, eth: 0, at: 0 }; if (!(NUSD[k].p > 0)) NUSD[k].p = st.cfg.px; }
         st.cfgLoading = null; return st.cfg;
@@ -726,7 +749,7 @@
   /* ------------------------------------------------------------------ header pieces */
   function netChip(net) {
     var label = isLive(net) ? CHAINS[net].name : "SectoraEVM";
-    return '<div class="sl-netwrap"><button class="sl-net" data-a="netmenu" aria-haspopup="true" aria-label="' + X.esc(lt("net")) + '">' + (isLive(net) ? chainDot(net) : '<i class="sl-cdot is-sect"></i>') +
+    return '<div class="sl-netwrap"><button class="sl-net" data-a="netmenu" aria-haspopup="true" aria-label="' + X.esc(lt("net")) + '">' + chainLogo(isLive(net) ? net : "sectora", 18) +
       '<span class="nm">' + X.esc(label) + '</span><span class="sh">' + X.esc(isLive(net) ? CHAINS[net].short : "SEVM") + '</span><svg viewBox="0 0 24 24" width="12" height="12" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2"/></svg></button></div>';
   }
   // the network a visitor can use today: deployed, or the home network (Ethereum) while its contract is being published
@@ -736,9 +759,9 @@
     var html = '<div class="sl-netmenu" id="slNetMenu" role="menu"><span class="lbl">' + X.esc(lt("net_t")) + "</span>";
     ORDER.forEach(function (k) {
       var on = usable(k);
-      html += '<button role="menuitem" data-a="setnet" data-v="' + k + '"' + (k === net ? ' class="on"' : "") + (on ? "" : " disabled") + ">" + chainDot(k) + "<span>" + X.esc(CHAINS[k].name) + '</span><em class="' + (on ? "ok" : "") + '">' + X.esc(netTag(k)) + "</em></button>";
+      html += '<button role="menuitem" data-a="setnet" data-v="' + k + '"' + (k === net ? ' class="on"' : "") + (on ? "" : " disabled") + ">" + chainLogo(k, 20) + "<span>" + X.esc(CHAINS[k].name) + '</span><em class="' + (on ? "ok" : "") + '">' + X.esc(netTag(k)) + "</em></button>";
     });
-    html += '<button role="menuitem" disabled><i class="sl-cdot is-sect"></i><span>' + X.esc(lt("sectora_demo")) + '</span><em class="soon">' + X.esc(lt("net_soon")) + "</em></button></div>";
+    html += '<button role="menuitem" disabled>' + chainLogo("sectora", 20) + "<span>" + X.esc(lt("sectora_demo")) + '</span><em class="soon">' + X.esc(lt("net_soon")) + "</em></button></div>";
     return html;
   }
   function toggleNetMenu(net, anchor) {
@@ -812,9 +835,14 @@
     if (s === "live") return '<div class="sl-pcell"><div class="sl-prog is-done"><i style="width:100%"></i></div><b>' + X.esc(CHAINS[k].dex) + "</b></div>";
     return '<div class="sl-pcell"><div class="sl-prog' + (s === "exp" ? " is-exp" : "") + '"><i style="width:' + (pr * 100).toFixed(1) + '%"></i></div><b>' + (s === "exp" ? X.esc(lt("s_exp")) : X.nf(pr * 100, 1) + " %") + "</b></div>";
   }
+  // graduation target of a coin: $3K, $7K or $15K
+  function goalTag(c, full) {
+    var u = usdOfTier(c.tier), txt = full ? lt("goal", { g: dollars(u) }) : "$" + X.nf(u / 1000, 0) + "K";
+    return '<span class="sl-goal t' + c.tier + '" title="' + X.esc(lt("goal", { g: dollars(u) })) + '">' + X.esc(txt) + "</span>";
+  }
   function coinRow(k, c, i, extra) {
     var ch = CHAINS[k], href = "#/t/" + k + "/" + c.addr, raised = fx(c.raised);
-    return '<tr data-go="' + href + '"><td class="rk">' + (i + 1) + '</td><td><div class="sl-coin">' + logoTag(c, "sl-logo") + '<div><b><a href="' + href + '">' + X.esc(c.name) + "</a></b><span>$" + X.esc(c.sym) + "</span></div></div></td>" +
+    return '<tr data-go="' + href + '"><td class="rk">' + (i + 1) + '</td><td><div class="sl-coin">' + logoTag(c, "sl-logo") + '<div><b><a href="' + href + '">' + X.esc(c.name) + "</a></b><span>$" + X.esc(c.sym) + " " + goalTag(c) + "</span></div></div></td>" +
       (extra != null ? '<td class="r num">' + extra + "</td>" : "") +
       '<td class="r num sl-hide-sm">' + X.fmtPrice(c.rprice) + ' <span class="faint">' + X.esc(ch.qs) + "</span></td>" +
       '<td class="r num">' + X.esc(amt(raised, ch.qs)) + '<span class="usd">' + (X.esc(usdOf(k, raised)) || "&nbsp;") + "</span></td>" +
@@ -848,13 +876,13 @@
     var live = liveChains();
     return '<div class="sl-empty sl-off">' + X.ico("rocket") + "<h3>" + X.esc(lt("off_t", { c: isLive(k) ? CHAINS[k].name : "SectoraEVM" })) + "</h3><p>" + X.esc(lt("off_p")) + "</p>" +
       '<a class="sl-btn sl-btn-p" href="#/safety">' + X.esc(X.t("why_more")) + "</a>" +
-      (live.length ? '<div class="sl-netrow">' + live.map(function (x) { return '<button class="sl-netpill" data-a="setnet" data-v="' + x + '">' + chainDot(x) + X.esc(CHAINS[x].name) + "</button>"; }).join("") + "</div>" : "") + "</div>";
+      (live.length ? '<div class="sl-netrow">' + live.map(function (x) { return '<button class="sl-netpill" data-a="setnet" data-v="' + x + '">' + chainLogo(x, 18) + X.esc(CHAINS[x].name) + "</button>"; }).join("") + "</div>" : "") + "</div>";
   }
   function netRow(net) {
     return '<div class="sl-netrow">' + ORDER.map(function (k) {
       var on = usable(k);
-      return '<button class="sl-netpill' + (k === net ? " on" : "") + '" data-a="setnet" data-v="' + k + '"' + (on ? "" : " disabled") + ">" + chainDot(k) + X.esc(CHAINS[k].name) + (deployed(k) ? "" : " <em>" + X.esc(netTag(k)) + "</em>") + "</button>";
-    }).join("") + '<button class="sl-netpill" disabled><i class="sl-cdot is-sect"></i>SectoraEVM <em>' + X.esc(lt("net_soon")) + "</em></button></div>";
+      return '<button class="sl-netpill' + (k === net ? " on" : "") + '" data-a="setnet" data-v="' + k + '"' + (on ? "" : " disabled") + ">" + chainLogo(k, 18) + X.esc(CHAINS[k].name) + (deployed(k) ? ' <i class="sl-cdot"></i>' : " <em>" + X.esc(netTag(k)) + "</em>") + "</button>";
+    }).join("") + '<button class="sl-netpill is-soon" disabled>' + chainLogo("sectora", 18) + "SectoraEVM <em>" + X.esc(lt("net_soon")) + "</em></button></div>";
   }
   function explore(net) {
     var st = chainState(net), ch = CHAINS[net];
@@ -867,7 +895,7 @@
       '<div class="sl-mkt" id="slLGrid">' + gridHtml(net) + "</div></section>" + soonBand();
   }
   function soonBand() {
-    return '<section class="sl-sec"><div class="sl-soon"><div class="sl-soon-ic"><i class="sl-cdot is-sect" style="--s:14px"></i></div><div><span class="sl-eyebrow"><i class="rule"></i>SectoraEVM · ' + X.esc(lt("sectora_note", { d: MAINNET_TXT })) + "</span><h3>" + X.esc(lt("sectora_soon_t")) + "</h3><p>" + X.esc(lt("sectora_soon_p")) + "</p></div></div></section>";
+    return '<section class="sl-sec"><div class="sl-soon"><div class="sl-soon-ic">' + chainLogo("sectora", 54) + '</div><div><span class="sl-eyebrow"><i class="rule"></i>SectoraEVM · ' + X.esc(lt("sectora_note", { d: MAINNET_TXT })) + "</span><h3>" + X.esc(lt("sectora_soon_t")) + "</h3><p>" + X.esc(lt("sectora_soon_p")) + "</p></div></div></section>";
   }
   function counts(k) {
     var st = chainState(k), r = { open: 0, live: 0, inres: 0 };
@@ -894,11 +922,11 @@
     return X.esc(CHAINS[net].name) + " · " + X.esc(lt("block")) + ' <b class="num" id="slBlk">' + (st.block ? X.nf(st.block, 0) : "—") + "</b>";
   }
   // the SECT a reserve needs today, for the "how it works" animation
-  function storyRaise(net) { var cf = isLive(net) && chainState(net).cfg; return cf ? Math.round(fx(cf.target)) : 0; }
+  function storyRaise(net) { var cf = isLive(net) && chainState(net).cfg; return cf && cf.tiers ? Math.round(fx(cf.tiers[0].target)) : 0; }
 
   /* ------------------------------------------------------------------ create */
   var SUPPLIES = [["1M", "1000000"], ["100M", "100000000"], ["1B", "1000000000"], ["10B", "10000000000"], ["1T", "1000000000000"]];
-  function newDraft(pay) { return { name: "", sym: "", desc: "", img: "", web: "", x: "", tg: "", supply: "1000000000", dur: 3, join: "", lock: false, ack: false, pay: pay || "eth", touched: {} }; }
+  function newDraft(pay) { return { name: "", sym: "", desc: "", img: "", web: "", x: "", tg: "", supply: "1000000000", dur: 3, tier: 1, join: "", lock: false, ack: false, pay: pay || "eth", touched: {} }; }
   var draft = newDraft();
   var RESERVED = ["SECT", "SECTORA", "BTC", "WBTC", "ETH", "WETH", "USDT", "USDC", "DAI", "BNB", "WBNB", "SOL", "XRP", "POL", "MATIC", "AVAX", "ARB", "OP", "BUSD", "FDUSD", "TRX", "DOGE", "SHIB", "PEPE", "LINK", "UNI", "TON"];
   function utf8len(s) { return new TextEncoder().encode(s).length; }
@@ -945,11 +973,12 @@
   }
   function kv(label, val, sub) { return '<div class="sl-kv"><span>' + X.esc(label) + '</span><b class="num">' + X.esc(val) + (sub ? ' <small class="faint">' + X.esc(sub) + "</small>" : "") + "</b></div>"; }
   function createSummary(k) {
-    var ch = CHAINS[k], cf = chainState(k).cfg, errs = createErrors(k), ms = meState(k), sup = supplyWei(), jp = joinPlan(k), z = usdSizes();
+    var ch = CHAINS[k], cf = chainState(k).cfg, errs = createErrors(k), ms = meState(k), sup = supplyWei(), jp = joinPlan(k), z = usdSizes(), tc = tierCfg(cf);
     var rows = "";
     if (cf) {
-      var tgt = fx(cf.target), cap = fx(cf.cap);
-      rows += kv(lt("c_target"), amt(tgt, ch.qs), "≈ " + dollars(cf.targetUsd || z.g)) + kv(lt("c_cap"), amt(cap, ch.qs), "≈ " + dollars(cf.capUsd || z.cap));
+      var tgt = fx(tc.target), cap = fx(cf.cap);
+      rows += kv(lt("c_target"), amt(tgt, ch.qs), "≈ " + dollars(tc.usd || usdOfTier(draft.tier))) + kv(lt("c_cap"), amt(cap, ch.qs), "≈ " + dollars(cf.capUsd || z.cap)) +
+        kv(lt("c_minw"), String(Math.ceil((tc.usd || usdOfTier(draft.tier)) / (cf.capUsd || z.cap))), "");
       if (sup) {
         var res = fx(resTokens(sup)), rp0 = tgt / res, op = tgt * 0.98 / fx(poolTokens(sup)), omc = op * fx(sup);
         rows += kv(lt("c_rprice"), X.fmtPrice(rp0) + " " + ch.qs, usdOf(k, rp0)) + kv(lt("c_oprice"), X.fmtPrice(op) + " " + ch.qs, "+50 % · " + usdOf(k, op)) +
@@ -966,8 +995,8 @@
     var btn = !W.addr ? '<button class="sl-btn sl-btn-p sl-btn-w" data-a="wconnect">' + X.esc(lt("w_connect")) + "</button>"
       : '<button class="sl-btn sl-btn-p sl-btn-w" data-a="llaunch"' + (ok ? "" : " disabled") + ">" + X.ico("rocket") + X.esc(needApprove ? lt("approve_sect", { n: amt(fx(joinWei(k))) }) : lt("c_btn", { c: ch.name })) + "</button>";
     var errList = ["join", "meta", "supply"].filter(function (x) { return errs[x] && (x !== "supply" || draft.touched.supply); }).map(function (x) { return '<div class="sl-alert is-bad" style="margin-top:10px">' + X.ico("alert") + "<span>" + X.esc(errs[x]) + "</span></div>"; }).join("");
-    var burn = cf ? Math.round(cf.burn / 100) : 50, gtxt = dollars(cf && cf.targetUsd > 0 ? cf.targetUsd : z.g), ctxt = dollars(cf && cf.capUsd > 0 ? cf.capUsd : z.cap);
-    return '<div class="sl-panel"><h3>' + X.ico("file") + X.esc(lt("c_summary")) + "</h3>" + chainDot(k) + ' <b style="font-size:13px">' + X.esc(ch.name) + " · " + X.esc(ch.qs) + "</b>" + rows +
+    var burn = cf ? Math.round(cf.burn / 100) : 50, gtxt = dollars(tc.usd || usdOfTier(draft.tier)), ctxt = dollars(cf && cf.capUsd > 0 ? cf.capUsd : z.cap);
+    return '<div class="sl-panel"><h3>' + X.ico("file") + X.esc(lt("c_summary")) + "</h3>" + chainLogo(k, 16) + ' <b style="font-size:13px">' + X.esc(ch.name) + " · " + X.esc(ch.qs) + "</b>" + rows +
       '<h4 class="sl-sub">' + X.esc(lt("c_rules")) + '</h4><ul class="sl-rules">' +
       ["c_r1", "c_r2", "c_r3", "c_r4", "c_r5", "c_r6"].map(function (r) { return "<li>" + X.ico("check") + "<span>" + X.esc(lt(r, { g: gtxt, cap: ctxt, d: ch.dex, b: burn })) + "</span></li>"; }).join("") + "</ul>" +
       errList + '<div style="margin-top:14px">' + btn + "</div></div>" +
@@ -992,7 +1021,14 @@
       return '<div class="sl-field"><label for="' + id + '">' + X.esc(label) + '</label><input class="sl-input' + (err ? " is-bad" : "") + '" id="' + id + '" value="' + X.esc(val) + '" ' + (attrs || "") + ">" + (err ? '<small class="sl-err" style="color:var(--red)">' + X.esc(err) + "</small>" : hint ? "<small>" + X.esc(hint) + "</small>" : "") + "</div>";
     }
     var prev = draft.img.trim() && safeImg(draft.img) ? '<img class="sl-logo" id="slLImgPv" src="' + X.esc(safeImg(draft.img)) + '" alt="" referrerpolicy="no-referrer" data-fb="' + X.esc(logoOf({ sym: draft.sym || "?" })) + '">' : '<img class="sl-logo" id="slLImgPv" src="' + logoOf({ sym: draft.sym || "?" }) + '" alt="">';
-    var z = usdSizes(), capTxt = dollars(cf && cf.capUsd > 0 ? cf.capUsd : z.cap), gTxt = dollars(cf && cf.targetUsd > 0 ? cf.targetUsd : z.g);
+    var z = usdSizes(), capTxt = dollars(cf && cf.capUsd > 0 ? cf.capUsd : z.cap), gTxt = dollars(tierCfg(cf).usd || usdOfTier(draft.tier));
+    var capU = cf && cf.capUsd > 0 ? cf.capUsd : z.cap;
+    var tierPick = '<div class="sl-field"><span class="sl-label">' + X.esc(lt("c_grad")) + '</span><div class="sl-tiers">' + [0, 1, 2].map(function (i) {
+      var u = (cf && cf.tiers && cf.tiers[i].usd) || usdOfTier(i), sect = cf && cf.tiers ? fx(cf.tiers[i].target) : 0;
+      return '<button type="button" class="sl-tier' + (draft.tier === i ? " on" : "") + '" data-a="ltier" data-v="' + i + '"><span class="sl-tier-k">' + X.esc(lt("g" + i)) + "</span>" +
+        '<b class="num">' + dollars(u) + "</b><span>" + X.esc(lt("g" + i + "_p", { n: Math.ceil(u / capU) })) + "</span>" +
+        (sect ? '<small class="num">≈ ' + X.esc(amt(sect, ch.qs)) + "</small>" : "") + "</button>";
+    }).join("") + "</div><small>" + X.esc(lt("c_grad_h", { cap: capTxt })) + "</small></div>";
     var r0 = rateOf(net), capS = cf ? fx(cf.cap) : 0, maxJ = draft.pay === "eth" ? (r0 && capS ? Math.floor(capS / r0 * 0.98 * 1e5) / 1e5 : 0) : capS;
     var jUnit = draft.pay === "eth" ? ch.sym : ch.qs, jQuick = draft.pay === "eth" ? ch.quick.slice(0, 3) : ch.qquick.slice(0, 3);
     var supShown = X.nf(Number(String(draft.supply).replace(/[^0-9]/g, "") || 0), 0);
@@ -1007,7 +1043,7 @@
       '<div class="sl-row3">' + f("slLWeb", lt("c_web"), draft.web, 'inputmode="url" placeholder="https://"') + f("slLX", lt("c_x"), draft.x, 'inputmode="url" placeholder="https://x.com/…"') + f("slLTg", lt("c_tg"), draft.tg, 'inputmode="url" placeholder="https://t.me/…"') + "</div>" +
       '<div class="sl-field"><label for="slLSup">' + X.esc(lt("c_supply")) + '</label><input class="sl-input num' + (tch.supply && errs.supply ? " is-bad" : "") + '" id="slLSup" inputmode="numeric" autocomplete="off" value="' + X.esc(supShown) + '">' +
       '<div class="sl-chips" style="margin-top:8px">' + SUPPLIES.map(function (s) { return '<button type="button" data-a="lsup" data-v="' + s[1] + '"' + (String(draft.supply).replace(/[^0-9]/g, "") === s[1] ? ' class="on"' : "") + ">" + s[0] + "</button>"; }).join("") + "</div>" +
-      "<small>" + X.esc(tch.supply && errs.supply ? errs.supply : lt("c_supply_h")) + "</small></div>" +
+      "<small>" + X.esc(tch.supply && errs.supply ? errs.supply : lt("c_supply_h")) + "</small></div>" + tierPick +
       '<div class="sl-field"><span class="sl-label">' + X.esc(lt("c_dur")) + '</span><div class="sl-chips">' + DUR.map(function (d, i) { return '<button type="button" data-a="ldur" data-v="' + i + '"' + (draft.dur === i ? ' class="on"' : "") + ">" + X.esc(lt("dur")[i]) + "</button>"; }).join("") + "</div>" +
       "<small>" + X.esc(lt("c_dur_h", { g: gTxt })) + "</small></div>" +
       '<h4 class="sl-sub">' + X.esc(lt("c_join")) + "</h4>" +
@@ -1061,7 +1097,7 @@
   function doCreate(net) {
     var errs = createErrors(net), cf = chainState(net).cfg, jp = joinPlan(net), ms = meState(net), sup = supplyWei();
     if (Object.keys(errs).length || !draft.ack || !cf || !jp.ready || !W.addr || !sup) { draft.touched = { name: 1, sym: 1, img: 1, supply: 1 }; X.render(); return; }
-    var name = draft.name.trim(), sym = draft.sym, meta = metaJson(), dur = DUR[draft.dur], lock = !!draft.lock && jp.v > 0;
+    var name = draft.name.trim(), sym = draft.sym, meta = metaJson(), dur = DUR[draft.dur], tier = [0, 1, 2].indexOf(draft.tier) >= 0 ? draft.tier : 1, lock = !!draft.lock && jp.v > 0;
     var done = function (rc) {
       var addr = null;
       rc.logs.forEach(function (l) { try { var p = IF.parseLog(l); if (p && p.name === "CoinCreated") addr = p.args.token; } catch (e) {} });
@@ -1076,14 +1112,14 @@
         txFlow(net, function (s) { return qC(net, s).approve(factoryOf(net), amount); }, function () { ME[net] && (ME[net].at = 0); loadMe(net).then(function () { X.refreshLive("summary"); }); return { html: X.esc(lt("ok_approve")) }; });
         return;
       }
-      txFlow(net, function (s) { return fac(net, s).createCoin(name, sym, meta, sup, dur, amount, lock); }, done);
+      txFlow(net, function (s) { return fac(net, s).createCoin([name, sym, meta, sup, dur, tier], amount, lock); }, done);
       return;
     }
     // paying ETH: swapped to SECT on the fixed route; SECT above the wallet maximum comes back to the creator
     var value; try { value = E.parseEther(String(jp.v)); } catch (e) { return; }
     txFlow(net, function (s) {
       return quoteEth(net, value).then(function (out) {
-        return fac(net, s).createCoinWithETH(name, sym, meta, sup, dur, out * 98n / 100n, lock, { value: value });
+        return fac(net, s).createCoinWithETH([name, sym, meta, sup, dur, tier], out * 98n / 100n, lock, { value: value });
       });
     }, done);
   }
@@ -1375,7 +1411,7 @@
     return back +
       '<div class="sl-2col sl-tok"><div>' +
       '<div class="sl-coinhead o1">' + logoTag(c, "sl-logo sl-logo-lg") + "<div><h1>" + X.esc(c.name) + " <span>$" + X.esc(c.sym) + '</span><span class="sl-tag ' + tag + '">' + X.ico("shield") + sh.score + "</span></h1>" +
-      '<div class="meta"><span class="sl-netpill on sm">' + chainDot(k) + X.esc(ch.name) + '</span><button class="sl-addr" data-a="copy" data-v="' + c.addr + '">' + X.esc(X.short(c.addr)) + X.ico("copy") + "</button>" + stag +
+      '<div class="meta"><span class="sl-netpill on sm">' + chainLogo(k, 16) + X.esc(ch.name) + '</span><button class="sl-addr" data-a="copy" data-v="' + c.addr + '">' + X.esc(X.short(c.addr)) + X.ico("copy") + "</button>" + stag + goalTag(c, true) +
       '<span class="faint" style="font-size:12.5px">' + X.esc(agoC(k, c.created)) + "</span></div></div></div>" +
       '<div class="sl-panel o2"><div class="sl-pricebar" id="slLPrice">' + priceBar(k, td) + '</div><div id="slLMeter">' + meterHtml(k, td) + "</div></div>" +
       '<div class="sl-panel o5"><div class="sl-itabs">' + itabs.map(function (x) { return '<button data-a="lctab" data-v="' + x[0] + '"' + (ui.ctab === x[0] ? ' class="on"' : "") + ">" + X.esc(lt(x[1])) + "</button>"; }).join("") + '</div><div id="slLBody">' + body + "</div></div>" +
@@ -1463,6 +1499,7 @@
     if (act === "ltab") { ui.tab = v; var g = document.getElementById("slLGrid"); if (g) g.innerHTML = gridHtml(net); document.querySelectorAll('[data-a="ltab"]').forEach(function (b) { b.classList.toggle("on", b.getAttribute("data-v") === v); }); return true; }
     if (act === "lsup") { draft.supply = String(v); draft.touched.supply = true; X.render(); return true; }
     if (act === "ldur") { draft.dur = +v; X.render(); return true; }
+    if (act === "ltier") { draft.tier = [0, 1, 2].indexOf(+v) >= 0 ? +v : 1; X.render(); return true; }
     if (act === "lcpay") { draft.pay = v; draft.join = ""; X.render(); return true; }
     if (act === "ljoinamt") { draft.join = String(v); var d = document.getElementById("slLJoin"); if (d) { d.value = draft.join; d.dispatchEvent(new Event("input")); } return true; }
     if (act === "llaunch") { doCreate(net); return true; }
