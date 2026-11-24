@@ -219,22 +219,20 @@
     else SWEEP.value.set(lerp(-.85, .85, io3(sw)), Math.sin(Math.PI * sw) * 1.1);
     // stars: drift, warp while diving, gone when the page arrives
     drawStars(t, bell(t, 3.45, 4.05, 4.5, 5.1), seg(t, .1, 1.1) * (1 - seg(t, 4.6, 5.6)));
-    // cinema bars
-    var bh = Math.round((mob ? .085 : .105) * h), bk = o3(seg(t, 0, .7)) * (1 - io3(seg(t, HAND, END)));
-    el["bart"].style.height = el["barb"].style.height = (bh * bk).toFixed(1) + "px";
+    // full screen (no cinema bars): only the captions float at the bottom
     el["barb"].style.setProperty("--o", seg(t, .7, 1.2) * (1 - seg(t, 5.2, 5.6)));
     // "Sectora Foundation presents"
     var pr = bell(t, .3, .75, 1.2, 1.55);
-    el.pre.style.opacity = pr; el.pre.style.letterSpacing = lerp(.62, .42, seg(t, .3, 1.55)).toFixed(3) + "em";
+    el.pre.style.opacity = pr; el.pre.style.visibility = pr > .004 ? "visible" : "hidden"; el.pre.style.letterSpacing = lerp(.62, .42, seg(t, .3, 1.55)).toFixed(3) + "em";
     // sunrise on the rim: an anamorphic flare at the top of the planet
     var fl = bell(t, 2.05, 2.5, 2.75, 3.4);
-    el.flare.style.opacity = fl; el.flare.style.transform = "translate(" + (cx - 0).toFixed(1) + "px," + (cy - rad).toFixed(1) + "px) scaleX(" + lerp(.4, 1, seg(t, 2.05, 2.8)).toFixed(3) + ")";
+    el.flare.style.opacity = fl; el.flare.style.visibility = fl > .004 ? "visible" : "hidden"; el.flare.style.transform = "translate(" + (cx - 0).toFixed(1) + "px," + (cy - rad).toFixed(1) + "px) scaleX(" + lerp(.4, 1, seg(t, 2.05, 2.8)).toFixed(3) + ")";
     // the two networks lock onto the planet
     var nin = o3(seg(t, 2.35, 2.9)), nout = seg(t, 3.35, 3.8), gap = mob ? r0 + 26 : r0 + 46;
     var p1 = mob ? [A.cx, A.cy - gap] : [A.cx - gap, A.cy], p2 = mob ? [A.cx, A.cy + gap] : [A.cx + gap, A.cy];
     [[el.n1, p1, -1], [el.n2, p2, 1]].forEach(function (n) {
       var off = (1 - nin) * 40 + nout * 70, dx = mob ? 0 : n[2] * off, dy = mob ? n[2] * off : 0;
-      n[0].style.opacity = nin * (1 - nout); n[0].style.filter = nout > 0 ? "blur(" + (nout * 6).toFixed(1) + "px)" : "";
+      n[0].style.opacity = nin * (1 - nout); n[0].style.visibility = nin * (1 - nout) > .004 ? "visible" : "hidden"; n[0].style.filter = nout > 0 ? "blur(" + (nout * 6).toFixed(1) + "px)" : "";
       n[0].style.transform = "translate(" + (n[1][0] + dx).toFixed(1) + "px," + (n[1][1] + dy).toFixed(1) + "px) translate(" + (mob ? "-50%" : n[2] < 0 ? "-100%" : "0") + "," + (mob ? (n[2] < 0 ? "-100%" : "0") : "-50%") + ")";
     });
     var bl = o3(seg(t, 2.6, 3.1)) * (1 - nout), e1 = mob ? [A.cx, A.cy - r0 - 4] : [A.cx - r0 - 4, A.cy], e2 = mob ? [A.cx, A.cy + r0 + 4] : [A.cx + r0 + 4, A.cy];
