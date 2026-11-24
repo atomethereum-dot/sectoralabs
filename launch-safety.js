@@ -204,12 +204,12 @@
   ];
   function view(net) {
     var X = window.SLX, LV = window.SLLive, L = X.lang(), XS = window.SL_I18N && window.SL_I18N[L], D = S[L] || (XS && XS.safety) || S.en;
-    var z = LV && LV.sizes ? LV.sizes() : { g: 15000, gtxt: "$7,000 / $15,000", cap: 500 }, dol = function (n) { return "$" + X.nf(n, 0); };
-    function s(k) { var v = D[k] != null ? D[k] : S.en[k]; return String(v).split("{G}").join(z.gtxt || dol(z.g)).split("{CAP}").join(dol(z.cap)); }
+    var z = LV && LV.sizes ? LV.sizes() : { g: 15000, gtxt: "$3,000 / $7,000 / $15,000", cap: 500, ctxt: "$150–$500" }, dol = function (n) { return "$" + X.nf(n, 0); };
+    function s(k) { var v = D[k] != null ? D[k] : S.en[k]; return String(v).split("{G}").join(z.gtxt || dol(z.g)).split("{CAP}").join(z.ctxt || dol(z.cap)); }
     var e = X.esc, ico = X.ico;
     var k = LV && LV.liveChains ? LV.liveChains()[0] : null, ch = k && LV.chains[k], fac = k && LV.factory ? LV.factory(k) : "";
     var facUrl = fac && ch && ch.exp ? ch.exp + "/address/" + fac + "#readContract" : "";
-    var tiles = [[dol(z.cap), s("k1")], ["100 %", s("k2")], ["98 %", s("k3")], ["0", s("k4")]];
+    var tiles = [[z.ctxt || dol(z.cap), s("k1")], ["100 %", s("k2")], ["98 %", s("k3")], ["0", s("k4")]];
     var head = '<a class="sl-back" href="#/">' + ico("back") + e(X.t("back")) + "</a>" +
       '<div class="sl-pagehead sf-head"><span class="sl-eyebrow"><i class="rule"></i>' + e(s("eb")) + "</span><h1>" + e(s("h1")) + "</h1><p>" + e(s("intro")) + '</p><span class="sf-net">' + ico("shield") + e(s("net")) + "</span></div>" +
       '<div class="sf-keys">' + tiles.map(function (t) { return '<div class="sf-key"><b>' + e(t[0]) + "</b><span>" + e(t[1]) + "</span></div>"; }).join("") + "</div>" +

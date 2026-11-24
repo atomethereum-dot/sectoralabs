@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#05070b">
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
 <link rel="preload" href="fonts/IBMPlexSans.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="launch.css?v=20261124b">
+<link rel="stylesheet" href="launch.css?v=20261124e">
 <style>
   body { padding-top: 0; }
   .dp { max-width: 980px; margin: 0 auto; padding: 40px var(--pad) 80px; }
@@ -46,16 +46,20 @@
       <div class="sl-field"><label for="dpOwner">Dueño (solo puede cambiar a dónde va la parte no quemada de las comisiones)</label><input class="sl-input mono" id="dpOwner" placeholder="0x…"></div>
       <div class="sl-field"><label for="dpFee">Cartera que recibe las comisiones de la plataforma</label><input class="sl-input mono" id="dpFee" placeholder="0x…"></div>
       <div class="sl-field"><label for="dpTU">Graduación 1 · rápida (el creador elige una de las tres)</label><div class="sl-input-wrap"><input class="sl-input num" id="dpTU" value="3000" inputmode="decimal"><span class="unit">USD</span></div><small id="dpTUu"></small></div>
+      <div class="sl-field"><label for="dpCU">Máximo por wallet en la graduación 1</label><div class="sl-input-wrap"><input class="sl-input num" id="dpCU" value="150" inputmode="decimal"><span class="unit">USD</span></div><small id="dpCUu"></small></div>
       <div class="sl-field"><label for="dpTU1">Graduación 2 · equilibrada</label><div class="sl-input-wrap"><input class="sl-input num" id="dpTU1" value="7000" inputmode="decimal"><span class="unit">USD</span></div><small id="dpTU1u"></small></div>
+      <div class="sl-field"><label for="dpCU1">Máximo por wallet en la graduación 2</label><div class="sl-input-wrap"><input class="sl-input num" id="dpCU1" value="350" inputmode="decimal"><span class="unit">USD</span></div><small id="dpCU1u"></small></div>
       <div class="sl-field"><label for="dpTU2">Graduación 3 · fuerte</label><div class="sl-input-wrap"><input class="sl-input num" id="dpTU2" value="15000" inputmode="decimal"><span class="unit">USD</span></div><small id="dpTU2u"></small></div>
-      <div class="sl-field"><label for="dpCU">Máximo por wallet en cada reserva</label><div class="sl-input-wrap"><input class="sl-input num" id="dpCU" value="500" inputmode="decimal"><span class="unit">USD</span></div><small id="dpCUu"></small></div>
+      <div class="sl-field"><label for="dpCU2">Máximo por wallet en la graduación 3</label><div class="sl-input-wrap"><input class="sl-input num" id="dpCU2" value="500" inputmode="decimal"><span class="unit">USD</span></div><small id="dpCU2u"></small></div>
       <div class="sl-field"><label for="dpTF">Graduación 1 de respaldo (solo si el oráculo no responde)</label><div class="sl-input-wrap"><input class="sl-input num" id="dpTF" inputmode="decimal"><span class="unit">SECT</span></div></div>
+      <div class="sl-field"><label for="dpCF">Máximo por wallet de respaldo · graduación 1</label><div class="sl-input-wrap"><input class="sl-input num" id="dpCF" inputmode="decimal"><span class="unit">SECT</span></div></div>
       <div class="sl-field"><label for="dpTF1">Graduación 2 de respaldo</label><div class="sl-input-wrap"><input class="sl-input num" id="dpTF1" inputmode="decimal"><span class="unit">SECT</span></div></div>
+      <div class="sl-field"><label for="dpCF1">Máximo por wallet de respaldo · graduación 2</label><div class="sl-input-wrap"><input class="sl-input num" id="dpCF1" inputmode="decimal"><span class="unit">SECT</span></div></div>
       <div class="sl-field"><label for="dpTF2">Graduación 3 de respaldo</label><div class="sl-input-wrap"><input class="sl-input num" id="dpTF2" inputmode="decimal"><span class="unit">SECT</span></div></div>
-      <div class="sl-field"><label for="dpCF">Máximo por wallet de respaldo</label><div class="sl-input-wrap"><input class="sl-input num" id="dpCF" inputmode="decimal"><span class="unit">SECT</span></div><small id="dpFBu"></small></div>
+      <div class="sl-field"><label for="dpCF2">Máximo por wallet de respaldo · graduación 3</label><div class="sl-input-wrap"><input class="sl-input num" id="dpCF2" inputmode="decimal"><span class="unit">SECT</span></div><small id="dpFBu"></small></div>
       <div class="sl-field"><label for="dpBurn">Parte de los ingresos de la plataforma que se quema</label><div class="sl-input-wrap"><input class="sl-input num" id="dpBurn" value="50" inputmode="decimal"><span class="unit">%</span></div><small id="dpBurnU"></small></div>
     </div>
-    <p class="sl-note" id="dpNote">Crear una moneda es gratis. Todos los que entran en una reserva pagan el mismo precio; si no se llena a tiempo, cada uno recupera el 100 % sin comisiones. Cada creador elige su meta de graduación ($3.000, $7.000 o $15.000). Al llegar a ella, el 98 % de la reserva forma un pool MONEDA/SECT en Uniswap que abre un 50 % por encima del precio de la reserva, con el LP quemado. Solo entonces se cobra: 1 % para el creador y 1 % para la plataforma. El dueño no puede pausar ni tocar las reservas, los pools, la ruta de pago con ETH ni ninguna moneda. Estos valores quedan fijos en el contrato.</p>
+    <p class="sl-note" id="dpNote">Crear una moneda es gratis. Todos los que entran en una reserva pagan el mismo precio; si no se llena a tiempo, cada uno recupera el 100 % sin comisiones. Cada creador elige su meta de graduación ($3.000, $7.000 o $15.000), y cada una tiene su máximo por wallet ($150, $350 o $500), así cualquier lanzamiento necesita al menos 20 wallets distintas. Al llegar a ella, el 98 % de la reserva forma un pool MONEDA/SECT en Uniswap que abre un 50 % por encima del precio de la reserva, con el LP quemado. Solo entonces se cobra: 1 % para el creador y 1 % para la plataforma. El dueño no puede pausar ni tocar las reservas, los pools, la ruta de pago con ETH ni ninguna moneda. Estos valores quedan fijos en el contrato.</p>
   </div>
 
   <div class="sl-panel">
@@ -65,10 +69,10 @@
   </div>
 </main>
 <script src="vendor/ethers-6.13.4.umd.min.js"></script>
-<script src="sl-abi.js?v=20261124a"></script>
-<script src="sl-bytecode.js?v=20261124a"></script>
+<script src="sl-abi.js?v=20261124e"></script>
+<script src="sl-bytecode.js?v=20261124e"></script>
 <script src="deployments.js?v=20261121a"></script>
-<script src="launch-fair.js?v=20261124a"></script>
-<script src="deploy.js?v=20261124a"></script>
+<script src="launch-fair.js?v=20261124e"></script>
+<script src="deploy.js?v=20261124e"></script>
 </body>
 </html>

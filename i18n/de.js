@@ -108,7 +108,7 @@
     ev_launch: "Launch", ev_grad: "Graduierung", ref: "≈ {u} zum aktuellen SECT-Kurs", footer_l: "Vorschau von Sectora Launch im SectoraEVM-Testnet. Keine Finanzberatung. Tokens im Testnet haben keinen Wert.", acct_n: "Konto {n}"
   },
   live: {
-    c_grad: "Graduierungsziel", c_grad_h: "Erreicht die Reserve das Ziel, geht der Coin auf Uniswap live. Gleicher Preis für alle und bis zu {cap} pro Wallet bei allen drei.", g0: "Schnell", g0_p: "Voll ab {n} Wallets", g1: "Ausgewogen", g1_p: "Ab {n} Wallets · mehr Liquidität", g2: "Stark", g2_p: "Ab {n} Wallets · tiefste Liquidität", c_minw: "Benötigte Wallets (min.)", goal: "Graduierung {g}",
+    c_grad: "Graduierungsziel", c_grad_h: "Erreicht die Reserve das Ziel, geht der Coin auf Uniswap live. Gleicher Preis für alle; das Maximum pro Wallet wächst mit dem Ziel ({cap}), daher braucht jeder Launch mindestens {n} Wallets.", g0: "Schnell", g0_p: "Voll ab {n} Wallets", g1: "Ausgewogen", g1_p: "Ab {n} Wallets · mehr Liquidität", g2: "Stark", g2_p: "Ab {n} Wallets · tiefste Liquidität", c_minw: "Benötigte Wallets (min.)", goal: "Graduierung {g}",
     net_on: "Verbunden",
     bonus_up: "Bonus bis zu +25 %", r_p1: "{r} von {g} · 1 Wallet", j_sect: "SECT für dein ETH", j_in: "Geht in die Reserve", j_back: "Geht an dich zurück", pay: "Zahlen mit",
     banner_live: "Faire Launches auf {n}: ein Preis für alle, 100 % zurück, wenn sich eine Reserve nicht füllt. Jeder Coin ist in {s} bepreist.",

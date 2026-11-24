@@ -1344,6 +1344,8 @@ button[disabled] .sl-cdot, .sl-cdot.is-off { animation: none; opacity: .55; }
 .sl-tier b { font-size: 26px; font-weight: 500; letter-spacing: -.02em; color: var(--ink); line-height: 1.15; }
 .sl-tier span:not(.sl-tier-k) { font-size: 12.5px; color: var(--ink3); line-height: 1.45; }
 .sl-tier small { font-size: 11px; color: var(--ink4); margin-top: 2px; }
+.sl-tier .sl-tier-cap { font-style: normal; font-family: var(--mono); font-size: 10.5px; letter-spacing: .06em; color: var(--ink2); margin-top: 4px; padding: 3px 8px; border-radius: 999px; background: rgba(21, 105, 255, .08); border: 1px solid rgba(21, 105, 255, .22); }
+.sl-tier.on .sl-tier-cap { color: var(--blue); border-color: rgba(21, 105, 255, .45); }
 .sl-tier::after {
   content: ""; position: absolute; top: 14px; right: 14px; width: 16px; height: 16px; border-radius: 50%;
   border: 1.5px solid var(--rule); transition: border-color .2s var(--ease), box-shadow .2s var(--ease);

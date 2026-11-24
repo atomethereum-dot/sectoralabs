@@ -23,7 +23,7 @@
   function nf(v, d) { return v.toLocaleString("es-ES", { maximumFractionDigits: d == null ? (v >= 100 ? 0 : 4) : d }); }
   function usd(v) { return "$" + nf(v, v >= 100 ? 0 : 2); }
   function setDefaults() {
-    $("dpTU").value = "3000"; $("dpTU1").value = "7000"; $("dpTU2").value = "15000"; $("dpCU").value = "500"; $("dpBurn").value = "50"; fbEdited = false; px = { sect: 0, oracle: 0 };
+    $("dpTU").value = "3000"; $("dpTU1").value = "7000"; $("dpTU2").value = "15000"; $("dpCU").value = "150"; $("dpCU1").value = "350"; $("dpCU2").value = "500"; $("dpBurn").value = "50"; fbEdited = false; px = { sect: 0, oracle: 0 };
     loadPx(); preview(); runChecks();
   }
   function best(pairs, addr, ds) {
@@ -54,6 +54,8 @@
     $("dpTF1").value = String(Math.round(num("dpTU1") / px.oracle));
     $("dpTF2").value = String(Math.round(num("dpTU2") / px.oracle));
     $("dpCF").value = String(Math.round(num("dpCU") / px.oracle));
+    $("dpCF1").value = String(Math.round(num("dpCU1") / px.oracle));
+    $("dpCF2").value = String(Math.round(num("dpCU2") / px.oracle));
   }
   function loadPx() {
     var ch = C[net()], k = net();
@@ -63,16 +65,17 @@
     oracleRead(k).then(function (o) { if (net() !== k) return; px.oracle = o.price || o.spot; autoFallback(); preview(); updateBtn(); }).catch(function () {});
   }
   function preview() {
-    var tu = num("dpTU"), tu1 = num("dpTU1"), tu2 = num("dpTU2"), cu = num("dpCU"), tf = num("dpTF"), tf1 = num("dpTF1"), tf2 = num("dpTF2"), cf = num("dpCF"), b = num("dpBurn"), op = px.oracle;
+    var tu = num("dpTU"), tu1 = num("dpTU1"), tu2 = num("dpTU2"), cu = num("dpCU"), cu1 = num("dpCU1"), cu2 = num("dpCU2"), tf = num("dpTF"), tf1 = num("dpTF1"), tf2 = num("dpTF2"), cf = num("dpCF"), cf1 = num("dpCF1"), cf2 = num("dpCF2"), b = num("dpBurn"), op = px.oracle;
     // 1B supply: 535.28M tokens in the reserve, 349.72M in the pool
     var res = 1e9 * (1 - 0.115) * 150 / 248;
     var tierTxt = function (t) { var rp = t / res; return t > 0 ? (op ? "Hoy son ≈ " + nf(t / op) + " SECT (precio medio de 30 min: $" + nf(op, 6) + "). " : "") +
-      "Con 1.000 millones de tokens: precio en la reserva ≈ $" + nf(rp, 8) + ", al abrir ≈ $" + nf(rp * 1.5, 8) + " y valor al abrir ≈ " + usd(rp * 1.5 * 1e9) + (cu > 0 ? ". Mínimo " + Math.ceil(t / cu) + " wallets." : ".") : ""; };
+      "Con 1.000 millones de tokens: precio en la reserva ≈ $" + nf(rp, 8) + ", al abrir ≈ $" + nf(rp * 1.5, 8) + " y valor al abrir ≈ " + usd(rp * 1.5 * 1e9) + "." : ""; };
+    var capTxt = function (c, t, n) { return c > 0 ? (op ? "Hoy son ≈ " + nf(c / op) + " SECT. " : "") + (t > 0 ? "Mínimo " + Math.ceil(t / c) + " wallets para llenar la graduación " + n + "." : "") + (c > t ? " No puede superar la graduación " + n + "." : "") : "Tiene que ser mayor que 0."; };
     $("dpTUu").textContent = tierTxt(tu);
     $("dpTU1u").textContent = tierTxt(tu1) + (tu1 > 0 && tu1 <= tu ? " Tiene que ser mayor que la graduación 1." : "");
     $("dpTU2u").textContent = tierTxt(tu2) + (tu2 > 0 && tu2 <= tu1 ? " Tiene que ser mayor que la graduación 2." : "");
-    $("dpCUu").textContent = cu > 0 ? (op ? "Hoy son ≈ " + nf(cu / op) + " SECT. " : "") + "Igual en las tres graduaciones." + (cu > tu ? " No puede superar la graduación 1." : "") : "";
-    $("dpFBu").textContent = tf > 0 && tf1 > 0 && tf2 > 0 && cf > 0 ? "Solo si el oráculo no responde: graduaciones " + nf(tf) + ", " + nf(tf1) + " y " + nf(tf2) + " SECT y máximo " + nf(cf) + " SECT por wallet" + (px.sect ? " (≈ " + usd(tf * px.sect) + ", " + usd(tf1 * px.sect) + ", " + usd(tf2 * px.sect) + " y " + usd(cf * px.sect) + " hoy)" : "") + ". Con el oráculo funcionando, el contrato nunca usa menos de 1/50 ni más de 50 veces estos valores." : "";
+    $("dpCUu").textContent = capTxt(cu, tu, 1); $("dpCU1u").textContent = capTxt(cu1, tu1, 2); $("dpCU2u").textContent = capTxt(cu2, tu2, 3);
+    $("dpFBu").textContent = tf > 0 && tf1 > 0 && tf2 > 0 && cf > 0 && cf1 > 0 && cf2 > 0 ? "Solo si el oráculo no responde: graduaciones " + nf(tf) + ", " + nf(tf1) + " y " + nf(tf2) + " SECT, con máximos por wallet de " + nf(cf) + ", " + nf(cf1) + " y " + nf(cf2) + " SECT" + (px.sect ? " (≈ " + usd(tf * px.sect) + ", " + usd(tf1 * px.sect) + ", " + usd(tf2 * px.sect) + " y máximos ≈ " + usd(cf * px.sect) + ", " + usd(cf1 * px.sect) + ", " + usd(cf2 * px.sect) + " hoy)" : "") + ". Con el oráculo funcionando, el contrato nunca usa menos de 1/50 ni más de 50 veces estos valores." : "";
     $("dpBurnU").textContent = "Del 1 % que se queda la plataforma al lanzar cada moneda se quema el " + b + " % y el " + (100 - b) + " % va a la cartera de comisiones.";
   }
   function row(st, txt, code) { return '<div class="dp-chk ' + st + '"><i>' + ICO[st] + "</i><div><span>" + esc(txt) + "</span>" + (code ? "<br><code>" + esc(code) + "</code>" : "") + "</div></div>"; }
@@ -128,8 +131,9 @@
     }).catch(function (e) { if (id === runId) box.innerHTML = row("bad", "No se pudo leer la red: " + (e.shortMessage || e.message)); });
   }
   function valid() {
-    var tu = num("dpTU"), tu1 = num("dpTU1"), tu2 = num("dpTU2"), cu = num("dpCU"), tf = num("dpTF"), tf1 = num("dpTF1"), tf2 = num("dpTF2"), cf = num("dpCF"), b = num("dpBurn");
-    return E.isAddress($("dpOwner").value.trim()) && E.isAddress($("dpFee").value.trim()) && cu > 0 && cu <= tu && tu < tu1 && tu1 < tu2 && cf > 0 && cf <= tf && tf < tf1 && tf1 < tf2 && b >= 0 && b <= 100;
+    var tu = num("dpTU"), tu1 = num("dpTU1"), tu2 = num("dpTU2"), cu = num("dpCU"), cu1 = num("dpCU1"), cu2 = num("dpCU2"), tf = num("dpTF"), tf1 = num("dpTF1"), tf2 = num("dpTF2"), cf = num("dpCF"), cf1 = num("dpCF1"), cf2 = num("dpCF2"), b = num("dpBurn");
+    return E.isAddress($("dpOwner").value.trim()) && E.isAddress($("dpFee").value.trim()) && tu < tu1 && tu1 < tu2 && tf < tf1 && tf1 < tf2 &&
+      cu > 0 && cu <= tu && cu1 > 0 && cu1 <= tu1 && cu2 > 0 && cu2 <= tu2 && cf > 0 && cf <= tf && cf1 > 0 && cf1 <= tf1 && cf2 > 0 && cf2 <= tf2 && b >= 0 && b <= 100;
   }
   function updateBtn() {
     $("dpDeploy").disabled = !(ok && !!W && valid());
@@ -146,9 +150,9 @@
       updateBtn();
     }, function (e) { $("dpWho").textContent = e.message || "Cancelado"; });
   });
-  ["dpOwner", "dpFee", "dpTU", "dpTU1", "dpTU2", "dpCU", "dpTF", "dpTF1", "dpTF2", "dpCF", "dpBurn"].forEach(function (id) { $(id).addEventListener("input", function () {
-    if (id === "dpTF" || id === "dpTF1" || id === "dpTF2" || id === "dpCF") fbEdited = true;
-    if (id === "dpTU" || id === "dpTU1" || id === "dpTU2" || id === "dpCU") autoFallback();
+  ["dpOwner", "dpFee", "dpTU", "dpTU1", "dpTU2", "dpCU", "dpCU1", "dpCU2", "dpTF", "dpTF1", "dpTF2", "dpCF", "dpCF1", "dpCF2", "dpBurn"].forEach(function (id) { $(id).addEventListener("input", function () {
+    if (/^dp(TF|CF)/.test(id)) fbEdited = true;
+    if (/^dp(TU|CU)/.test(id)) autoFallback();
     preview(); updateBtn();
   }); });
   $("dpNet").addEventListener("change", setDefaults);
@@ -158,8 +162,8 @@
     var cfg = {
       owner: E.getAddress($("dpOwner").value.trim()), feeRecipient: E.getAddress($("dpFee").value.trim()), quote: ch.qaddr, dexFactory: ch.dexFactory,
       swapRouter: ch.v3router, wrappedNative: ch.wnative, swapPath: path(k), oraclePool: ch.oracle,
-      targetsUsd: ["dpTU", "dpTU1", "dpTU2"].map(function (id) { return E.parseEther(String(num(id))); }), capUsd: E.parseEther(String(num("dpCU"))),
-      targetFallbacks: ["dpTF", "dpTF1", "dpTF2"].map(function (id) { return E.parseEther(String(num(id))); }), capFallback: E.parseEther(String(num("dpCF"))), burnShareBps: Math.round(num("dpBurn") * 100)
+      targetsUsd: ["dpTU", "dpTU1", "dpTU2"].map(function (id) { return E.parseEther(String(num(id))); }), capsUsd: ["dpCU", "dpCU1", "dpCU2"].map(function (id) { return E.parseEther(String(num(id))); }),
+      targetFallbacks: ["dpTF", "dpTF1", "dpTF2"].map(function (id) { return E.parseEther(String(num(id))); }), capFallbacks: ["dpCF", "dpCF1", "dpCF2"].map(function (id) { return E.parseEther(String(num(id))); }), burnShareBps: Math.round(num("dpBurn") * 100)
     };
     btn.disabled = true; st.textContent = "Confirma en tu wallet…"; out.innerHTML = "";
     W.request({ method: "wallet_switchEthereumChain", params: [{ chainId: "0x" + ch.id.toString(16) }] }).then(function () {
@@ -170,7 +174,7 @@
       st.textContent = "Enviado. Esperando confirmación…";
       out.innerHTML = '<div class="dp-out">Transacción: ' + esc(c.deploymentTransaction().hash) + "</div>";
       return c.waitForDeployment().then(function () { return c.getAddress(); }).then(function (addr) {
-        return Promise.all([c.targetsUsd(), c.capUsd(), c.sizesNow(0), c.burnShareBps(), c.owner(), c.feeRecipient(), c.quote(), c.sizesNow(1), c.sizesNow(2)]).then(function (v) {
+        return Promise.all([c.targetsUsd(), c.capsUsd(), c.sizesNow(0), c.burnShareBps(), c.owner(), c.feeRecipient(), c.quote(), c.sizesNow(1), c.sizesNow(2)]).then(function (v) {
           try { var o = JSON.parse(localStorage.getItem("sectoraLaunch.fair") || "{}"); o[k] = addr; localStorage.setItem("sectoraLaunch.fair", JSON.stringify(o)); } catch (e) {}
           var enc = new E.Interface(window.SL_ABI.factory).encodeDeploy([cfg]).slice(2);
           var exp = ch.exp ? ch.exp + "/address/" + addr : "", f = function (x) { return Number(E.formatEther(x)); };
@@ -178,8 +182,7 @@
           out.innerHTML = '<div class="sl-alert is-ok">' + ICO.ok.replace("<svg", '<svg width="15" height="15"') + "<span>Sectora Launch ya funciona en " + esc(ch.name) + " desde este navegador. Envía la dirección para publicarla en la web para todo el mundo.</span></div>" +
             '<div class="dp-out" style="margin-top:12px">' + esc(k) + ': "' + esc(addr) + '"</div>' +
             '<div class="sl-kv"><span>Moneda de cotización</span><b class="mono">' + esc(v[6]) + "</b></div>" +
-            [v[2], v[7], v[8]].map(function (sz, i) { return '<div class="sl-kv"><span>Graduación ' + (i + 1) + '</span><b class="num">' + usd(f(v[0][i])) + " · hoy " + nf(f(sz[0])) + " SECT</b></div>"; }).join("") +
-            '<div class="sl-kv"><span>Máximo por wallet</span><b class="num">' + usd(f(v[1])) + " · hoy " + nf(f(v[2][1])) + " SECT</b></div>" +
+            [v[2], v[7], v[8]].map(function (sz, i) { return '<div class="sl-kv"><span>Graduación ' + (i + 1) + '</span><b class="num">' + usd(f(v[0][i])) + " · hoy " + nf(f(sz[0])) + " SECT · máx. " + usd(f(v[1][i])) + " (" + nf(f(sz[1])) + " SECT) por wallet</b></div>"; }).join("") +
             '<div class="sl-kv"><span>Parte quemada</span><b class="num">' + Number(v[3]) / 100 + " %</b></div>" +
             '<div class="sl-kv"><span>Dueño</span><b class="mono">' + esc(v[4]) + "</b></div>" +
             '<div class="sl-kv"><span>Comisiones a</span><b class="mono">' + esc(v[5]) + "</b></div>" +

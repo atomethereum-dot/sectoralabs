@@ -7,7 +7,8 @@ pragma solidity 0.8.24;
  * 1. Anyone creates a coin for free: name, ticker, supply (1,000 … 10^15 tokens, 18 decimals,
  *    no owner, no mint, no tax) and how long its reserve stays open (1 hour … 7 days).
  * 2. Reserve: everyone pays the same price. The creator picks the graduation target, $3,000,
- *    $7,000 or $15,000 worth of SECT, and each wallet can put at most $500 worth, both converted to
+ *    $7,000 or $15,000 worth of SECT, and each wallet can put at most $150, $350 or $500 worth
+ *    respectively (so every launch needs at least 20 different wallets), both converted to
  *    SECT when the coin is created with the 30-minute average price of the SECT/USDT pool. Paying with ETH swaps it to SECT on a route
  *    fixed at deployment. Until the target is reached anyone can take their SECT back; if the
  *    deadline passes first, everyone takes back 100 % and no fee is charged.
@@ -160,8 +161,12 @@ contract SectoraFairLaunch {
     uint256 private immutable targetFallback0; // the same targets in SECT, used only if the oracle cannot answer
     uint256 private immutable targetFallback1;
     uint256 private immutable targetFallback2;
-    uint256 public immutable capUsd;           // per-wallet maximum in dollars (18 decimals)
-    uint256 public immutable capFallback;      // per-wallet maximum in SECT if the oracle cannot answer
+    uint256 private immutable capUsd0;         // per-wallet maximum for each target in dollars (18 decimals)
+    uint256 private immutable capUsd1;
+    uint256 private immutable capUsd2;
+    uint256 private immutable capFallback0;    // the same maximums in SECT, used only if the oracle cannot answer
+    uint256 private immutable capFallback1;
+    uint256 private immutable capFallback2;
     uint256 public immutable burnShareBps;     // share of platform income burned on withdrawal
     address public immutable tokenImplementation;
     bool private immutable quoteIsToken0;
@@ -234,9 +239,9 @@ contract SectoraFairLaunch {
         bytes swapPath;
         address oraclePool;
         uint256[3] targetsUsd;
-        uint256 capUsd;
+        uint256[3] capsUsd;
         uint256[3] targetFallbacks;
-        uint256 capFallback;
+        uint256[3] capFallbacks;
         uint256 burnShareBps;
     }
 
@@ -247,11 +252,12 @@ contract SectoraFairLaunch {
         uint256 n = cfg.swapPath.length;
         require(n >= 43 && (n - 20) % 23 == 0, "SF: swap path");
         require(_pathToken(cfg.swapPath, 0) == cfg.wrappedNative && _pathToken(cfg.swapPath, n - 20) == cfg.quote, "SF: swap path ends");
-        require(cfg.capUsd > 0 && cfg.capUsd <= cfg.targetsUsd[0] && cfg.targetsUsd[0] < cfg.targetsUsd[1] && cfg.targetsUsd[1] < cfg.targetsUsd[2], "SF: dollar amounts");
-        require(
-            cfg.capFallback > 0 && cfg.capFallback <= cfg.targetFallbacks[0] && cfg.targetFallbacks[0] < cfg.targetFallbacks[1] && cfg.targetFallbacks[1] < cfg.targetFallbacks[2],
-            "SF: fallback amounts"
-        );
+        require(cfg.targetsUsd[0] < cfg.targetsUsd[1] && cfg.targetsUsd[1] < cfg.targetsUsd[2], "SF: dollar amounts");
+        require(cfg.targetFallbacks[0] < cfg.targetFallbacks[1] && cfg.targetFallbacks[1] < cfg.targetFallbacks[2], "SF: fallback amounts");
+        for (uint256 i; i < TIERS; ++i) {
+            require(cfg.capsUsd[i] > 0 && cfg.capsUsd[i] <= cfg.targetsUsd[i], "SF: dollar caps");
+            require(cfg.capFallbacks[i] > 0 && cfg.capFallbacks[i] <= cfg.targetFallbacks[i], "SF: fallback caps");
+        }
         require(cfg.burnShareBps <= 10_000, "SF: burn share");
         address t0 = IV3PoolOracle(cfg.oraclePool).token0();
         address t1 = IV3PoolOracle(cfg.oraclePool).token1();
@@ -272,11 +278,15 @@ contract SectoraFairLaunch {
         targetUsd0 = cfg.targetsUsd[0];
         targetUsd1 = cfg.targetsUsd[1];
         targetUsd2 = cfg.targetsUsd[2];
-        capUsd = cfg.capUsd;
+        capUsd0 = cfg.capsUsd[0];
+        capUsd1 = cfg.capsUsd[1];
+        capUsd2 = cfg.capsUsd[2];
         targetFallback0 = cfg.targetFallbacks[0];
         targetFallback1 = cfg.targetFallbacks[1];
         targetFallback2 = cfg.targetFallbacks[2];
-        capFallback = cfg.capFallback;
+        capFallback0 = cfg.capFallbacks[0];
+        capFallback1 = cfg.capFallbacks[1];
+        capFallback2 = cfg.capFallbacks[2];
         burnShareBps = cfg.burnShareBps;
         quoteIsToken0 = q0;
         quoteUnit = 10 ** qd;
@@ -532,15 +542,27 @@ contract SectoraFairLaunch {
         return [targetFallback0, targetFallback1, targetFallback2];
     }
 
+    /// The per-wallet maximums in dollars (18 decimals), one per graduation target.
+    function capsUsd() external view returns (uint256[3] memory) {
+        return [capUsd0, capUsd1, capUsd2];
+    }
+
+    /// The per-wallet maximums in SECT used only if the oracle cannot answer.
+    function capFallbacks() external view returns (uint256[3] memory) {
+        return [capFallback0, capFallback1, capFallback2];
+    }
+
     /// Reserve target and per-wallet maximum (in SECT) for a coin created now with this tier.
     function sizesNow(uint8 tier) public view returns (uint256 target, uint256 cap) {
         require(tier < TIERS, "SF: tier");
         uint256 tUsd = tier == 0 ? targetUsd0 : tier == 1 ? targetUsd1 : targetUsd2;
         uint256 tFallback = tier == 0 ? targetFallback0 : tier == 1 ? targetFallback1 : targetFallback2;
+        uint256 cUsd = tier == 0 ? capUsd0 : tier == 1 ? capUsd1 : capUsd2;
+        uint256 cFallback = tier == 0 ? capFallback0 : tier == 1 ? capFallback1 : capFallback2;
         uint256 price = quoteUsdPrice();
-        if (price == 0) return (tFallback, capFallback);
+        if (price == 0) return (tFallback, cFallback);
         target = _clamp((tUsd * quoteUnit) / price, tFallback);
-        cap = _clamp((capUsd * quoteUnit) / price, capFallback);
+        cap = _clamp((cUsd * quoteUnit) / price, cFallback);
         if (cap > target) cap = target;
     }
 
