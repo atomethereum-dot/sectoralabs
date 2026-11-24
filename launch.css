@@ -545,6 +545,13 @@ main { position: relative; z-index: 2; max-width: 1440px; margin: 0 auto; paddin
 .sl-foot a { color: var(--ink3); transition: color .25s var(--ease); }
 .sl-foot a:hover { color: var(--ink); }
 .sl-tabbar { display: none; }
+/* "Soon" badge on Tokenize */
+.sl-soonb { display: inline-block; font-family: var(--mono); font-weight: 500; font-size: 7.5px; line-height: 1; letter-spacing: .1em; text-transform: uppercase; color: #fff; background: var(--key); padding: 3px 5px 2.5px; border-radius: 999px; box-shadow: 0 0 0 2px var(--tabbg, #06080d), 0 0 12px rgba(21, 105, 255, .5); white-space: nowrap; pointer-events: none; animation: slSoonB 2.4s ease-in-out infinite; }
+.sl-nav .sl-soonb { margin-left: 6px; vertical-align: 5px; box-shadow: 0 0 10px rgba(21, 105, 255, .45); }
+.sl-tb-ic { position: relative; display: block; line-height: 0; }
+.sl-tb-ic .sl-soonb { position: absolute; left: calc(100% - 3px); top: -8px; }
+@keyframes slSoonB { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
+@media (prefers-reduced-motion: reduce) { .sl-soonb { animation: none; } }
 
 @media (max-width: 1180px) {
   .sl-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }

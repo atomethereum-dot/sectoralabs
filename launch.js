@@ -806,14 +806,14 @@
       : '<button class="sl-acct" data-a="newacct">' + ico("user").replace("<svg", '<svg width="14" height="14"') + '<span class="l">' + esc(t("connect")) + '</span><span class="s">' + esc(t("connect_s")) + "</span></button>";
     document.getElementById("slTop").innerHTML =
       '<a class="sl-brand" href="#/" aria-label="Sectora Launch"><span class="sl-mark"><i></i></span><span class="sl-word">SECTORA <em>LAUNCH</em></span></a>' +
-      '<nav class="sl-nav">' + NAV.map(function (n) { return '<a href="' + n[1] + '"' + (navOn(n[0]) ? ' class="on"' : "") + ">" + esc(t(n[2])) + "</a>"; }).join("") + "</nav>" +
+      '<nav class="sl-nav">' + NAV.map(function (n) { return '<a href="' + n[1] + '"' + (navOn(n[0]) ? ' class="on"' : "") + ">" + esc(t(n[2])) + (n[0] === "tokenize" ? '<b class="sl-soonb">Soon</b>' : "") + "</a>"; }).join("") + "</nav>" +
       '<div class="sl-top-r">' + (LIVE ? LIVE.netChip(NET) : '<span class="sl-pill live"><span class="sl-dot"></span>SectoraEVM · ' + esc(t("live")) + "</span>") +
       '<div class="sl-lp" id="slLp"><button type="button" class="sl-lp-b" data-a="langmenu" aria-haspopup="listbox" aria-expanded="false" aria-label="Language">' + flag(L) + '<span class="nm">' + esc(LNAME[L]) + '</span><span class="cd">' + L.toUpperCase() + '</span><svg class="cv" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9.5l6 6 6-6"/></svg></button>' +
       '<ul class="sl-lp-l" role="listbox">' + LANGS.map(function (l) { return '<li role="option" data-a="setlang" data-v="' + l + '" aria-selected="' + (l === L) + '" lang="' + l + '">' + flag(l) + "<span>" + LNAME[l] + "</span></li>"; }).join("") + "</ul></div>" +
       accBtn + "</div>";
     document.getElementById("slBanner").innerHTML = live() ? LIVE.banner(NET) : '<span class="sl-dot" style="color:var(--live)"></span><span>' + esc(t("banner")) + "</span>";
     document.getElementById("slTabbar").innerHTML = NAV.filter(function (n) { return n[0] !== "stats" && n[0] !== "assets"; }).map(function (n) {
-      return '<a href="' + n[1] + '"' + (navOn(n[0]) ? ' class="on"' : "") + ">" + ico(n[3]) + "<span>" + esc(t(n[2])) + "</span></a>";
+      return '<a href="' + n[1] + '"' + (navOn(n[0]) ? ' class="on"' : "") + ">" + (n[0] === "tokenize" ? '<span class="sl-tb-ic">' + ico(n[3]) + '<b class="sl-soonb">Soon</b></span>' : ico(n[3])) + "<span>" + esc(t(n[2])) + "</span></a>";
     }).join("");
     var fnav = NAV.map(function (n) { return '<a href="' + n[1] + '">' + esc(t(n[2])) + "</a>"; }).join("");
     document.getElementById("slFoot").innerHTML =
