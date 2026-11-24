@@ -50,8 +50,17 @@
   renderer.setPixelRatio(dpr); renderer.setClearColor(0x000000, 0);
   var scene = new T.Scene();
   var camera = new T.PerspectiveCamera(FOV, 1, 0.05, 200);
-  function resize() { renderer.setSize(innerWidth, innerHeight, false); camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); }
+  // size from the canvas's real box (fixed, full screen), not innerWidth/innerHeight: on phones and in-app
+  // browsers the toolbars change innerHeight without changing the box, which stretched the globe
+  var VW = innerWidth, VH = innerHeight;
+  function resize() {
+    var w = canvas.clientWidth, h = canvas.clientHeight;
+    VW = w > 0 ? w : innerWidth; VH = h > 0 ? h : innerHeight;
+    renderer.setSize(VW, VH, false); camera.aspect = VW / VH; camera.updateProjectionMatrix();
+  }
+  function fitCheck() { if (canvas.clientWidth !== VW || canvas.clientHeight !== VH) resize(); }
   resize(); addEventListener("resize", resize);
+  if (window.visualViewport) visualViewport.addEventListener("resize", resize);
 
   /* ---------- land mask from the local world atlas ---------- */
   function landMask(W) {
@@ -114,15 +123,15 @@
 
   /* ---------- framing: the planet follows the #slOrbit box at the bottom of the hero ---------- */
   function frameFor(cx, cy, rad) {
-    var t = Math.tan(FOV / 2 * D), d = innerHeight / (2 * rad * t), hh = d * t, hw = hh * camera.aspect;
-    return { d: d, x: (cx / innerWidth * 2 - 1) * hw, y: -(cy / innerHeight * 2 - 1) * hh };
+    var t = Math.tan(FOV / 2 * D), d = VH / (2 * rad * t), hh = d * t, hw = hh * camera.aspect;
+    return { d: d, x: (cx / VW * 2 - 1) * hw, y: -(cy / VH * 2 - 1) * hh };
   }
   function place(f) { root.position.set(f.x, f.y, 0); camera.position.set(0, 0, f.d); camera.lookAt(0, 0, 0); }
   var anchor = null;
   // where the cover keeps the planet: centre and radius in CSS px, and the downward fade (device px)
   function coverGeom(lift) {
     if (!anchor || !anchor.isConnected) anchor = document.getElementById("slOrbit");
-    var r = anchor && anchor.getBoundingClientRect(), w = innerWidth, h = innerHeight;
+    var r = anchor && anchor.getBoundingClientRect(), w = VW, h = VH;
     if (!(r && r.width > 10 && r.height > 10)) r = { left: 0, width: w, top: h * .68, height: h * .22, bottom: h * .9 };
     var rad = w >= 960 ? Math.min(w * .54, 1060) : w * 1.06, k = renderer.getPixelRatio();
     return { cx: r.left + r.width * .5, cy: r.top + r.height * .02 + rad + lift, rad: rad,
@@ -189,7 +198,7 @@
   var bell = function (t, a, b, c, d) { return seg(t, a, b) * (1 - seg(t, c, d)); };
   var t0 = 0, last = 0, home = homeRoute, visible = true, skipAt = -1, introOver = !playIntro, spin = 0, heroTick = 0, scrolled = false;
   function drawStars(t, warp, fade) {
-    var w = innerWidth, h = innerHeight, k = Math.min(devicePixelRatio || 1, 2);
+    var w = VW, h = VH, k = Math.min(devicePixelRatio || 1, 2);
     if (stars.width !== Math.round(w * k)) { stars.width = Math.round(w * k); stars.height = Math.round(h * k); }
     sg.setTransform(k, 0, 0, k, 0, 0); sg.clearRect(0, 0, w, h);
     var cx = w / 2, cy = h * .47, R = Math.max(w, h) * .75, drift = t * .012;
@@ -205,7 +214,7 @@
     }
   }
   function frameIntro(t) {
-    var w = innerWidth, h = innerHeight, mob = w < 760;
+    var w = VW, h = VH, mob = w < 760;
     // the planet: whole in deep space, then the camera dives until it is the cover's horizon
     var r0 = Math.min(w * (mob ? .27 : .15), h * .17), A = { cx: w / 2, cy: h * (mob ? .5 : .47), rad: r0 }, B = coverGeom(0);
     var k = io3(seg(t, 3.4, 5.0)), rad = A.rad * Math.pow(B.rad / A.rad, k), cx = lerp(A.cx, B.cx, k), cy = lerp(A.cy, B.cy, k);
@@ -277,6 +286,7 @@
     if (!t0) t0 = now;
     var dt = Math.min(.05, (now - (last || now)) / 1000); last = now;
     var t = (now - t0) / 1000;
+    fitCheck();
     if (!introOver) {
       if (t >= HAND + .15) finishIntro();
       if (t >= END) endIntro();
