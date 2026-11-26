@@ -144,6 +144,7 @@
     t_buy: "买入", t_sell: "卖出", t_bal: "余额", t_you_get: "你将收到", t_min: "滑点后最少", t_slip: "滑点", t_btn_buy: "买入 ${s}", t_btn_sell: "卖出 ${s}",
     t_approve: "授权 ${s}", t_no_tokens: "你没有 ${s}", t_dex_note: "已上线：在 {d} 上交易。", t_router_off: "网站内交易已关闭。请使用 {d}：", t_uni: "在 Uniswap 用 ETH 购买 ↗", t_chart: "在 DexScreener 查看图表 ↗",
     cr_t: "创建者", cr_fees: "你的创建者收益", cr_claim: "领取", cr_vest: "创建者代币（5 %）", cr_vest_p: "已释放 {v} / {a} · {d} 全部释放", cr_wait: "上线后 30 天内逐步释放。",
+    lv_t: "创作者档案", lv_lvl: "等级 {n}", lv_names: "新人|上升|已验证|可信|知名", lv_pts: "{p} 分", lv_next: "{p} / {q} 分，升至等级 {n}", lv_max: "已达最高等级", lv_coins: "已创建代币", lv_ok: "达到目标", lv_fail: "未满额", lv_open: "预留进行中", lv_rate: "成功率", lv_raised: "已发行代币募集", lv_list: "发行记录", lv_th_goal: "目标", lv_th_perf: "现价 / 开盘价", lv_th_pts: "分数", lv_st_live: "已发行", lv_st_exp: "未满额", lv_st_open: "进行中", lv_how_t: "等级规则", lv_how_p: "等级完全来自区块链。每个达到目标的代币获得分数：目标 {g0} 得 10 分，{g1} 得 20 分，{g2} 得 30 分。分数再乘以当前价格相对开盘价的表现，范围 {lo} 到 {hi}。未满额的代币不得分。发行越成功，等级越高。", lv_from: "{p} 分起", lv_view: "查看创作者档案", lv_mine: "你的创作者档案", lv_creator_lvl: "创作者等级", lv_loading: "正在读取区块链…", lv_none: "该地址尚未创建代币。", lv_bad: "地址无效。",
     sh_score: "合约保障与实时检查",
     sh1: "固定供应量", sh1d: "只铸造一次。不存在增发函数。", sh2: "无所有者、无税", sh2d: "该代币没有所有者、黑名单或转账手续费。",
     sh3: "流动性永久锁定", sh3d: "LP 代币已发送至 0x…dEaD。任何人都无法撤走资金池。", sh3p: "上线时 LP 代币将发送至 0x…dEaD。",

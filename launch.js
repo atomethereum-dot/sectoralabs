@@ -368,7 +368,7 @@
   function loadLang(l, done) {
     if (T[l] || xdict(l, "core")) { done(); return; }
     var s = document.createElement("script");
-    s.src = "i18n/" + l + ".js?v=20261126b";
+    s.src = "i18n/" + l + ".js?v=20261126c";
     s.onload = s.onerror = function () { done(); };
     document.head.appendChild(s);
   }
@@ -776,7 +776,7 @@
   function parseRoute() {
     var h = (location.hash || "#/").replace(/^#\/?/, "").split("/");
     var v = h[0] || "home";
-    if (["home", "create", "coin", "t", "tokenize", "assets", "asset", "me", "stats", "safety"].indexOf(v) < 0) v = "home";
+    if (["home", "create", "coin", "t", "creator", "tokenize", "assets", "asset", "me", "stats", "safety"].indexOf(v) < 0) v = "home";
     return [v, h[1] || "", h[2] || ""];
   }
   function route() {
@@ -795,7 +795,7 @@
   ];
   function navOn(id) {
     if (id === view) return true;
-    if (id === "home" && (view === "coin" || view === "t")) return true;
+    if (id === "home" && (view === "coin" || view === "t" || view === "creator")) return true;
     if (id === "assets" && view === "asset") return true;
     return false;
   }
@@ -826,7 +826,20 @@
       '<p class="sl-foot-entity"><b>Sectora Foundation IL</b> · ' + esc(t("f_loc")) + " · " + esc(t("f_file")) + ' 18523639 · EIN 32-0868576 · <a href="https://apps.ilsos.gov/businessentitysearch/" target="_blank" rel="noopener">' + esc(t("f_regv")) + " ↗</a></p>" +
       '<div class="sl-foot-bot"><span>' + esc(t("footer_l")) + "</span><span>" + esc(t("f_copy")) + "</span></div></div>";
     applyDir();
+    fitTop();
   }
+  // when the top bar does not fit (long languages, mid-size screens) it drops, in order: Transparency,
+  // Real assets, the guide button's label (icon only), Tokenize and Security; all of them stay in the footer
+  function fitTop() {
+    var top = document.getElementById("slTop"), r = top && top.querySelector(".sl-top-r");
+    if (!r) return;
+    top.classList.remove("fit1", "fit2", "fit3", "fit4", "fit5");
+    var lim = document.documentElement.clientWidth - 4;
+    for (var i = 1; i <= 5 && r.getBoundingClientRect().right > lim; i++) top.classList.add("fit" + i);
+  }
+  var fitT = 0;
+  window.addEventListener("resize", function () { clearTimeout(fitT); fitT = setTimeout(fitTop, 120); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitTop);
 
   function render() {
     shell();
@@ -835,6 +848,7 @@
     else if (view === "create") h = live() ? LIVE.create(NET) : vCreate();
     else if (view === "coin") h = vCoin(arg);
     else if (view === "t") h = LIVE ? LIVE.token(arg, arg2) : "";
+    else if (view === "creator") h = LIVE && LIVE.creator ? LIVE.creator(arg, arg2) : "";
     else if (view === "tokenize") h = vTokenize();
     else if (view === "assets") h = vAssets();
     else if (view === "asset") h = vAsset(arg);
@@ -1776,7 +1790,7 @@
     // Ethereum is the network the platform starts on; SectoraEVM is shown as coming soon
     if (!(LIVE && LIVE.isLive(k))) return;
     NET = k; try { localStorage.setItem(NKEY, k); } catch (e) {}
-    if (view === "t" || view === "coin") location.hash = "#/";
+    if (view === "t" || view === "coin" || view === "creator") location.hash = "#/";
     else { entering = true; render(); }
   }
   window.SLX = {

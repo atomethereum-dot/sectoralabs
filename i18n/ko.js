@@ -144,6 +144,7 @@
     t_buy: "매수", t_sell: "매도", t_bal: "잔액", t_you_get: "받는 양", t_min: "슬리피지 후 최소", t_slip: "슬리피지", t_btn_buy: "${s} 매수", t_btn_sell: "${s} 매도",
     t_approve: "${s} 승인", t_no_tokens: "${s}이(가) 없습니다", t_dex_note: "상장됨: {d}에서 거래됩니다.", t_router_off: "사이트 내 거래가 꺼져 있습니다. {d}을(를) 이용하세요:", t_uni: "Uniswap에서 ETH로 사기 ↗", t_chart: "DexScreener 차트 ↗",
     cr_t: "크리에이터", cr_fees: "내 크리에이터 수수료", cr_claim: "청구", cr_vest: "크리에이터 토큰(5 %)", cr_vest_p: "{a} 중 {v} 해제 · {d}에 전부", cr_wait: "상장 후 30일에 걸쳐 해제됩니다.",
+    lv_t: "크리에이터 프로필", lv_lvl: "레벨 {n}", lv_names: "신규|성장 중|검증됨|신뢰|유명", lv_pts: "{p}점", lv_next: "레벨 {n}까지 {p} / {q}점", lv_max: "최고 레벨 달성", lv_coins: "만든 코인", lv_ok: "목표 달성", lv_fail: "미달", lv_open: "예약 진행 중", lv_rate: "성공률", lv_raised: "출시된 코인 모금액", lv_list: "출시 내역", lv_th_goal: "목표", lv_th_perf: "현재가 / 시초가", lv_th_pts: "점수", lv_st_live: "출시됨", lv_st_exp: "미달", lv_st_open: "진행 중", lv_how_t: "레벨 산정 방식", lv_how_p: "레벨은 블록체인 데이터로만 정해집니다. 목표를 달성한 코인마다 점수: 목표 {g0} 10점, {g1} 20점, {g2} 30점. 점수에 현재 가격과 시초가의 비율({lo}~{hi})을 곱합니다. 목표에 못 미친 코인은 점수가 없습니다. 출시가 성공할수록 레벨이 올라갑니다.", lv_from: "{p}점부터", lv_view: "크리에이터 프로필 보기", lv_mine: "내 크리에이터 프로필", lv_creator_lvl: "크리에이터 레벨", lv_loading: "블록체인을 읽는 중…", lv_none: "이 주소는 아직 코인을 만들지 않았습니다.", lv_bad: "잘못된 주소입니다.",
     sh_score: "컨트랙트 보장과 실시간 검사",
     sh1: "고정 공급량", sh1d: "한 번만 발행되었습니다. 추가 발행 기능은 없습니다.", sh2: "소유자·세금 없음", sh2d: "토큰에는 소유자, 블랙리스트, 전송 수수료가 없습니다.",
     sh3: "유동성 영구 잠김", sh3d: "LP 토큰은 0x…dEaD로 보내졌습니다. 누구도 풀을 뺄 수 없습니다.", sh3p: "상장 시 LP 토큰은 0x…dEaD로 갑니다.",

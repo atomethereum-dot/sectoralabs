@@ -90,6 +90,7 @@
       t_buy: "Buy", t_sell: "Sell", t_bal: "Balance", t_you_get: "You receive", t_min: "Minimum after slippage", t_slip: "Slippage", t_btn_buy: "Buy ${s}", t_btn_sell: "Sell ${s}",
       t_approve: "Approve ${s}", t_no_tokens: "You have no ${s}", t_dex_note: "Live: trades run on {d}.", t_router_off: "In-app trading is off. Use {d}:", t_uni: "Buy with ETH on Uniswap ↗", t_chart: "Chart on DexScreener ↗",
       cr_t: "Creator", cr_fees: "Your creator fees", cr_claim: "Claim", cr_vest: "Creator tokens (5 %)", cr_vest_p: "{v} of {a} released · fully by {d}", cr_wait: "Released over 30 days after launch.",
+      lv_t: "Creator profile", lv_lvl: "Level {n}", lv_names: "New|Rising|Proven|Trusted|Known", lv_pts: "{p} points", lv_next: "{p} of {q} points to level {n}", lv_max: "Top level reached", lv_coins: "Coins created", lv_ok: "Reached their goal", lv_fail: "Did not fill", lv_open: "Reserve open", lv_rate: "Success rate", lv_raised: "Raised by launched coins", lv_list: "Launches", lv_th_goal: "Goal", lv_th_perf: "Price vs opening", lv_th_pts: "Points", lv_st_live: "Launched", lv_st_exp: "Did not fill", lv_st_open: "Open", lv_how_t: "How levels work", lv_how_p: "Levels come only from the blockchain. Every coin that reaches its goal earns points: {g0} goal 10, {g1} goal 20, {g2} goal 30. The points are multiplied by how the price is doing now against the opening price, from {lo} to {hi}. Coins that do not fill earn nothing. The more successful the launch, the higher the level.", lv_from: "from {p} points", lv_view: "View creator profile", lv_mine: "Your creator profile", lv_creator_lvl: "Creator level", lv_loading: "Reading the blockchain…", lv_none: "This address has not created coins yet.", lv_bad: "Invalid address.",
       sh_t: "Sectora Shield", sh_score: "Contract guarantees and live checks",
       sh1: "Fixed supply", sh1d: "Minted once. No mint function exists.", sh2: "No owner, no tax", sh2d: "The token has no owner, no blacklist and no transfer fee.",
       sh3: "Liquidity locked forever", sh3d: "The LP tokens were sent to 0x…dEaD. Nobody can pull the pool.", sh3p: "At launch the LP tokens go to 0x…dEaD.",
@@ -144,6 +145,7 @@
       t_buy: "Comprar", t_sell: "Vender", t_bal: "Saldo", t_you_get: "Recibes", t_min: "Mínimo con deslizamiento", t_slip: "Deslizamiento", t_btn_buy: "Comprar ${s}", t_btn_sell: "Vender ${s}",
       t_approve: "Aprobar ${s}", t_no_tokens: "No tienes ${s}", t_dex_note: "En vivo: se opera en {d}.", t_router_off: "La compraventa en la web no está disponible. Usa {d}:", t_uni: "Comprar con ETH en Uniswap ↗", t_chart: "Gráfica en DexScreener ↗",
       cr_t: "Creador", cr_fees: "Tus comisiones de creador", cr_claim: "Cobrar", cr_vest: "Tokens del creador (5 %)", cr_vest_p: "{v} de {a} liberados · todo el {d}", cr_wait: "Se liberan durante 30 días desde el lanzamiento.",
+      lv_t: "Perfil de creador", lv_lvl: "Nivel {n}", lv_names: "Nuevo|En ascenso|Probado|De confianza|Conocido", lv_pts: "{p} puntos", lv_next: "{p} de {q} puntos para el nivel {n}", lv_max: "Nivel máximo alcanzado", lv_coins: "Monedas creadas", lv_ok: "Alcanzaron su meta", lv_fail: "No se llenaron", lv_open: "Reserva abierta", lv_rate: "Tasa de éxito", lv_raised: "Recaudado por monedas lanzadas", lv_list: "Lanzamientos", lv_th_goal: "Meta", lv_th_perf: "Precio vs apertura", lv_th_pts: "Puntos", lv_st_live: "Lanzada", lv_st_exp: "No se llenó", lv_st_open: "Abierta", lv_how_t: "Cómo funcionan los niveles", lv_how_p: "Los niveles salen solo de la blockchain. Cada moneda que alcanza su meta suma puntos: meta de {g0} 10, de {g1} 20, de {g2} 30. Los puntos se multiplican según cómo va el precio ahora frente al precio de apertura, de {lo} a {hi}. Las monedas que no se llenan no suman. Cuanto más exitoso el lanzamiento, más alto el nivel.", lv_from: "desde {p} puntos", lv_view: "Ver perfil del creador", lv_mine: "Tu perfil de creador", lv_creator_lvl: "Nivel del creador", lv_loading: "Leyendo la blockchain…", lv_none: "Esta dirección todavía no ha creado monedas.", lv_bad: "Dirección no válida.",
       sh_t: "Sectora Shield", sh_score: "Garantías del contrato y comprobaciones en vivo",
       sh1: "Supply fijo", sh1d: "Se creó una sola vez. No existe función de mint.", sh2: "Sin dueño ni impuestos", sh2d: "El token no tiene dueño, lista negra ni comisión por transferencia.",
       sh3: "Liquidez bloqueada para siempre", sh3d: "Los LP se enviaron a 0x…dEaD. Nadie puede retirar el pool.", sh3p: "Al lanzar, los LP van a 0x…dEaD.",
@@ -198,6 +200,7 @@
       t_buy: "Comprar", t_sell: "Vender", t_bal: "Saldo", t_you_get: "Você recebe", t_min: "Mínimo com slippage", t_slip: "Slippage", t_btn_buy: "Comprar ${s}", t_btn_sell: "Vender ${s}",
       t_approve: "Aprovar ${s}", t_no_tokens: "Você não tem ${s}", t_dex_note: "Ao vivo: negociado na {d}.", t_router_off: "A negociação no site não está disponível. Use a {d}:", t_uni: "Comprar com ETH na Uniswap ↗", t_chart: "Gráfico no DexScreener ↗",
       cr_t: "Criador", cr_fees: "Suas taxas de criador", cr_claim: "Resgatar", cr_vest: "Tokens do criador (5 %)", cr_vest_p: "{v} de {a} liberados · tudo em {d}", cr_wait: "Liberados ao longo de 30 dias após o lançamento.",
+      lv_t: "Perfil de criador", lv_lvl: "Nível {n}", lv_names: "Novo|Em ascensão|Comprovado|Confiável|Conhecido", lv_pts: "{p} pontos", lv_next: "{p} de {q} pontos para o nível {n}", lv_max: "Nível máximo alcançado", lv_coins: "Moedas criadas", lv_ok: "Atingiram a meta", lv_fail: "Não encheram", lv_open: "Reserva aberta", lv_rate: "Taxa de sucesso", lv_raised: "Arrecadado pelas moedas lançadas", lv_list: "Lançamentos", lv_th_goal: "Meta", lv_th_perf: "Preço vs abertura", lv_th_pts: "Pontos", lv_st_live: "Lançada", lv_st_exp: "Não encheu", lv_st_open: "Aberta", lv_how_t: "Como funcionam os níveis", lv_how_p: "Os níveis vêm só da blockchain. Cada moeda que atinge a meta soma pontos: meta de {g0} 10, de {g1} 20, de {g2} 30. Os pontos são multiplicados conforme o preço agora em relação ao preço de abertura, de {lo} a {hi}. Moedas que não enchem não somam. Quanto mais bem-sucedido o lançamento, mais alto o nível.", lv_from: "a partir de {p} pontos", lv_view: "Ver perfil do criador", lv_mine: "Seu perfil de criador", lv_creator_lvl: "Nível do criador", lv_loading: "Lendo a blockchain…", lv_none: "Este endereço ainda não criou moedas.", lv_bad: "Endereço inválido.",
       sh_t: "Sectora Shield", sh_score: "Garantias do contrato e verificações ao vivo",
       sh1: "Supply fixo", sh1d: "Criado uma única vez. Não existe função de mint.", sh2: "Sem dono, sem imposto", sh2d: "O token não tem dono, lista negra nem taxa de transferência.",
       sh3: "Liquidez bloqueada para sempre", sh3d: "Os LP foram enviados para 0x…dEaD. Ninguém pode retirar o pool.", sh3p: "No lançamento os LP vão para 0x…dEaD.",
@@ -1272,7 +1275,7 @@
   }
   function creatorPanel(k, td) {
     var c = td.c, ch = CHAINS[k], mine = td.mine && W.addr && W.addr === c.creator, html = '<div class="sl-panel"><h3>' + X.ico("user") + X.esc(lt("cr_t")) + "</h3>" +
-      '<div class="sl-kv"><span>' + X.esc(lt("i_creator")) + '</span><b class="mono">' + addrLink(k, c.creator) + "</b></div>";
+      '<div class="sl-kv"><span>' + X.esc(lt("i_creator")) + '</span><b class="mono">' + addrLink(k, c.creator) + "</b></div>" + creatorLvRow(k, c);
     if (mine) {
       html += kv(lt("cr_fees"), amt(fx(td.mine.cfees), ch.qs), usdOf(k, fx(td.mine.cfees))) +
         '<button class="sl-btn sl-btn-w" style="margin-top:10px" data-a="lclaimfees"' + (td.mine.cfees > 0n ? "" : " disabled") + ">" + X.esc(lt("cr_claim")) + "</button>";
@@ -1488,6 +1491,106 @@
     var inp = document.getElementById("slLAmt"); if (inp && inp.value && inp._upd) inp._upd();
   }
 
+  /* ------------------------------------------------------------------ creator levels */
+  // A creator's level comes only from their launches on chain, nothing is stored anywhere else.
+  // Every coin that reaches its goal earns points by its goal ($3K 10 · $7K 20 · $15K 30), multiplied by
+  // how its price is doing now against the opening price (x0.25 to x3). Coins that do not fill earn nothing.
+  var LV_PTS = [10, 20, 30], LV_MIN = [0, 10, 40, 100, 250], LV_LO = 0.25, LV_HI = 3;
+  var CR = {};  // per "net:creator": { at, loading, err, coins, pts, lvl, ok, fail, open, raised }
+  function lvOf(pts) { var l = 1; for (var i = 1; i < LV_MIN.length; i++) if (pts >= LV_MIN[i]) l = i + 1; return l; }
+  function lvName(n) { return String(lt("lv_names")).split("|")[n - 1] || ""; }
+  function lvBars(n) { var s = ""; for (var j = 1; j <= 5; j++) s += "<s" + (j <= n ? ' class="on"' : "") + ' style="height:' + (j * 20) + '%"></s>'; return '<i class="sl-lvbars">' + s + "</i>"; }
+  function lvBadge(n) { return '<span class="sl-lvb lv' + n + '">' + lvBars(n) + X.esc(lt("lv_lvl", { n: n })) + " · " + X.esc(lvName(n)) + "</span>"; }
+  function lvHref(k, a) { return "#/creator/" + k + "/" + a; }
+  function lvX(r) { return "×" + X.nf(r, r >= 10 ? 1 : 2); }
+  // every coin of the factory (newest first), re-read at most once a minute
+  function allCoins(k) {
+    var st = chainState(k);
+    if (st.all && Date.now() - st.all.at < 60000) return Promise.resolve(st.all.coins);
+    if (st.allLoading) return st.allLoading;
+    st.allLoading = loadCfg(k).then(function () { return withRpc(k, function (p) { return Promise.all([fac(k, p).coinsCount(), p.getBlock("latest")]); }); }).then(function (r) {
+      var n = r[0], pages = []; st.skew = r[1].timestamp * 1000 - Date.now(); for (var o = 0; o < Number(n); o += 100) pages.push(o);
+      return Promise.all(pages.map(function (o) { return withRpc(k, function (p) { return fac(k, p).latestCoins(o, 100); }); }));
+    }).then(function (lists) {
+      var coins = []; lists.forEach(function (l) { l.forEach(function (v) { coins.push(mapCoin(v)); }); });
+      st.all = { at: Date.now(), coins: coins }; st.allLoading = null; return coins;
+    }, function (err) { st.allLoading = null; throw err; });
+    return st.allLoading;
+  }
+  function scoreCoin(k, c, now) {
+    var st = statusOf(k, c), ratio = now > 0 && c.oprice > 0 ? now / c.oprice : null, mult = null, pts = 0;
+    if (st === "live") { mult = ratio == null ? 1 : Math.min(LV_HI, Math.max(LV_LO, ratio)); pts = (LV_PTS[c.tier] || LV_PTS[0]) * mult; }
+    return { c: c, st: st, ratio: ratio, mult: mult, pts: pts };
+  }
+  function loadCreator(k, addr) {
+    var key = k + ":" + addr, cr = CR[key] || (CR[key] = { at: 0, loading: null, err: "", coins: [] });
+    if (cr.loading) return cr.loading;
+    if (cr.at && Date.now() - cr.at < 60000) return Promise.resolve(cr);
+    cr.loading = allCoins(k).then(function (coins) {
+      var mine = coins.filter(function (c) { return c.creator === addr; });
+      return Promise.all(mine.map(function (c) {
+        if (!c.launched || !c.pair || c.pair === E.ZeroAddress) return null;
+        return withRpc(k, function (p) { var pc = new E.Contract(c.pair, PAIR_ABI, p); return Promise.all([pc.getReserves(), pc.token0()]); }).then(function (r) {
+          var t0 = E.getAddress(r[1]) === c.addr, rt = fx(t0 ? r[0][0] : r[0][1]), rn = fx(t0 ? r[0][1] : r[0][0]);
+          return rt > 0 ? rn / rt : null;
+        }, function () { return null; });
+      })).then(function (px) {
+        var rows = mine.map(function (c, i) { return scoreCoin(k, c, px[i]); }), pts = 0, ok = 0, fail = 0, open = 0, raised = 0;
+        rows.forEach(function (r) { pts += r.pts; if (r.st === "live") { ok++; raised += fx(r.c.raised); } else if (r.st === "exp") fail++; else open++; });
+        pts = Math.round(pts * 10) / 10;
+        cr.coins = rows; cr.pts = pts; cr.lvl = lvOf(pts); cr.ok = ok; cr.fail = fail; cr.open = open; cr.raised = raised;
+        cr.at = Date.now(); cr.err = ""; cr.loading = null; return cr;
+      });
+    }).catch(function (err) { cr.loading = null; cr.err = String((err && (err.shortMessage || err.message)) || err); throw err; });
+    return cr.loading;
+  }
+  // level row for the coin page; reads the creator's launches the first time it is shown
+  function creatorLvRow(k, c) {
+    var key = k + ":" + c.creator, cr = CR[key];
+    if (!cr || (!cr.loading && (!cr.at || Date.now() - cr.at > 60000))) {
+      loadCreator(k, c.creator).then(function () {
+        var td = TD[k + ":" + c.addr], el = document.getElementById("slLCreator");
+        if (el && td && td.c && onToken(c.addr)) el.innerHTML = creatorPanel(k, td);
+      }, function () {});
+      cr = CR[key];
+    }
+    var val = cr && cr.at ? '<a href="' + lvHref(k, c.creator) + '">' + lvBadge(cr.lvl) + "</a>" : '<span class="faint">…</span>';
+    return '<div class="sl-kv"><span>' + X.esc(lt("lv_creator_lvl")) + "</span><b>" + val + "</b></div>" +
+      '<a class="sl-btn sl-btn-w" style="margin-top:10px" href="' + lvHref(k, c.creator) + '">' + X.ico("user") + X.esc(lt("lv_view")) + "</a>";
+  }
+  function creatorView(k, a) {
+    var h1 = "", head = function (sub) { return '<div class="sl-pagehead"><span class="sl-eyebrow"><i class="rule"></i>' + X.esc(lt("lv_t")) + "</span><h1>" + X.esc(h1 || lt("lv_t")) + "</h1>" + (sub ? "<p>" + sub + "</p>" : "") + "</div>"; };
+    if (!CHAINS[k] || !E.isAddress(a || "")) return head(X.esc(lt("lv_bad")));
+    var addr = E.getAddress(a), ch = CHAINS[k];
+    h1 = X.short(addr);
+    if (!deployed(k)) return head(addrLink(k, addr, addr)) + offHtml(k);
+    var cr = CR[k + ":" + addr];
+    if (!cr || (!cr.loading && (!cr.at || Date.now() - cr.at > 60000))) {
+      loadCreator(k, addr).then(function () { if (location.hash.toLowerCase().indexOf(addr.toLowerCase()) >= 0) X.render(); }, function () { if (location.hash.toLowerCase().indexOf(addr.toLowerCase()) >= 0) X.render(); });
+      cr = CR[k + ":" + addr];
+    }
+    var top = head('<span class="mono" style="word-break:break-all">' + addrLink(k, addr, addr) + "</span>");
+    if (!cr || !cr.at) return top + '<div class="sl-panel"><p class="dim">' + X.esc(cr && cr.err ? cr.err : lt("lv_loading")) + "</p></div>";
+    var n = cr.lvl, nextMin = LV_MIN[n], cur = LV_MIN[n - 1], frac = n >= 5 ? 1 : Math.max(0, Math.min(1, (cr.pts - cur) / (nextMin - cur)));
+    var done = cr.ok + cr.fail, hue = parseInt(addr.slice(2, 6), 16) % 360;
+    var card = '<div class="sl-panel sl-lvcard"><div class="sl-lvwho"><span class="sl-lvav" style="background:hsl(' + hue + ',70%,50%)"><i></i></span><div><span class="sl-lvk">' + X.esc(lt("lv_lvl", { n: n })) + "</span><b>" + X.esc(lvName(n)) + '</b><span class="num faint">' + X.esc(lt("lv_pts", { p: X.nf(cr.pts, cr.pts % 1 ? 1 : 0) })) + "</span></div></div>" +
+      '<div class="sl-lvbig">' + [1, 2, 3, 4, 5].map(function (j) { return '<div class="' + (j <= n ? "on" : "") + (j === 5 ? " top" : "") + '" style="height:' + (j * 20) + '%"><em>' + j + "</em></div>"; }).join("") + "</div>" +
+      '<div class="sl-prog"><i style="width:' + (frac * 100).toFixed(1) + '%"></i></div><p class="sl-note">' + X.esc(n >= 5 ? lt("lv_max") : lt("lv_next", { p: X.nf(cr.pts, cr.pts % 1 ? 1 : 0), q: X.nf(nextMin, 0), n: n + 1 })) + "</p></div>";
+    var stats = '<div class="sl-panel">' + kv(lt("lv_coins"), X.nf(cr.coins.length, 0)) + kv(lt("lv_ok"), X.nf(cr.ok, 0)) + kv(lt("lv_fail"), X.nf(cr.fail, 0)) + kv(lt("lv_open"), X.nf(cr.open, 0)) +
+      kv(lt("lv_rate"), done ? X.nf(cr.ok / done * 100, 0) + " %" : "—") + kv(lt("lv_raised"), amt(cr.raised, ch.qs), usdOf(k, cr.raised)) + "</div>";
+    var list = !cr.coins.length ? '<p class="dim">' + X.esc(lt("lv_none")) + "</p>" :
+      '<div class="sl-mkt"><div class="sl-table-wrap"><table class="sl-table"><thead><tr><th>' + X.esc(X.t("th_coin")) + '</th><th class="r">' + X.esc(lt("lv_th_goal")) + "</th><th>" + X.esc(lt("me_status")) + '</th><th class="r sl-hide-sm">' + X.esc(lt("lv_th_perf")) + '</th><th class="r">' + X.esc(lt("lv_th_pts")) + "</th></tr></thead><tbody>" +
+      cr.coins.map(function (r) {
+        var c = r.c, href = "#/t/" + k + "/" + c.addr, tag = r.st === "live" ? '<span class="sl-tag is-good">' + X.esc(lt("lv_st_live")) + "</span>" : r.st === "exp" ? '<span class="sl-tag is-bad">' + X.esc(lt("lv_st_exp")) + "</span>" : '<span class="sl-tag is-mid">' + X.esc(lt("lv_st_open")) + "</span>";
+        return '<tr data-go="' + href + '"><td><div class="sl-coin">' + logoTag(c, "sl-logo") + '<div><b><a href="' + href + '">' + X.esc(c.name) + "</a></b><span>$" + X.esc(c.sym) + '</span></div></div></td><td class="r num">' + X.esc(dollars(usdOfTier(c.tier))) + "</td><td>" + tag +
+          '</td><td class="r num sl-hide-sm">' + (r.ratio != null ? X.esc(lvX(r.ratio)) : "—") + '</td><td class="r num">' + (r.st === "live" ? X.esc(X.nf(r.pts, r.pts % 1 ? 1 : 0)) : "0") + "</td></tr>";
+      }).join("") + "</tbody></table></div></div>";
+    var how = '<div class="sl-panel"><h3>' + X.ico("info") + X.esc(lt("lv_how_t")) + '</h3><p class="sl-note" style="margin-top:0">' + X.esc(lt("lv_how_p", { g0: dollars(usdOfTier(0)), g1: dollars(usdOfTier(1)), g2: dollars(usdOfTier(2)), lo: lvX(LV_LO), hi: lvX(LV_HI) })) + "</p>" +
+      '<div class="sl-lvrows">' + LV_MIN.map(function (m, i) { return '<div class="' + (i + 1 === n ? "on" : "") + '">' + lvBadge(i + 1) + '<span class="num faint">' + X.esc(lt("lv_from", { p: X.nf(m, 0) })) + "</span></div>"; }).join("") + "</div></div>";
+    return top + '<div class="sl-lvtop">' + card + stats + "</div>" +
+      '<section class="sl-sec"><div class="sl-head"><div><h2>' + X.esc(lt("lv_list")) + "</h2></div></div>" + list + "</section>" + '<section class="sl-sec">' + how + "</section>";
+  }
+
   /* ------------------------------------------------------------------ me / stats */
   function meView(net) {
     if (!W.addr) return '<div class="sl-pagehead"><span class="sl-eyebrow"><i class="rule"></i>Sectora Launch</span><h1>' + X.esc(lt("me_t")) + '</h1></div><div class="sl-empty">' + X.ico("wallet") + "<p>" + X.esc(lt("c_need_wallet")) + '</p><button class="sl-btn sl-btn-p" data-a="wconnect">' + X.esc(lt("w_connect")) + "</button></div>";
@@ -1508,7 +1611,7 @@
       '<div class="sl-kv"><span>' + X.esc(lt("eth_bal", { s: ch.sym })) + '</span><b class="num">' + (ms.native != null ? X.esc(amt(fx(ms.native), ch.sym)) + ' <small class="faint">' + X.esc(ethUsd(net, fx(ms.native))) + "</small>" : "…") + "</b></div>" +
       '<div class="sl-kv"><span>' + X.esc(lt("sect_bal")) + '</span><b class="num">' + (ms.sect != null ? X.esc(amt(fx(ms.sect), ch.qs)) + " " + usdLine(net, fx(ms.sect)) : "…") + "</b></div>" +
       (deployed(net) ? '<div class="sl-kv"><span>' + X.esc(lt("me_fees")) + '</span><b class="num">' + X.esc(amt(fx(ms.fees || 0n), ch.qs)) + "</b></div>" +
-        '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px"><button class="sl-btn sl-btn-p" data-a="lclaimfees"' + (ms.fees > 0n ? "" : " disabled") + ">" + X.esc(lt("cr_claim")) + '</button><button class="sl-btn" data-a="wdisconnect">' + X.esc(lt("w_disconnect")) + "</button></div>" : '<button class="sl-btn" style="margin-top:12px" data-a="wdisconnect">' + X.esc(lt("w_disconnect")) + "</button>") + "</div>" +
+        '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px"><button class="sl-btn sl-btn-p" data-a="lclaimfees"' + (ms.fees > 0n ? "" : " disabled") + ">" + X.esc(lt("cr_claim")) + '</button><a class="sl-btn" href="' + lvHref(net, W.addr) + '">' + X.ico("user") + X.esc(lt("lv_mine")) + '</a><button class="sl-btn" data-a="wdisconnect">' + X.esc(lt("w_disconnect")) + "</button></div>" : '<button class="sl-btn" style="margin-top:12px" data-a="wdisconnect">' + X.esc(lt("w_disconnect")) + "</button>") + "</div>" +
       (deployed(net) ? '<section class="sl-sec"><div class="sl-head"><div><h2>' + X.esc(lt("me_seats")) + "</h2></div></div>" + seatsHtml + "</section>" +
         '<section class="sl-sec"><div class="sl-head"><div><h2>' + X.esc(lt("me_coins")) + "</h2></div></div>" + (mine.length ? '<div class="sl-mkt">' + coinTable(net, mine) + "</div>" : '<p class="dim">' + X.esc(lt("me_none")) + "</p>") + "</section>" : offHtml(net));
   }
@@ -1620,7 +1723,7 @@
     chains: CHAINS, order: ORDER, isLive: isLive, deployed: deployed, liveChains: liveChains,
     defaultNet: function () { var l = liveChains(); return l.length ? l[0] : ORDER[0]; },
     t: override, netChip: netChip, acctBtn: acctBtn, banner: banner, hud: hud, storyRaise: storyRaise, factory: factoryOf, sizes: usdSizes,
-    explore: explore, statTiles: statTiles, create: createView, token: tokenView, me: meView, stats: statsView,
+    explore: explore, statTiles: statTiles, create: createView, token: tokenView, me: meView, stats: statsView, creator: creatorView,
     onAction: onAction, wire: wire, tick: tick, refresh: refresh,
     wallet: function () { return W.addr; }
   };
