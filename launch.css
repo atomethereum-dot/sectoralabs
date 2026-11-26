@@ -1439,3 +1439,8 @@ a .sl-lvb:hover { border-color: var(--key); }
 .sl-sb-note:empty { display: none; }
 @media (max-width: 1080px) { .sl-sb-top { grid-template-columns: minmax(0, 1fr); } .sl-sb-nums { grid-template-columns: repeat(3, minmax(0, 1fr)); } .sl-sb-t.big { grid-column: 1 / -1; } }
 @media (max-width: 640px) { .sl-sb h2 { font-size: 30px; } .sl-sb-nums { grid-template-columns: minmax(0, 1fr); } }
+/* small phones: long button labels (es, de, ru…) wrap inside the button instead of leaving the screen */
+@media (max-width: 640px) {
+  .sl-btn { max-width: 100%; white-space: normal; text-align: center; line-height: 1.3; }
+  .sl-pagehead p .mono, .sl-pagehead p a { overflow-wrap: anywhere; word-break: break-all; }
+}

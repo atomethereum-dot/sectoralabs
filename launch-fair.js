@@ -1589,7 +1589,7 @@
     if (!CHAINS[k] || !E.isAddress(a || "")) return head(X.esc(lt("lv_bad")));
     var addr = E.getAddress(a), ch = CHAINS[k];
     h1 = X.short(addr);
-    if (!deployed(k)) return head(addrLink(k, addr, addr)) + offHtml(k);
+    if (!deployed(k)) return head('<span class="mono" style="word-break:break-all">' + addrLink(k, addr, addr) + "</span>") + offHtml(k);
     var cr = CR[k + ":" + addr];
     if (!cr || (!cr.loading && (!cr.at || Date.now() - cr.at > 60000))) {
       loadCreator(k, addr).then(function () { if (location.hash.toLowerCase().indexOf(addr.toLowerCase()) >= 0) X.render(); }, function () { if (location.hash.toLowerCase().indexOf(addr.toLowerCase()) >= 0) X.render(); });

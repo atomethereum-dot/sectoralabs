@@ -93,6 +93,10 @@ h2 span { color: var(--key); font-weight: 400; }
 .sub { font-size: 17px; color: var(--ink2); max-width: 760px; }
 .sub b { color: var(--ink); }
 .partlbl { display: flex; align-items: baseline; gap: 22px; }
+.partlbl > div { min-width: 0; }
+.inv > * { min-width: 0; }
+.ex .r span { min-width: 0; overflow-wrap: anywhere; }
+h1, h2, h3, .ex .h, .card h3 { overflow-wrap: anywhere; hyphens: auto; }
 .partlbl .L { font-size: 96px; font-weight: 200; color: var(--key); line-height: .9; letter-spacing: -.04em; }
 .g3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 36px; }
 .g4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 36px; }
