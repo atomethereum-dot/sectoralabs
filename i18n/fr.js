@@ -1,6 +1,7 @@
 /* Sectora Launch — français */
 (window.SL_I18N = window.SL_I18N || {}).fr = {
   core: {
+    cv_eb: "Sectora Labs · Ne manquez pas les premiers lancements", cv_t1: "Si ce n’est pas sur Sectora Labs ou SectoraEVM,", cv_t2: "ce n’est pas sûr.",
     f_copy: "© 2026 Sectora Foundation IL. Tous droits réservés.",
     f_loc: "Chicago, Illinois, États-Unis", f_file: "Dossier Illinois", f_regv: "Vérifier l’immatriculation",
     hero_l1: "Lancez des monnaies et", hero_l2: "tokenisez des <b>actifs réels</b>", hero_l3: "<b class=\"k\">sans arnaques</b>.",

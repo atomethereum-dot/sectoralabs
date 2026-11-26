@@ -1,6 +1,7 @@
 /* Sectora Launch — हिन्दी */
 (window.SL_I18N = window.SL_I18N || {}).hi = {
   core: {
+    cv_eb: "Sectora Labs · पहले लॉन्च मत चूकिए", cv_t1: "अगर यह Sectora Labs या SectoraEVM पर नहीं है,", cv_t2: "तो यह सुरक्षित नहीं है।",
     f_copy: "© 2026 Sectora Foundation IL. सर्वाधिकार सुरक्षित।",
     f_loc: "शिकागो, इलिनॉय, अमेरिका", f_file: "इलिनॉय फ़ाइल नंबर", f_regv: "पंजीकरण जाँचें",
     hero_l1: "कॉइन लॉन्च करें और", hero_l2: "<b>वास्तविक संपत्तियों</b> को टोकन बनाएँ", hero_l3: "<b class=\"k\">बिना रग पुल के</b>।",

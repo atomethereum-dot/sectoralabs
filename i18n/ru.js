@@ -1,6 +1,7 @@
 /* Sectora Launch — русский */
 (window.SL_I18N = window.SL_I18N || {}).ru = {
   core: {
+    cv_eb: "Sectora Labs · Не пропустите первые запуски", cv_t1: "Если это не на Sectora Labs или SectoraEVM,", cv_t2: "это небезопасно.",
     f_copy: "© 2026 Sectora Foundation IL. Все права защищены.",
     f_loc: "Чикаго, Иллинойс, США", f_file: "Номер в реестре Иллинойса", f_regv: "Проверить регистрацию",
     hero_l1: "Запускайте монеты и", hero_l2: "токенизируйте <b>реальные активы</b>", hero_l3: "<b class=\"k\">без рагпулов</b>.",

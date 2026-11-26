@@ -1,6 +1,7 @@
 /* Sectora Launch — 日本語 */
 (window.SL_I18N = window.SL_I18N || {}).ja = {
   core: {
+    cv_eb: "Sectora Labs · 最初のローンチを見逃すな", cv_t1: "Sectora Labs か SectoraEVM になければ、", cv_t2: "安全ではありません。",
     f_copy: "© 2026 Sectora Foundation IL. 無断転載を禁じます。",
     f_loc: "米国イリノイ州シカゴ", f_file: "イリノイ州登録番号", f_regv: "登記を確認",
     hero_l1: "コインを発行し、", hero_l2: "<b>実物資産</b>をトークン化。", hero_l3: "<b class=\"k\">ラグプルなしで</b>。",

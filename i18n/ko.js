@@ -1,6 +1,7 @@
 /* Sectora Launch — 한국어 */
 (window.SL_I18N = window.SL_I18N || {}).ko = {
   core: {
+    cv_eb: "Sectora Labs · 첫 출시를 놓치지 마세요", cv_t1: "Sectora Labs나 SectoraEVM에 없다면,", cv_t2: "안전하지 않습니다.",
     f_copy: "© 2026 Sectora Foundation IL. 모든 권리 보유.",
     f_loc: "미국 일리노이주 시카고", f_file: "일리노이주 등록번호", f_regv: "등록 확인",
     hero_l1: "코인을 발행하고", hero_l2: "<b>실물 자산</b>을 토큰화하세요,", hero_l3: "<b class=\"k\">러그풀 없이</b>.",

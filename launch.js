@@ -45,6 +45,7 @@
       eyebrow: "Sectora Launch · on SectoraEVM",
       hero_t: "Launch coins and tokenize real assets — <em>without rugs</em>.",
       hero_s: "Fair launches with anti-sniper limits, liquidity nobody can pull, a Sectora Shield security scan on every coin, and fees that buy back and burn SECT — all written into the contracts.",
+      cv_eb: "Sectora Labs · Don’t miss the first launches", cv_t1: "If it’s not on Sectora Labs or SectoraEVM,", cv_t2: "it’s not safe.",
       cta_launch: "Launch a coin", cta_tokenize: "Tokenize an asset",
       st_coins: "Coins launched", st_vol: "Volume", st_creators: "Paid to creators", st_burn: "SECT burned", st_rwa: "Real assets tokenized", st_queue: "in burn queue",
       explore: "Explore coins", tab_trend: "Trending", tab_new: "New", tab_soon: "About to graduate", tab_grad: "Graduated",
@@ -145,6 +146,7 @@
       eyebrow: "Sectora Launch · en SectoraEVM",
       hero_t: "Lanza monedas y tokeniza activos reales, <em>sin estafas</em>.",
       hero_s: "Lanzamientos justos con límites anti-snipers, liquidez que nadie puede retirar, escáner de seguridad Sectora Shield en cada moneda y comisiones que recompran y queman SECT. Todo escrito en los contratos.",
+      cv_eb: "Sectora Labs · No te pierdas los primeros lanzamientos", cv_t1: "Si no está en Sectora Labs o SectoraEVM,", cv_t2: "no es seguro.",
       cta_launch: "Lanzar una moneda", cta_tokenize: "Tokenizar un activo",
       st_coins: "Monedas lanzadas", st_vol: "Volumen", st_creators: "Pagado a creadores", st_burn: "SECT quemado", st_rwa: "Activos reales tokenizados", st_queue: "en cola de quema",
       explore: "Explorar monedas", tab_trend: "Tendencia", tab_new: "Nuevas", tab_soon: "Por graduarse", tab_grad: "Graduadas",
@@ -245,6 +247,7 @@
       eyebrow: "Sectora Launch · na SectoraEVM",
       hero_t: "Lance moedas e tokenize ativos reais, <em>sem golpes</em>.",
       hero_s: "Lançamentos justos com limites anti-snipers, liquidez que ninguém pode retirar, verificação de segurança Sectora Shield em cada moeda e taxas que recompram e queimam SECT. Tudo escrito nos contratos.",
+      cv_eb: "Sectora Labs · Não perca os primeiros lançamentos", cv_t1: "Se não está na Sectora Labs ou na SectoraEVM,", cv_t2: "não é seguro.",
       cta_launch: "Lançar uma moeda", cta_tokenize: "Tokenizar um ativo",
       st_coins: "Moedas lançadas", st_vol: "Volume", st_creators: "Pago aos criadores", st_burn: "SECT queimado", st_rwa: "Ativos reais tokenizados", st_queue: "na fila de queima",
       explore: "Explorar moedas", tab_trend: "Em alta", tab_new: "Novas", tab_soon: "Quase graduando", tab_grad: "Graduadas",
@@ -368,7 +371,7 @@
   function loadLang(l, done) {
     if (T[l] || xdict(l, "core")) { done(); return; }
     var s = document.createElement("script");
-    s.src = "i18n/" + l + ".js?v=20261126e";
+    s.src = "i18n/" + l + ".js?v=20261126f";
     s.onload = s.onerror = function () { done(); };
     document.head.appendChild(s);
   }
@@ -857,8 +860,8 @@
     else if (view === "safety") h = window.SLSafety ? window.SLSafety.view(NET) : "";
     if (live() && (view === "tokenize" || view === "assets" || view === "asset")) h = '<div class="sl-alert is-info" style="margin-bottom:18px">' + ico("info") + "<span>" + esc(t("rwa_soon")) + "</span></div>" + h;
     m.innerHTML = h;
-    document.body.classList.toggle("lt", view !== "home");
-    document.documentElement.classList.toggle("sl-ondark", view === "home");
+    document.body.classList.add("lt");
+    document.documentElement.classList.remove("sl-ondark");
     if (window.SLPlanet) window.SLPlanet.setHome(view === "home");
     m.className = entering ? "sl-enter" : "";
     if (entering) {
@@ -870,11 +873,17 @@
       });
       else m.querySelectorAll("[data-count]").length && countUp(m);
     } else {
-      m.classList.add("go"); var hero2 = m.querySelector(".sl-hero"); if (hero2) hero2.classList.add("go");
+      var hero2 = m.querySelector(".sl-hero");
+      if (hero2) (window.SL_INTRO || Promise.resolve()).then(function () { m.classList.add("go"); hero2.classList.add("go"); });
+      else m.classList.add("go");
     }
     entering = false;
     wire();
     if (window.SLScenes) { if (view === "home") window.SLScenes.mount(m); else window.SLScenes.unmount(); }
+    if (window.SLCover) {
+      var cvh = view === "home" && m.querySelector(".sl-cv");
+      if (cvh) requestAnimationFrame(function () { window.SLCover.mount(cvh); }); else window.SLCover.unmount();
+    }
   }
 
   function coinsList() { return S.order.map(function (a) { return S.coins[a]; }).filter(Boolean); }
@@ -973,13 +982,14 @@
   function vHome() {
     var tabs = [["trend", "tab_trend"], ["new", "tab_new"], ["soon", "tab_soon"], ["grad", "tab_grad"]];
     var why = [["bolt", 1], ["users", 2], ["lock", 3], ["scale", 4], ["fire", 5], ["shield", 6], ["chart", 7], ["copycat", 8], ["file", 9], ["badge", 10]];
-    return '<section class="sl-hero"><div><span class="sl-eyebrow fade-in" style="--d:.05s"><i class="rule"></i>' + esc(t("eyebrow2")) + "</span>" +
-      "<h1>" + ["hero_l1", "hero_l2", "hero_l3"].map(function (k, i) { return '<span class="ln"><span style="--i:' + i + '">' + t(k) + "</span></span>"; }).join("") + "</h1>" +
+    return '<section class="sl-hero sl-cv"><div class="sl-cv-bg" aria-hidden="true"></div><div class="sl-cv-in">' +
+      '<span class="sl-cv-mark fade-in" style="--d:.05s" aria-hidden="true"><i></i></span>' +
+      '<span class="sl-cv-eb fade-in" style="--d:.15s">' + esc(t("cv_eb")) + "</span>" +
+      '<h1><span class="ln"><span style="--i:0">' + esc(t("cv_t1")) + '</span></span><span class="ln"><span class="k" style="--i:1">' + esc(t("cv_t2")) + "</span></span></h1>" +
       '<p class="sl-hero-p fade-in" style="--d:.42s">' + esc(t("hero_s")) + "</p>" +
       '<div class="sl-hero-cta fade-in" style="--d:.55s"><a class="sl-btn sl-btn-p" href="#/create">' + ico("rocket") + esc(t("cta_launch")) + '</a><a class="sl-btn" href="#/tokenize">' + ico("building") + esc(t("cta_tokenize")) + '</a><a class="sl-btn sl-guide-m" href="/intro/">' + ico("file") + esc(t("nav_guide")) + "</a></div>" +
       '<div class="sl-hero-facts fade-in" style="--d:.68s">' + (live() ? ["hf0", "hf1", "hf2", "hf3"] : ["hf1", "hf2", "hf3"]).map(function (k) { return "<span><i></i>" + esc(t(k)) + "</span>"; }).join("") +
-      '<button class="sl-play" type="button" data-a="film"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg>' + esc(t("film_eb")) + " · 0:34</button></div></div>" +
-      '<div class="sl-orbit" id="slOrbit" aria-hidden="true"></div></section>' +
+      '<button class="sl-play" type="button" data-a="film"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg>' + esc(t("film_eb")) + " · 0:34</button></div></div></section>" +
       (live() ? '<div class="sl-hero-stats fade-in" style="--d:.75s">' + LIVE.statTiles(NET) + "</div>" : "") +
       '<div class="sl-sheet lt"><div class="sl-sheet-in">' + (live() && LIVE.sectBand ? LIVE.sectBand(NET) : "") + (live() ? LIVE.explore(NET) : demoExplore(tabs)) + filmSec() + storySec() + whySec(why) + endBand() + "</div></div>";
   }

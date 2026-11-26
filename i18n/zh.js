@@ -1,6 +1,7 @@
 /* Sectora Launch — 中文 */
 (window.SL_I18N = window.SL_I18N || {}).zh = {
   core: {
+    cv_eb: "Sectora Labs · 别错过首批发行", cv_t1: "不在 Sectora Labs 或 SectoraEVM 上的，", cv_t2: "就不安全。",
     f_copy: "© 2026 Sectora Foundation IL. 版权所有，保留所有权利。",
     f_loc: "美国伊利诺伊州芝加哥", f_file: "伊利诺伊州登记号", f_regv: "核实注册",
     hero_l1: "发行代币，", hero_l2: "将<b>真实资产</b>代币化，", hero_l3: "<b class=\"k\">杜绝跑路</b>。",
