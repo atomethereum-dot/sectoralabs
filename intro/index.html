@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sectora Launch · The fair launchpad</title>
+<meta name="description" content="Sectora Launch: one price for everyone, a maximum per wallet, 100 % back if a reserve does not fill and liquidity burned forever. Every rule is written in an open-source smart contract on Ethereum.">
+<meta name="theme-color" content="#05070b">
+<meta property="og:title" content="Sectora Launch · The fair launchpad">
+<meta property="og:description" content="One price for everyone. 100 % back if it does not fill. Liquidity burned forever.">
+<link rel="icon" type="image/png" sizes="32x32" href="../icons/favicon-32x32.png">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<style>
+@font-face { font-family: "IBM Plex Sans"; src: url("../fonts/IBMPlexSans.woff2") format("woff2"); font-weight: 100 700; font-display: swap; }
+@font-face { font-family: "IBM Plex Mono"; src: url("../fonts/IBMPlexMono-400.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "IBM Plex Mono"; src: url("../fonts/IBMPlexMono-500.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+:root {
+  --bg: #05070b; --surf: #0a0d13; --surf2: #0e1219; --line: #1a2030; --line2: #252c3d;
+  --ink: #f2f5fa; --ink2: #b6c0d1; --ink3: #7b8598; --ink4: #4f5867;
+  --key: #1569ff; --blue: #4d8dff; --green: #3ecf8e; --red: #ff5c6c;
+  --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-weight: 300; line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+a { color: inherit; text-decoration: none; }
+b, strong { font-weight: 600; color: var(--ink); }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+.mono { font-family: var(--mono); font-weight: 500; text-transform: uppercase; letter-spacing: .2em; }
+.eb { font-family: var(--mono); font-weight: 500; font-size: 11px; letter-spacing: .24em; text-transform: uppercase; color: var(--blue); display: inline-flex; align-items: center; gap: 12px; }
+.eb::before { content: ""; width: 22px; height: 1px; background: var(--blue); }
+/* header */
+.top { position: sticky; top: 0; z-index: 20; background: rgba(5,7,11,.92); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+.top .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; gap: 16px; }
+.brand { display: flex; align-items: center; gap: 12px; }
+.mark { width: 30px; height: 30px; border-radius: 8px; background: var(--key); display: grid; place-items: center; flex: 0 0 auto; }
+.mark i { width: 14px; height: 14px; border: 2.5px solid #fff; border-radius: 50%; display: block; }
+.word { font-family: var(--mono); font-size: 12px; letter-spacing: .3em; }
+.word em { font-style: normal; color: var(--blue); }
+.tr { display: flex; align-items: center; gap: 10px; }
+.langs { display: flex; border: 1px solid var(--line2); border-radius: 999px; overflow: hidden; }
+.langs button { background: none; border: 0; color: var(--ink3); font-family: var(--mono); font-size: 10.5px; letter-spacing: .14em; padding: 8px 11px; cursor: pointer; }
+.langs button.on { background: var(--surf2); color: var(--ink); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 14px 22px; border-radius: 999px; border: 1px solid var(--line2); font-family: var(--mono); font-weight: 500; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; white-space: nowrap; transition: border-color .2s, background .2s; }
+.btn:hover { border-color: var(--blue); }
+.btn.p { background: var(--key); border-color: var(--key); color: #fff; }
+.btn.p:hover { background: #0f57db; }
+.btn.s { padding: 10px 16px; font-size: 10px; }
+/* hero */
+.hero { padding: 96px 0 72px; border-bottom: 1px solid var(--line); }
+.hero h1 { font-size: clamp(40px, 7vw, 84px); font-weight: 600; letter-spacing: -.035em; line-height: 1.02; margin: 22px 0 26px; max-width: 980px; }
+.hero h1 span { color: var(--blue); }
+.hero p.lead { font-size: clamp(17px, 2vw, 21px); color: var(--ink2); max-width: 720px; }
+.cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; margin-top: 64px; }
+.stats div { background: var(--surf); padding: 26px 24px; }
+.stats b { display: block; font-family: var(--mono); font-weight: 500; font-size: clamp(26px, 3vw, 36px); letter-spacing: -.02em; color: var(--ink); line-height: 1.1; }
+.stats span { display: block; font-size: 14px; color: var(--ink3); margin-top: 8px; line-height: 1.45; }
+/* sections */
+section { padding: 88px 0; border-bottom: 1px solid var(--line); }
+h2 { font-size: clamp(30px, 4.2vw, 50px); font-weight: 600; letter-spacing: -.03em; line-height: 1.08; margin: 18px 0 18px; max-width: 860px; }
+.sub { font-size: 18px; color: var(--ink2); max-width: 760px; }
+.g3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 44px; }
+.g4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 44px; }
+.card { background: var(--surf); border: 1px solid var(--line); border-radius: 18px; padding: 26px; }
+.card h3 { font-size: 19px; font-weight: 600; letter-spacing: -.01em; margin: 16px 0 8px; line-height: 1.3; }
+.card p { font-size: 15px; color: var(--ink2); line-height: 1.55; }
+.ic { width: 40px; height: 40px; border-radius: 11px; display: grid; place-items: center; background: var(--surf2); border: 1px solid var(--line2); }
+.ic svg { width: 20px; height: 20px; }
+.ic.r svg { stroke: var(--red); } .ic.g svg { stroke: var(--green); } .ic.b svg { stroke: var(--blue); }
+.fact { display: flex; gap: 28px; align-items: center; margin-top: 18px; background: var(--surf); border: 1px solid var(--line); border-radius: 18px; padding: 26px 28px; }
+.fact b { font-family: var(--sans); font-weight: 600; font-size: clamp(40px, 5vw, 60px); color: var(--red); letter-spacing: -.035em; line-height: 1; flex: 0 0 auto; }
+.fact p { font-size: 15px; color: var(--ink2); }
+.fact small { display: block; color: var(--ink4); font-size: 13px; margin-top: 6px; }
+/* steps */
+.steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 44px; counter-reset: s; }
+.step { position: relative; background: var(--surf); border: 1px solid var(--line); border-radius: 18px; padding: 26px; }
+.step .n { font-family: var(--mono); font-weight: 500; font-size: 12px; letter-spacing: .2em; color: var(--blue); }
+.step h3 { font-size: 22px; font-weight: 600; margin: 12px 0 8px; letter-spacing: -.01em; }
+.step p { font-size: 15px; color: var(--ink2); line-height: 1.55; }
+.note { margin-top: 16px; display: flex; gap: 14px; align-items: flex-start; background: var(--surf); border: 1px solid var(--line); border-left: 3px solid var(--green); border-radius: 12px; padding: 18px 20px; font-size: 15px; color: var(--ink2); }
+.note b { color: var(--green); }
+/* comparison */
+.tbl { margin-top: 44px; border: 1px solid var(--line); border-radius: 18px; overflow: hidden; }
+.row { display: grid; grid-template-columns: 1.05fr 1.3fr 1.3fr; border-top: 1px solid var(--line); }
+.row:first-child { border-top: 0; }
+.row > div { padding: 18px 22px; font-size: 15px; color: var(--ink2); line-height: 1.5; display: flex; gap: 12px; align-items: flex-start; }
+.row > div:first-child { color: var(--ink); font-weight: 500; }
+.row > div:last-child { background: rgba(21,105,255,.06); color: var(--ink); }
+.row.h > div { font-family: var(--mono); font-weight: 500; font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase; color: var(--ink3); padding-top: 16px; padding-bottom: 16px; background: var(--surf); }
+.row.h > div:last-child { color: var(--blue); background: rgba(21,105,255,.1); }
+.x, .ok { flex: 0 0 auto; width: 18px; height: 18px; margin-top: 2px; }
+.x { stroke: var(--red); } .ok { stroke: var(--green); }
+.lab { display: none; }
+/* verify */
+.verify { display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; align-items: center; }
+.code { background: var(--surf); border: 1px solid var(--line); border-radius: 18px; padding: 24px; font-family: var(--mono); font-size: 13px; line-height: 1.9; color: var(--ink2); overflow: hidden; }
+.code .k { color: var(--blue); } .code .c { color: var(--ink4); } .code .v { color: var(--green); }
+.links { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+/* faq */
+.faq { margin-top: 36px; border-top: 1px solid var(--line); }
+details { border-bottom: 1px solid var(--line); }
+summary { list-style: none; cursor: pointer; padding: 22px 40px 22px 0; font-size: 18px; font-weight: 500; position: relative; }
+summary::-webkit-details-marker { display: none; }
+summary::after { content: "+"; position: absolute; right: 4px; top: 18px; font-family: var(--mono); font-size: 22px; color: var(--blue); }
+details[open] summary::after { content: "–"; }
+details p { padding: 0 0 22px; color: var(--ink2); font-size: 16px; max-width: 860px; }
+/* final */
+.final { text-align: center; border-bottom: 0; }
+.final h2 { margin-left: auto; margin-right: auto; }
+.final .sub { margin: 0 auto; }
+.final .cta { justify-content: center; }
+.risk { margin: 44px auto 0; max-width: 760px; font-size: 13px; color: var(--ink4); }
+footer { border-top: 1px solid var(--line); padding: 28px 0 40px; font-size: 13px; color: var(--ink4); }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
+@media (max-width: 960px) {
+  .g4, .steps { grid-template-columns: repeat(2, 1fr); }
+  .g3 { grid-template-columns: 1fr; }
+  .verify { grid-template-columns: 1fr; }
+  .stats { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+  .wrap { padding: 0 16px; }
+  .top .word { display: none; }
+  .top .btn.s { display: none; }
+  .hero { padding: 64px 0 52px; }
+  section { padding: 64px 0; }
+  .g4, .steps { grid-template-columns: 1fr; }
+  .fact { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .cta .btn { width: 100%; }
+  .row { grid-template-columns: 1fr; }
+  .row.h { display: none; }
+  .row > div { padding: 12px 16px; }
+  .row > div:first-child { padding-top: 18px; font-size: 16px; }
+  .row > div:last-child { padding-bottom: 18px; }
+  .lab { display: block; font-family: var(--mono); font-size: 9.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--ink4); margin-bottom: 2px; }
+  .row > div:last-child .lab { color: var(--blue); }
+}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="../#/"><span class="mark"><i></i></span><span class="word">SECTORA <em>LAUNCH</em></span></a>
+  <div class="tr"><div class="langs" id="langs"><button data-l="en">EN</button><button data-l="es">ES</button><button data-l="pt">PT</button></div><a class="btn s p" href="../#/" data-i="open">Open the app</a></div>
+</div></header>
+
+<main>
+<div class="hero"><div class="wrap">
+  <span class="eb" data-i="h_eb">Sectora Launch · Introduction</span>
+  <h1 data-i="h_t">The fair launchpad. <span>Built so nobody can rug you.</span></h1>
+  <p class="lead" data-i="h_p">One price for everyone. 100 % back if a reserve does not fill. Liquidity locked forever. Every rule is written in the smart contract, not in a promise.</p>
+  <div class="cta"><a class="btn p" href="../#/" data-i="c_explore">Explore coins</a><a class="btn" href="../#/create" data-i="c_create">Create a coin</a><a class="btn" href="#how" data-i="c_how">How it works</a></div>
+  <div class="stats">
+    <div><b>1</b><span data-i="s1">price for every buyer in a reserve</span></div>
+    <div><b>100%</b><span data-i="s2">back if the reserve does not fill</span></div>
+    <div><b>0</b><span data-i="s3">ways to withdraw the liquidity</span></div>
+    <div><b>30d</b><span data-i="s4">vesting for the creator's 5 %</span></div>
+  </div>
+</div></div>
+
+<section><div class="wrap">
+  <span class="eb" data-i="p_eb">The problem</span>
+  <h2 data-i="p_t">Why most new coins end badly</h2>
+  <p class="sub" data-i="p_p">On most launchpads the price rises with every buy. Whoever buys first pays the least, and that is usually bots, insiders or the creator. When the price climbs, they sell to the people who arrived later.</p>
+  <div class="g3">
+    <div class="card"><div class="ic r"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></div><h3 data-i="p1t">Snipers buy first</h3><p data-i="p1p">Bots buy in the first seconds at the lowest price and sell into the first wave of real buyers.</p></div>
+    <div class="card"><div class="ic r"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M3 7h18M3 12h12M3 17h7"/><path d="m16 15 5 5m0-5-5 5"/></svg></div><h3 data-i="p2t">The creator dumps</h3><p data-i="p2p">The creator can buy cheap at launch and sell everything at any moment, often minutes later.</p></div>
+    <div class="card"><div class="ic r"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M12 9v4m0 4h.01"/><path d="M10.3 3.9 2.4 18a2 2 0 0 0 1.7 3h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg></div><h3 data-i="p3t">There is no way back</h3><p data-i="p3p">If the coin never takes off, the buyers keep the loss. Nothing is returned.</p></div>
+  </div>
+  <div class="fact"><b>98.6%</b><p data-i="f_p">of the tokens launched on pump.fun showed pump-and-dump or rug-pull patterns, according to a report by Solidus Labs.<small>pump.fun disputes the figure.</small></p></div>
+</div></section>
+
+<section id="how"><div class="wrap">
+  <span class="eb" data-i="w_eb">How Sectora Launch works</span>
+  <h2 data-i="w_t">A reserve first. A launch only when the goal is met.</h2>
+  <div class="steps">
+    <div class="step"><span class="n">01</span><h3 data-i="w1t">Create</h3><p data-i="w1p">Anyone creates a coin for free: fixed supply, no owner, no mint, no tax. The creator picks the goal: $3,000, $7,000 or $15,000.</p></div>
+    <div class="step"><span class="n">02</span><h3 data-i="w2t">Reserve</h3><p data-i="w2p">Everyone pays the same price, up to $150, $350 or $500 per wallet, so every launch needs at least 20 wallets. You can take your money back at any time before launch.</p></div>
+    <div class="step"><span class="n">03</span><h3 data-i="w3t">Launch</h3><p data-i="w3p">At the goal the coin goes live on Uniswap, 50 % above the reserve price. The liquidity tokens are burned: nobody can ever withdraw them.</p></div>
+    <div class="step"><span class="n">04</span><h3 data-i="w4t">Delivery</h3><p data-i="w4p">75 % of your tokens at launch, the rest over 7 days. Lock for 30 days and earn a bonus of up to +25 %.</p></div>
+  </div>
+  <div class="note"><svg class="ok" viewBox="0 0 24 24" fill="none" stroke-width="2.2"><path d="M5 12l5 5L20 7"/></svg><span data-i="w_note"><b>The goal is not reached in time?</b> Everyone takes back 100 %. No fees.</span></div>
+</div></section>
+
+<section><div class="wrap">
+  <span class="eb" data-i="g_eb">Protections</span>
+  <h2 data-i="g_t">Eight protections, enforced by code</h2>
+  <p class="sub" data-i="g_p">None of them depends on trusting the team. They are rules of the smart contract and apply to every coin, automatically.</p>
+  <div class="g4">
+    <div class="card"><div class="ic g"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M4 12h16M12 4v16"/></svg></div><h3 data-i="g1t">One price for everyone</h3><p data-i="g1p">No early-bird discount and no curve to front-run. Bots get no advantage.</p></div>
+    <div class="card"><div class="ic g"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.8-3 3-4.6 5.5-4.6s4.7 1.6 5.5 4.6"/><path d="M17 8v7m-3-3h6"/></svg></div><h3 data-i="g2t">Maximum per wallet</h3><p data-i="g2p">$150, $350 or $500 per wallet. No whale and no creator can take most of the supply.</p></div>
+    <div class="card"><div class="ic g"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg></div><h3 data-i="g3t">100 % refund</h3><p data-i="g3p">If the reserve does not reach its goal in time, everyone takes back everything. No fees.</p></div>
+    <div class="card"><div class="ic g"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div><h3 data-i="g4t">Liquidity burned forever</h3><p data-i="g4p">At launch the LP tokens are sent to 0x…dEaD. The liquidity can never be pulled.</p></div>
+    <div class="card"><div class="ic g"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M12 3 4 7v5c0 4.4 3.4 8.3 8 9 4.6-.7 8-4.6 8-9V7z"/><path d="m9 12 2 2 4-4"/></svg></div><h3 data-i="g5t">A clean token</h3><p data-i="g5p">Fixed supply. No owner, no mint, no tax, no blacklist, no transfer tricks.</p></div>
+    <div class="card"><div class="ic g"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg></div><h3 data-i="g6t">Creator vesting</h3><p data-i="g6p">The creator's 5 % unlocks over 30 days. No dumping on day one.</p></div>
+    <div class="card"><div class="ic g"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M4 20V10m6 10V4m6 16v-7m4 7H2"/></svg></div><h3 data-i="g7t">Gradual delivery</h3><p data-i="g7p">75 % at launch and 25 % over 7 days, so the price is not crushed in the first minute.</p></div>
+    <div class="card"><div class="ic g"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M7 3h10l4 4v14H3V3z"/><path d="M8 13h8M8 17h5"/></svg></div><h3 data-i="g8t">Rules nobody can change</h3><p data-i="g8p">No pause button and no admin power over reserves, pools or coins. The owner can only change where Sectora's fee is paid.</p></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <span class="eb" data-i="t_eb">Comparison</span>
+  <h2 data-i="t_t">Sectora Launch vs typical launchpads</h2>
+  <p class="sub" data-i="t_p">Most launchpads, including pump.fun, sell new coins on a bonding curve. This is what changes.</p>
+  <div class="tbl" id="tbl"></div>
+</div></section>
+
+<section><div class="wrap">
+  <span class="eb" data-i="cr_eb">For creators</span>
+  <h2 data-i="cr_t">Honest creators fill their reserve faster</h2>
+  <p class="sub" data-i="cr_p">Buyers trust a launch they cannot be rugged in. That trust is your best marketing.</p>
+  <div class="g4">
+    <div class="card"><div class="ic b"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M12 5v14M5 12h14"/></svg></div><h3 data-i="cr1t">Free to create</h3><p data-i="cr1p">Creating a coin costs nothing but the network fee.</p></div>
+    <div class="card"><div class="ic b"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><circle cx="12" cy="12" r="8.5"/><path d="M14.5 9.5c-.5-1-1.5-1.5-2.5-1.5-1.4 0-2.5.8-2.5 2s1.1 1.6 2.5 2 2.5.8 2.5 2-1.1 2-2.5 2c-1 0-2-.5-2.5-1.5M12 6.5V8m0 8v1.5"/></svg></div><h3 data-i="cr2t">1 % of the reserve</h3><p data-i="cr2p">Paid to the creator in SECT on the day the coin launches.</p></div>
+    <div class="card"><div class="ic b"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M4 19h16M7 16V9m5 7V5m5 11v-4"/></svg></div><h3 data-i="cr3t">5 % of the supply</h3><p data-i="cr3p">Delivered over 30 days, aligned with the people who believed in the coin.</p></div>
+    <div class="card"><div class="ic b"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M12 3 4 7v5c0 4.4 3.4 8.3 8 9 4.6-.7 8-4.6 8-9V7z"/></svg></div><h3 data-i="cr4t">A visible Shield score</h3><p data-i="cr4p">Every coin page shows buyers its protections and score at a glance.</p></div>
+  </div>
+</div></section>
+
+<section><div class="wrap verify">
+  <div>
+    <span class="eb" data-i="v_eb">Don't trust. Verify.</span>
+    <h2 data-i="v_t">Open source, on Ethereum, checkable by anyone</h2>
+    <p class="sub" data-i="v_p">Sectora Launch runs on an open-source smart contract. Every reserve, every launch and every burned LP token can be checked on-chain, by anyone, at any time.</p>
+    <div class="links"><a class="btn p" href="https://github.com/atomethereum-dot/sectoralabs/blob/main/contracts/SectoraFairLaunch.sol" target="_blank" rel="noopener" data-i="v_code">Read the contract</a><a class="btn" href="../#/safety" data-i="v_sec">Security</a><a class="btn" href="../#/stats" data-i="v_tr">Transparency</a></div>
+  </div>
+  <div class="code" aria-hidden="true">
+    <div><span class="c">// at launch, in the same transaction</span></div>
+    <div><span class="k">pool</span>   = 98% of the reserve + pool tokens</div>
+    <div><span class="k">LP</span>     → <span class="v">0x000…dEaD</span></div>
+    <div><span class="k">open</span>   = reserve price × <span class="v">1.5</span></div>
+    <div><span class="k">refund</span> = <span class="v">100%</span> if the goal is missed</div>
+    <div><span class="k">mint()</span> = <span class="v">does not exist</span></div>
+    <div><span class="k">pause()</span>= <span class="v">does not exist</span></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <span class="eb" data-i="q_eb">Questions</span>
+  <h2 data-i="q_t">Frequently asked questions</h2>
+  <div class="faq">
+    <details><summary data-i="q1">Can the creator run away with the money?</summary><p data-i="a1">No. The reserve is held by the smart contract. At launch 98 % goes into the Uniswap pool and the LP tokens are burned. The creator only receives a 1 % fee and 5 % of the tokens over 30 days.</p></details>
+    <details><summary data-i="q2">What happens if the reserve does not fill?</summary><p data-i="a2">After the deadline everyone takes back 100 % of what they put in. You can also withdraw at any time before launch. No fees in either case.</p></details>
+    <details><summary data-i="q3">Why is every coin priced in SECT?</summary><p data-i="a3">SECT is the currency of the Sectora ecosystem. You can pay with ETH, USDT or SECT: ETH and USDT are swapped to SECT automatically on Uniswap.</p></details>
+    <details><summary data-i="q4">Does this mean a coin cannot lose value?</summary><p data-i="a4">No. The rules remove rug pulls and unfair advantages, but a new coin is still high risk: its price depends on the people who buy and sell it.</p></details>
+    <details><summary data-i="q5">Which network does it use?</summary><p data-i="a5">Ethereum today. SectoraEVM, Sectora's own network, is expected around March 2027.</p></details>
+  </div>
+</div></section>
+
+<section class="final"><div class="wrap">
+  <h2 data-i="e_t">Launch fair. Buy fair.</h2>
+  <p class="sub" data-i="e_p">The launchpad where the rules protect the buyer, not the insider.</p>
+  <div class="cta"><a class="btn p" href="../#/" data-i="c_explore">Explore coins</a><a class="btn" href="../#/create" data-i="c_create">Create a coin</a></div>
+  <p class="risk" data-i="risk">New coins are high risk. Sectora Launch protects against unfair launches, not against market losses. Only use money you can afford to lose.</p>
+</div></section>
+</main>
+
+<footer><div class="wrap"><span data-i="foot">© 2026 Sectora Foundation IL. All rights reserved.</span><span>sectoralabs.com</span></div></footer>
+
+<script>
+(function () {
+  "use strict";
+  var X = '<svg class="x" viewBox="0 0 24 24" fill="none" stroke-width="2.2"><path d="M6 6l12 12M18 6 6 18"/></svg>';
+  var OK = '<svg class="ok" viewBox="0 0 24 24" fill="none" stroke-width="2.2"><path d="M5 12l5 5L20 7"/></svg>';
+  var T = {
+    en: {
+      open: "Open the app", h_eb: "Sectora Launch · Introduction",
+      h_t: "The fair launchpad. <span>Built so nobody can rug you.</span>",
+      h_p: "One price for everyone. 100 % back if a reserve does not fill. Liquidity locked forever. Every rule is written in the smart contract, not in a promise.",
+      c_explore: "Explore coins", c_create: "Create a coin", c_how: "How it works",
+      s1: "price for every buyer in a reserve", s2: "back if the reserve does not fill", s3: "ways to withdraw the liquidity", s4: "vesting for the creator's 5 %",
+      p_eb: "The problem", p_t: "Why most new coins end badly",
+      p_p: "On most launchpads the price rises with every buy. Whoever buys first pays the least, and that is usually bots, insiders or the creator. When the price climbs, they sell to the people who arrived later.",
+      p1t: "Snipers buy first", p1p: "Bots buy in the first seconds at the lowest price and sell into the first wave of real buyers.",
+      p2t: "The creator dumps", p2p: "The creator can buy cheap at launch and sell everything at any moment, often minutes later.",
+      p3t: "There is no way back", p3p: "If the coin never takes off, the buyers keep the loss. Nothing is returned.",
+      f_p: "of the tokens launched on pump.fun showed pump-and-dump or rug-pull patterns, according to a report by Solidus Labs.<small>pump.fun disputes the figure.</small>",
+      w_eb: "How Sectora Launch works", w_t: "A reserve first. A launch only when the goal is met.",
+      w1t: "Create", w1p: "Anyone creates a coin for free: fixed supply, no owner, no mint, no tax. The creator picks the goal: $3,000, $7,000 or $15,000.",
+      w2t: "Reserve", w2p: "Everyone pays the same price, up to $150, $350 or $500 per wallet, so every launch needs at least 20 wallets. You can take your money back at any time before launch.",
+      w3t: "Launch", w3p: "At the goal the coin goes live on Uniswap, 50 % above the reserve price. The liquidity tokens are burned: nobody can ever withdraw them.",
+      w4t: "Delivery", w4p: "75 % of your tokens at launch, the rest over 7 days. Lock for 30 days and earn a bonus of up to +25 %.",
+      w_note: "<b>The goal is not reached in time?</b> Everyone takes back 100 %. No fees.",
+      g_eb: "Protections", g_t: "Eight protections, enforced by code", g_p: "None of them depends on trusting the team. They are rules of the smart contract and apply to every coin, automatically.",
+      g1t: "One price for everyone", g1p: "No early-bird discount and no curve to front-run. Bots get no advantage.",
+      g2t: "Maximum per wallet", g2p: "$150, $350 or $500 per wallet. No whale and no creator can take most of the supply.",
+      g3t: "100 % refund", g3p: "If the reserve does not reach its goal in time, everyone takes back everything. No fees.",
+      g4t: "Liquidity burned forever", g4p: "At launch the LP tokens are sent to 0x…dEaD. The liquidity can never be pulled.",
+      g5t: "A clean token", g5p: "Fixed supply. No owner, no mint, no tax, no blacklist, no transfer tricks.",
+      g6t: "Creator vesting", g6p: "The creator's 5 % unlocks over 30 days. No dumping on day one.",
+      g7t: "Gradual delivery", g7p: "75 % at launch and 25 % over 7 days, so the price is not crushed in the first minute.",
+      g8t: "Rules nobody can change", g8p: "No pause button and no admin power over reserves, pools or coins. The owner can only change where Sectora's fee is paid.",
+      t_eb: "Comparison", t_t: "Sectora Launch vs typical launchpads", t_p: "Most launchpads, including pump.fun, sell new coins on a bonding curve. This is what changes.",
+      th: ["", "Typical launchpads", "Sectora Launch"],
+      rows: [
+        ["Price for buyers", "Rises with every buy: the first buyers pay the least", "The same price for everyone in the reserve"],
+        ["Sniper bots", "Buy in the first seconds at the lowest price", "No advantage: same price and a maximum per wallet"],
+        ["The creator at launch", "Can buy first and sell at any moment", "No cheaper price; their 5 % unlocks over 30 days"],
+        ["Maximum per wallet", "None", "$150, $350 or $500"],
+        ["If the coin does not take off", "The buyers keep the loss", "100 % back before launch, no fees"],
+        ["Opening price", "Set by the curve", "50 % above what the reserve paid"],
+        ["Tokens at launch", "Everything can be sold at once", "75 % at launch, 25 % over 7 days"],
+        ["Liquidity", "Depends on each platform", "Burned forever at launch"]
+      ],
+      cr_eb: "For creators", cr_t: "Honest creators fill their reserve faster", cr_p: "Buyers trust a launch they cannot be rugged in. That trust is your best marketing.",
+      cr1t: "Free to create", cr1p: "Creating a coin costs nothing but the network fee.",
+      cr2t: "1 % of the reserve", cr2p: "Paid to the creator in SECT on the day the coin launches.",
+      cr3t: "5 % of the supply", cr3p: "Delivered over 30 days, aligned with the people who believed in the coin.",
+      cr4t: "A visible Shield score", cr4p: "Every coin page shows buyers its protections and score at a glance.",
+      v_eb: "Don't trust. Verify.", v_t: "Open source, on Ethereum, checkable by anyone",
+      v_p: "Sectora Launch runs on an open-source smart contract. Every reserve, every launch and every burned LP token can be checked on-chain, by anyone, at any time.",
+      v_code: "Read the contract", v_sec: "Security", v_tr: "Transparency",
+      q_eb: "Questions", q_t: "Frequently asked questions",
+      q1: "Can the creator run away with the money?", a1: "No. The reserve is held by the smart contract. At launch 98 % goes into the Uniswap pool and the LP tokens are burned. The creator only receives a 1 % fee and 5 % of the tokens over 30 days.",
+      q2: "What happens if the reserve does not fill?", a2: "After the deadline everyone takes back 100 % of what they put in. You can also withdraw at any time before launch. No fees in either case.",
+      q3: "Why is every coin priced in SECT?", a3: "SECT is the currency of the Sectora ecosystem. You can pay with ETH, USDT or SECT: ETH and USDT are swapped to SECT automatically on Uniswap.",
+      q4: "Does this mean a coin cannot lose value?", a4: "No. The rules remove rug pulls and unfair advantages, but a new coin is still high risk: its price depends on the people who buy and sell it.",
+      q5: "Which network does it use?", a5: "Ethereum today. SectoraEVM, Sectora's own network, is expected around March 2027.",
+      e_t: "Launch fair. Buy fair.", e_p: "The launchpad where the rules protect the buyer, not the insider.",
+      risk: "New coins are high risk. Sectora Launch protects against unfair launches, not against market losses. Only use money you can afford to lose.",
+      foot: "© 2026 Sectora Foundation IL. All rights reserved.", title: "Sectora Launch · The fair launchpad"
+    },
+    es: {
+      open: "Abrir la app", h_eb: "Sectora Launch · Introducción",
+      h_t: "El launchpad justo. <span>Hecho para que nadie te haga rug.</span>",
+      h_p: "Un solo precio para todos. 100 % de vuelta si la reserva no se llena. Liquidez bloqueada para siempre. Cada regla está escrita en el contrato inteligente, no en una promesa.",
+      c_explore: "Explorar monedas", c_create: "Crear una moneda", c_how: "Cómo funciona",
+      s1: "precio para todos los compradores de una reserva", s2: "de vuelta si la reserva no se llena", s3: "formas de retirar la liquidez", s4: "de entrega para el 5 % del creador",
+      p_eb: "El problema", p_t: "Por qué la mayoría de monedas nuevas terminan mal",
+      p_p: "En la mayoría de launchpads el precio sube con cada compra. Quien compra primero paga menos, y casi siempre son bots, gente de dentro o el propio creador. Cuando el precio sube, le venden a los que llegaron después.",
+      p1t: "Los snipers compran primero", p1p: "Los bots compran en los primeros segundos al precio más bajo y le venden a la primera ola de compradores reales.",
+      p2t: "El creador vende todo", p2p: "El creador puede comprar barato al lanzar y venderlo todo en cualquier momento, muchas veces minutos después.",
+      p3t: "No hay vuelta atrás", p3p: "Si la moneda nunca despega, los compradores se quedan con la pérdida. No se devuelve nada.",
+      f_p: "de los tokens lanzados en pump.fun mostraron patrones de pump-and-dump o rug pull, según un informe de Solidus Labs.<small>pump.fun discute la cifra.</small>",
+      w_eb: "Cómo funciona Sectora Launch", w_t: "Primero una reserva. Lanzamiento solo si se alcanza la meta.",
+      w1t: "Crear", w1p: "Cualquiera crea una moneda gratis: supply fijo, sin dueño, sin emisión, sin impuestos. El creador elige la meta: $3.000, $7.000 o $15.000.",
+      w2t: "Reserva", w2p: "Todos pagan el mismo precio, hasta $150, $350 o $500 por wallet, así que cada lanzamiento necesita al menos 20 wallets. Puedes retirar tu dinero en cualquier momento antes del lanzamiento.",
+      w3t: "Lanzamiento", w3p: "Al llegar a la meta, la moneda sale en Uniswap un 50 % por encima del precio de la reserva. Los tokens de liquidez se queman: nadie puede retirarlos nunca.",
+      w4t: "Entrega", w4p: "El 75 % de tus tokens al lanzar y el resto en 7 días. Bloquea 30 días y gana un bonus de hasta +25 %.",
+      w_note: "<b>¿No se llega a la meta a tiempo?</b> Todos recuperan el 100 %. Sin comisiones.",
+      g_eb: "Protecciones", g_t: "Ocho protecciones, garantizadas por código", g_p: "Ninguna depende de confiar en el equipo. Son reglas del contrato inteligente y se aplican a todas las monedas, automáticamente.",
+      g1t: "Un solo precio para todos", g1p: "Sin descuento para los primeros y sin curva que adelantar. Los bots no tienen ventaja.",
+      g2t: "Máximo por wallet", g2p: "$150, $350 o $500 por wallet. Ninguna ballena ni el creador pueden quedarse con la mayor parte.",
+      g3t: "Devolución del 100 %", g3p: "Si la reserva no llega a su meta a tiempo, todos recuperan todo. Sin comisiones.",
+      g4t: "Liquidez quemada para siempre", g4p: "Al lanzar, los tokens LP se envían a 0x…dEaD. La liquidez no se puede retirar nunca.",
+      g5t: "Un token limpio", g5p: "Supply fijo. Sin dueño, sin emisión, sin impuestos, sin lista negra, sin trucos en las transferencias.",
+      g6t: "Entrega gradual al creador", g6p: "El 5 % del creador se libera en 30 días. Nada de vender todo el primer día.",
+      g7t: "Entrega gradual", g7p: "75 % al lanzar y 25 % en 7 días, para que el precio no se hunda en el primer minuto.",
+      g8t: "Reglas que nadie puede cambiar", g8p: "Sin botón de pausa y sin poder de administrador sobre reservas, pools o monedas. El dueño solo puede cambiar a dónde se paga la comisión de Sectora.",
+      t_eb: "Comparación", t_t: "Sectora Launch frente a los launchpads típicos", t_p: "La mayoría de launchpads, incluido pump.fun, venden las monedas nuevas con una curva de precios. Esto es lo que cambia.",
+      th: ["", "Launchpads típicos", "Sectora Launch"],
+      rows: [
+        ["Precio para los compradores", "Sube con cada compra: los primeros pagan menos", "El mismo precio para todos en la reserva"],
+        ["Bots snipers", "Compran en los primeros segundos al precio más bajo", "Sin ventaja: mismo precio y máximo por wallet"],
+        ["El creador al lanzar", "Puede comprar primero y vender en cualquier momento", "Sin precio más barato; su 5 % se libera en 30 días"],
+        ["Máximo por wallet", "Ninguno", "$150, $350 o $500"],
+        ["Si la moneda no despega", "Los compradores se quedan con la pérdida", "100 % de vuelta antes del lanzamiento, sin comisiones"],
+        ["Precio de apertura", "Lo marca la curva", "50 % por encima de lo que pagó la reserva"],
+        ["Tokens al lanzar", "Todo se puede vender de golpe", "75 % al lanzar, 25 % en 7 días"],
+        ["Liquidez", "Depende de cada plataforma", "Quemada para siempre al lanzar"]
+      ],
+      cr_eb: "Para creadores", cr_t: "Los creadores honestos llenan su reserva más rápido", cr_p: "Los compradores confían en un lanzamiento donde no les pueden hacer rug. Esa confianza es tu mejor publicidad.",
+      cr1t: "Crear es gratis", cr1p: "Crear una moneda no cuesta nada, solo la comisión de la red.",
+      cr2t: "1 % de la reserva", cr2p: "Se paga al creador en SECT el mismo día que la moneda se lanza.",
+      cr3t: "5 % del supply", cr3p: "Se entrega en 30 días, alineado con la gente que creyó en la moneda.",
+      cr4t: "Puntuación Shield visible", cr4p: "La página de cada moneda muestra a los compradores sus protecciones y su puntuación de un vistazo.",
+      v_eb: "No confíes. Verifica.", v_t: "Código abierto, en Ethereum, comprobable por cualquiera",
+      v_p: "Sectora Launch funciona con un contrato inteligente de código abierto. Cada reserva, cada lanzamiento y cada token LP quemado se puede comprobar en la blockchain, por cualquiera y en cualquier momento.",
+      v_code: "Leer el contrato", v_sec: "Seguridad", v_tr: "Transparencia",
+      q_eb: "Preguntas", q_t: "Preguntas frecuentes",
+      q1: "¿Puede el creador escaparse con el dinero?", a1: "No. La reserva la guarda el contrato inteligente. Al lanzar, el 98 % entra en la pool de Uniswap y los tokens LP se queman. El creador solo recibe una comisión del 1 % y el 5 % de los tokens en 30 días.",
+      q2: "¿Qué pasa si la reserva no se llena?", a2: "Tras la fecha límite, todos recuperan el 100 % de lo que pusieron. También puedes retirarte en cualquier momento antes del lanzamiento. Sin comisiones en ningún caso.",
+      q3: "¿Por qué todas las monedas cotizan en SECT?", a3: "SECT es la moneda del ecosistema Sectora. Puedes pagar con ETH, USDT o SECT: el ETH y el USDT se cambian a SECT automáticamente en Uniswap.",
+      q4: "¿Significa esto que una moneda no puede perder valor?", a4: "No. Las reglas eliminan los rugs y las ventajas injustas, pero una moneda nueva sigue siendo de alto riesgo: su precio depende de quienes la compran y la venden.",
+      q5: "¿Qué red usa?", a5: "Ethereum hoy. SectoraEVM, la red propia de Sectora, se espera hacia marzo de 2027.",
+      e_t: "Lanza justo. Compra justo.", e_p: "El launchpad donde las reglas protegen al comprador, no al de dentro.",
+      risk: "Las monedas nuevas son de alto riesgo. Sectora Launch protege contra lanzamientos injustos, no contra pérdidas del mercado. Usa solo dinero que puedas permitirte perder.",
+      foot: "© 2026 Sectora Foundation IL. Todos los derechos reservados.", title: "Sectora Launch · El launchpad justo"
+    },
+    pt: {
+      open: "Abrir o app", h_eb: "Sectora Launch · Introdução",
+      h_t: "O launchpad justo. <span>Feito para ninguém te dar rug.</span>",
+      h_p: "Um único preço para todos. 100 % de volta se a reserva não encher. Liquidez travada para sempre. Cada regra está escrita no contrato inteligente, não numa promessa.",
+      c_explore: "Explorar moedas", c_create: "Criar uma moeda", c_how: "Como funciona",
+      s1: "preço para todos os compradores de uma reserva", s2: "de volta se a reserva não encher", s3: "formas de retirar a liquidez", s4: "de liberação para os 5 % do criador",
+      p_eb: "O problema", p_t: "Por que a maioria das moedas novas termina mal",
+      p_p: "Na maioria dos launchpads o preço sobe a cada compra. Quem compra primeiro paga menos, e quase sempre são bots, gente de dentro ou o próprio criador. Quando o preço sobe, eles vendem para quem chegou depois.",
+      p1t: "Os snipers compram primeiro", p1p: "Os bots compram nos primeiros segundos pelo menor preço e vendem para a primeira onda de compradores reais.",
+      p2t: "O criador vende tudo", p2p: "O criador pode comprar barato no lançamento e vender tudo a qualquer momento, muitas vezes minutos depois.",
+      p3t: "Não há volta", p3p: "Se a moeda nunca decola, os compradores ficam com o prejuízo. Nada é devolvido.",
+      f_p: "dos tokens lançados na pump.fun mostraram padrões de pump-and-dump ou rug pull, segundo um relatório da Solidus Labs.<small>A pump.fun contesta o número.</small>",
+      w_eb: "Como funciona o Sectora Launch", w_t: "Primeiro uma reserva. Lançamento só quando a meta é atingida.",
+      w1t: "Criar", w1p: "Qualquer pessoa cria uma moeda de graça: supply fixo, sem dono, sem emissão, sem taxas. O criador escolhe a meta: $3.000, $7.000 ou $15.000.",
+      w2t: "Reserva", w2p: "Todos pagam o mesmo preço, até $150, $350 ou $500 por carteira, então cada lançamento precisa de pelo menos 20 carteiras. Você pode retirar seu dinheiro a qualquer momento antes do lançamento.",
+      w3t: "Lançamento", w3p: "Ao atingir a meta, a moeda vai para a Uniswap 50 % acima do preço da reserva. Os tokens de liquidez são queimados: ninguém pode retirá-los nunca.",
+      w4t: "Entrega", w4p: "75 % dos seus tokens no lançamento e o resto em 7 dias. Trave por 30 dias e ganhe um bônus de até +25 %.",
+      w_note: "<b>A meta não foi atingida a tempo?</b> Todos recebem 100 % de volta. Sem taxas.",
+      g_eb: "Proteções", g_t: "Oito proteções, garantidas por código", g_p: "Nenhuma depende de confiar na equipe. São regras do contrato inteligente e valem para todas as moedas, automaticamente.",
+      g1t: "Um único preço para todos", g1p: "Sem desconto para os primeiros e sem curva para passar na frente. Os bots não têm vantagem.",
+      g2t: "Máximo por carteira", g2p: "$150, $350 ou $500 por carteira. Nenhuma baleia nem o criador pode ficar com a maior parte.",
+      g3t: "Devolução de 100 %", g3p: "Se a reserva não atingir a meta a tempo, todos recebem tudo de volta. Sem taxas.",
+      g4t: "Liquidez queimada para sempre", g4p: "No lançamento, os tokens LP são enviados para 0x…dEaD. A liquidez nunca pode ser retirada.",
+      g5t: "Um token limpo", g5p: "Supply fixo. Sem dono, sem emissão, sem taxas, sem lista negra, sem truques nas transferências.",
+      g6t: "Liberação gradual ao criador", g6p: "Os 5 % do criador são liberados em 30 dias. Nada de vender tudo no primeiro dia.",
+      g7t: "Entrega gradual", g7p: "75 % no lançamento e 25 % em 7 dias, para o preço não desabar no primeiro minuto.",
+      g8t: "Regras que ninguém pode mudar", g8p: "Sem botão de pausa e sem poder de administrador sobre reservas, pools ou moedas. O dono só pode mudar para onde vai a taxa da Sectora.",
+      t_eb: "Comparação", t_t: "Sectora Launch versus launchpads típicos", t_p: "A maioria dos launchpads, incluindo a pump.fun, vende as moedas novas numa curva de preços. Isto é o que muda.",
+      th: ["", "Launchpads típicos", "Sectora Launch"],
+      rows: [
+        ["Preço para os compradores", "Sobe a cada compra: os primeiros pagam menos", "O mesmo preço para todos na reserva"],
+        ["Bots snipers", "Compram nos primeiros segundos pelo menor preço", "Sem vantagem: mesmo preço e máximo por carteira"],
+        ["O criador no lançamento", "Pode comprar primeiro e vender a qualquer momento", "Sem preço mais barato; seus 5 % liberados em 30 dias"],
+        ["Máximo por carteira", "Nenhum", "$150, $350 ou $500"],
+        ["Se a moeda não decolar", "Os compradores ficam com o prejuízo", "100 % de volta antes do lançamento, sem taxas"],
+        ["Preço de abertura", "Definido pela curva", "50 % acima do que a reserva pagou"],
+        ["Tokens no lançamento", "Tudo pode ser vendido de uma vez", "75 % no lançamento, 25 % em 7 dias"],
+        ["Liquidez", "Depende de cada plataforma", "Queimada para sempre no lançamento"]
+      ],
+      cr_eb: "Para criadores", cr_t: "Criadores honestos enchem a reserva mais rápido", cr_p: "Os compradores confiam num lançamento onde não podem levar rug. Essa confiança é o seu melhor marketing.",
+      cr1t: "Criar é grátis", cr1p: "Criar uma moeda não custa nada, só a taxa da rede.",
+      cr2t: "1 % da reserva", cr2p: "Pago ao criador em SECT no dia em que a moeda é lançada.",
+      cr3t: "5 % do supply", cr3p: "Entregue em 30 dias, alinhado com quem acreditou na moeda.",
+      cr4t: "Pontuação Shield visível", cr4p: "A página de cada moeda mostra aos compradores as proteções e a pontuação num relance.",
+      v_eb: "Não confie. Verifique.", v_t: "Código aberto, na Ethereum, verificável por qualquer pessoa",
+      v_p: "O Sectora Launch funciona com um contrato inteligente de código aberto. Cada reserva, cada lançamento e cada token LP queimado pode ser verificado na blockchain, por qualquer pessoa, a qualquer momento.",
+      v_code: "Ler o contrato", v_sec: "Segurança", v_tr: "Transparência",
+      q_eb: "Perguntas", q_t: "Perguntas frequentes",
+      q1: "O criador pode fugir com o dinheiro?", a1: "Não. A reserva fica com o contrato inteligente. No lançamento, 98 % vai para a pool da Uniswap e os tokens LP são queimados. O criador só recebe uma taxa de 1 % e 5 % dos tokens em 30 dias.",
+      q2: "O que acontece se a reserva não encher?", a2: "Depois do prazo, todos recebem 100 % do que colocaram. Você também pode sair a qualquer momento antes do lançamento. Sem taxas em nenhum caso.",
+      q3: "Por que todas as moedas são cotadas em SECT?", a3: "SECT é a moeda do ecossistema Sectora. Você pode pagar com ETH, USDT ou SECT: o ETH e o USDT são trocados por SECT automaticamente na Uniswap.",
+      q4: "Isso significa que uma moeda não pode perder valor?", a4: "Não. As regras eliminam os rugs e as vantagens injustas, mas uma moeda nova continua sendo de alto risco: o preço depende de quem compra e vende.",
+      q5: "Qual rede usa?", a5: "Ethereum hoje. A SectoraEVM, a rede própria da Sectora, é esperada por volta de março de 2027.",
+      e_t: "Lance justo. Compre justo.", e_p: "O launchpad onde as regras protegem o comprador, não quem está por dentro.",
+      risk: "Moedas novas são de alto risco. O Sectora Launch protege contra lançamentos injustos, não contra perdas de mercado. Use apenas dinheiro que você pode perder.",
+      foot: "© 2026 Sectora Foundation IL. Todos os direitos reservados.", title: "Sectora Launch · O launchpad justo"
+    }
+  };
+  function pick() {
+    var q = (location.search.match(/[?&]lang=([a-z]{2})/) || [])[1];
+    if (q && T[q]) return q;
+    try { var s = sessionStorage.getItem("sectoraLaunch.lang"); if (s && T[s]) return s; } catch (e) {}
+    var n = String(navigator.language || "en").slice(0, 2).toLowerCase();
+    return T[n] ? n : "en";
+  }
+  function table(d) {
+    var h = '<div class="row h"><div>' + d.th[0] + "</div><div>" + d.th[1] + "</div><div>" + d.th[2] + "</div></div>";
+    return h + d.rows.map(function (r) {
+      return '<div class="row"><div>' + r[0] + "</div><div>" + X + '<span><span class="lab">' + d.th[1] + "</span>" + r[1] + "</span></div><div>" + OK + '<span><span class="lab">' + d.th[2] + "</span>" + r[2] + "</span></div></div>";
+    }).join("");
+  }
+  function apply(l) {
+    var d = T[l] || T.en;
+    document.documentElement.lang = l;
+    document.title = d.title;
+    document.querySelectorAll("[data-i]").forEach(function (el) { var k = el.getAttribute("data-i"); if (d[k] != null) el.innerHTML = d[k]; });
+    document.getElementById("tbl").innerHTML = table(d);
+    document.querySelectorAll("#langs button").forEach(function (b) { b.classList.toggle("on", b.getAttribute("data-l") === l); });
+    try { sessionStorage.setItem("sectoraLaunch.lang", l); } catch (e) {}
+  }
+  document.querySelectorAll("#langs button").forEach(function (b) { b.addEventListener("click", function () { apply(b.getAttribute("data-l")); }); });
+  apply(pick());
+})();
+</script>
+</body>
+</html>
