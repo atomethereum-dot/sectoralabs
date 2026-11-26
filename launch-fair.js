@@ -91,6 +91,7 @@
       t_approve: "Approve ${s}", t_no_tokens: "You have no ${s}", t_dex_note: "Live: trades run on {d}.", t_router_off: "In-app trading is off. Use {d}:", t_uni: "Buy with ETH on Uniswap ↗", t_chart: "Chart on DexScreener ↗",
       cr_t: "Creator", cr_fees: "Your creator fees", cr_claim: "Claim", cr_vest: "Creator tokens (5 %)", cr_vest_p: "{v} of {a} released · fully by {d}", cr_wait: "Released over 30 days after launch.",
       lv_t: "Creator profile", lv_lvl: "Level {n}", lv_names: "New|Rising|Proven|Trusted|Known", lv_pts: "{p} points", lv_next: "{p} of {q} points to level {n}", lv_max: "Top level reached", lv_coins: "Coins created", lv_ok: "Reached their goal", lv_fail: "Did not fill", lv_open: "Reserve open", lv_rate: "Success rate", lv_raised: "Raised by launched coins", lv_list: "Launches", lv_th_goal: "Goal", lv_th_perf: "Price vs opening", lv_th_pts: "Points", lv_st_live: "Launched", lv_st_exp: "Did not fill", lv_st_open: "Open", lv_how_t: "How levels work", lv_how_p: "Levels come only from the blockchain. Every coin that reaches its goal earns points: {g0} goal 10, {g1} goal 20, {g2} goal 30. The points are multiplied by how the price is doing now against the opening price, from {lo} to {hi}. Coins that do not fill earn nothing. The more successful the launch, the higher the level.", lv_from: "from {p} points", lv_view: "View creator profile", lv_mine: "Your creator profile", lv_creator_lvl: "Creator level", lv_loading: "Reading the blockchain…", lv_none: "This address has not created coins yet.", lv_bad: "Invalid address.",
+      sb_eb: "Why every coin matters for SECT", sb_t: "Every coin launched here buys SECT <span>and pushes its price up.</span>", sb_p: "Reserves are paid in ETH or USDT and the contract turns every payment into a market buy of SECT. At launch 98 % of that SECT is locked forever in the coin's pool and can never be withdrawn. More coins means more SECT bought and less SECT in circulation.", sb_s1_t: "You pay in ETH or USDT", sb_s1_p: "Or in SECT, if you already hold it.", sb_s2_t: "The contract buys SECT", sb_s2_p: "On Uniswap, with every payment: constant buying pressure on SECT.", sb_s3_t: "98 % locked forever", sb_s3_p: "In the coin's pool on Uniswap, with the LP burned. That SECT leaves circulation.", sb_s4_t: "Fees burned in SECT", sb_s4_p: "Half of Sectora's 1 % fee is burned on every launch.", sb_goal: "Goal {g}", sb_bought: "SECT bought", sb_locked: "locked forever", sb_big_l: "100 launches of {g}", sb_big_p: "bought from the market · {pct} of the 25 million SECT left after the burn", sb_big_off: "worth of SECT bought from the market", sb_usd: "{v} in SECT", sb_px: "Calculated with the live SECT price: {p} (DexScreener).", sb_more: "See the full explanation",
       sh_t: "Sectora Shield", sh_score: "Contract guarantees and live checks",
       sh1: "Fixed supply", sh1d: "Minted once. No mint function exists.", sh2: "No owner, no tax", sh2d: "The token has no owner, no blacklist and no transfer fee.",
       sh3: "Liquidity locked forever", sh3d: "The LP tokens were sent to 0x…dEaD. Nobody can pull the pool.", sh3p: "At launch the LP tokens go to 0x…dEaD.",
@@ -146,6 +147,7 @@
       t_approve: "Aprobar ${s}", t_no_tokens: "No tienes ${s}", t_dex_note: "En vivo: se opera en {d}.", t_router_off: "La compraventa en la web no está disponible. Usa {d}:", t_uni: "Comprar con ETH en Uniswap ↗", t_chart: "Gráfica en DexScreener ↗",
       cr_t: "Creador", cr_fees: "Tus comisiones de creador", cr_claim: "Cobrar", cr_vest: "Tokens del creador (5 %)", cr_vest_p: "{v} de {a} liberados · todo el {d}", cr_wait: "Se liberan durante 30 días desde el lanzamiento.",
       lv_t: "Perfil de creador", lv_lvl: "Nivel {n}", lv_names: "Nuevo|En ascenso|Probado|De confianza|Conocido", lv_pts: "{p} puntos", lv_next: "{p} de {q} puntos para el nivel {n}", lv_max: "Nivel máximo alcanzado", lv_coins: "Monedas creadas", lv_ok: "Alcanzaron su meta", lv_fail: "No se llenaron", lv_open: "Reserva abierta", lv_rate: "Tasa de éxito", lv_raised: "Recaudado por monedas lanzadas", lv_list: "Lanzamientos", lv_th_goal: "Meta", lv_th_perf: "Precio vs apertura", lv_th_pts: "Puntos", lv_st_live: "Lanzada", lv_st_exp: "No se llenó", lv_st_open: "Abierta", lv_how_t: "Cómo funcionan los niveles", lv_how_p: "Los niveles salen solo de la blockchain. Cada moneda que alcanza su meta suma puntos: meta de {g0} 10, de {g1} 20, de {g2} 30. Los puntos se multiplican según cómo va el precio ahora frente al precio de apertura, de {lo} a {hi}. Las monedas que no se llenan no suman. Cuanto más exitoso el lanzamiento, más alto el nivel.", lv_from: "desde {p} puntos", lv_view: "Ver perfil del creador", lv_mine: "Tu perfil de creador", lv_creator_lvl: "Nivel del creador", lv_loading: "Leyendo la blockchain…", lv_none: "Esta dirección todavía no ha creado monedas.", lv_bad: "Dirección no válida.",
+      sb_eb: "Por qué cada moneda importa para SECT", sb_t: "Cada moneda que se lanza aquí compra SECT <span>y empuja su precio hacia arriba.</span>", sb_p: "Las reservas se pagan con ETH o USDT y el contrato convierte cada pago en una compra de SECT en el mercado. Al lanzar, el 98 % de ese SECT queda bloqueado para siempre en el pool de la moneda y nunca se puede retirar. Más monedas significa más SECT comprado y menos SECT en circulación.", sb_s1_t: "Pagas con ETH o USDT", sb_s1_p: "O con SECT, si ya lo tienes.", sb_s2_t: "El contrato compra SECT", sb_s2_p: "En Uniswap, con cada pago: presión de compra constante sobre SECT.", sb_s3_t: "El 98 % bloqueado para siempre", sb_s3_p: "En el pool de la moneda en Uniswap, con el LP quemado. Ese SECT sale de circulación.", sb_s4_t: "Comisiones quemadas en SECT", sb_s4_p: "La mitad del 1 % de Sectora se quema en cada lanzamiento.", sb_goal: "Meta {g}", sb_bought: "SECT comprado", sb_locked: "bloqueado para siempre", sb_big_l: "100 lanzamientos de {g}", sb_big_p: "comprado en el mercado · el {pct} de los 25 millones de SECT que quedan tras la quema", sb_big_off: "en SECT comprado en el mercado", sb_usd: "{v} en SECT", sb_px: "Calculado con el precio real de SECT: {p} (DexScreener).", sb_more: "Ver la explicación completa",
       sh_t: "Sectora Shield", sh_score: "Garantías del contrato y comprobaciones en vivo",
       sh1: "Supply fijo", sh1d: "Se creó una sola vez. No existe función de mint.", sh2: "Sin dueño ni impuestos", sh2d: "El token no tiene dueño, lista negra ni comisión por transferencia.",
       sh3: "Liquidez bloqueada para siempre", sh3d: "Los LP se enviaron a 0x…dEaD. Nadie puede retirar el pool.", sh3p: "Al lanzar, los LP van a 0x…dEaD.",
@@ -201,6 +203,7 @@
       t_approve: "Aprovar ${s}", t_no_tokens: "Você não tem ${s}", t_dex_note: "Ao vivo: negociado na {d}.", t_router_off: "A negociação no site não está disponível. Use a {d}:", t_uni: "Comprar com ETH na Uniswap ↗", t_chart: "Gráfico no DexScreener ↗",
       cr_t: "Criador", cr_fees: "Suas taxas de criador", cr_claim: "Resgatar", cr_vest: "Tokens do criador (5 %)", cr_vest_p: "{v} de {a} liberados · tudo em {d}", cr_wait: "Liberados ao longo de 30 dias após o lançamento.",
       lv_t: "Perfil de criador", lv_lvl: "Nível {n}", lv_names: "Novo|Em ascensão|Comprovado|Confiável|Conhecido", lv_pts: "{p} pontos", lv_next: "{p} de {q} pontos para o nível {n}", lv_max: "Nível máximo alcançado", lv_coins: "Moedas criadas", lv_ok: "Atingiram a meta", lv_fail: "Não encheram", lv_open: "Reserva aberta", lv_rate: "Taxa de sucesso", lv_raised: "Arrecadado pelas moedas lançadas", lv_list: "Lançamentos", lv_th_goal: "Meta", lv_th_perf: "Preço vs abertura", lv_th_pts: "Pontos", lv_st_live: "Lançada", lv_st_exp: "Não encheu", lv_st_open: "Aberta", lv_how_t: "Como funcionam os níveis", lv_how_p: "Os níveis vêm só da blockchain. Cada moeda que atinge a meta soma pontos: meta de {g0} 10, de {g1} 20, de {g2} 30. Os pontos são multiplicados conforme o preço agora em relação ao preço de abertura, de {lo} a {hi}. Moedas que não enchem não somam. Quanto mais bem-sucedido o lançamento, mais alto o nível.", lv_from: "a partir de {p} pontos", lv_view: "Ver perfil do criador", lv_mine: "Seu perfil de criador", lv_creator_lvl: "Nível do criador", lv_loading: "Lendo a blockchain…", lv_none: "Este endereço ainda não criou moedas.", lv_bad: "Endereço inválido.",
+      sb_eb: "Por que cada moeda importa para o SECT", sb_t: "Cada moeda lançada aqui compra SECT <span>e empurra o preço dele para cima.</span>", sb_p: "As reservas são pagas com ETH ou USDT e o contrato transforma cada pagamento numa compra de SECT no mercado. No lançamento, 98 % desse SECT fica bloqueado para sempre no pool da moeda e nunca pode ser retirado. Mais moedas significa mais SECT comprado e menos SECT em circulação.", sb_s1_t: "Você paga com ETH ou USDT", sb_s1_p: "Ou com SECT, se já tiver.", sb_s2_t: "O contrato compra SECT", sb_s2_p: "Na Uniswap, a cada pagamento: pressão de compra constante sobre o SECT.", sb_s3_t: "98 % bloqueado para sempre", sb_s3_p: "No pool da moeda na Uniswap, com o LP queimado. Esse SECT sai de circulação.", sb_s4_t: "Taxas queimadas em SECT", sb_s4_p: "Metade do 1 % da Sectora é queimada em cada lançamento.", sb_goal: "Meta {g}", sb_bought: "SECT comprado", sb_locked: "bloqueado para sempre", sb_big_l: "100 lançamentos de {g}", sb_big_p: "comprado no mercado · {pct} dos 25 milhões de SECT que restam após a queima", sb_big_off: "em SECT comprado no mercado", sb_usd: "{v} em SECT", sb_px: "Calculado com o preço real do SECT: {p} (DexScreener).", sb_more: "Ver a explicação completa",
       sh_t: "Sectora Shield", sh_score: "Garantias do contrato e verificações ao vivo",
       sh1: "Supply fixo", sh1d: "Criado uma única vez. Não existe função de mint.", sh2: "Sem dono, sem imposto", sh2d: "O token não tem dono, lista negra nem taxa de transferência.",
       sh3: "Liquidez bloqueada para sempre", sh3d: "Os LP foram enviados para 0x…dEaD. Ninguém pode retirar o pool.", sh3p: "No lançamento os LP vão para 0x…dEaD.",
@@ -1491,6 +1494,29 @@
     var inp = document.getElementById("slLAmt"); if (inp && inp.value && inp._upd) inp._upd();
   }
 
+  /* ------------------------------------------------------------------ SECT band (home) */
+  // Why every coin matters for SECT: reserve payments in ETH or USDT become market buys of SECT and 98 % of the
+  // reserve is locked forever at launch. Amounts use the live SECT price (DexScreener); until it loads, dollars of SECT.
+  var SB_SUPPLY = 25e6;
+  function sectNums(k) {
+    var px = NUSD[k] && NUSD[k].p > 0 ? NUSD[k].p : 0;
+    var q = function (usd) { return px ? X.compact(usd / px) + " SECT" : lt("sb_usd", { v: dollars(usd) }); };
+    var tiles = [0, 1, 2].map(function (i) {
+      var g = usdOfTier(i);
+      return '<div class="sl-sb-t"><span class="g">' + X.esc(lt("sb_goal", { g: dollars(g) })) + "</span><b>" + X.esc(q(g)) + "</b><span>" + X.esc(lt("sb_bought")) + '</span><b class="lk">' + X.esc(q(g * 0.98)) + "</b><span>" + X.esc(lt("sb_locked")) + "</span></div>";
+    }).join("");
+    var g7 = usdOfTier(1), big = g7 * 100;
+    return tiles + '<div class="sl-sb-t big"><span class="g">' + X.esc(lt("sb_big_l", { g: dollars(g7) })) + "</span><b>" + X.esc(px ? X.compact(big / px) + " SECT" : dollars(big)) + "</b><span>" +
+      X.esc(px ? lt("sb_big_p", { pct: X.nf(big / px / SB_SUPPLY * 100, 1) + " %" }) : lt("sb_big_off")) + "</span></div>" +
+      '<p class="sl-sb-note">' + (px ? X.esc(lt("sb_px", { p: "$" + X.nf(px, px < 0.01 ? 6 : 4) })) : "") + "</p>";
+  }
+  function sectBand(k) {
+    if (CHAINS[k] && CHAINS[k].qaddr && !(NUSD[k] && NUSD[k].p > 0)) loadUsd(k);
+    var steps = [1, 2, 3, 4].map(function (i) { return '<li><span class="n">' + i + "</span><div><b>" + X.esc(lt("sb_s" + i + "_t")) + "</b><p>" + X.esc(lt("sb_s" + i + "_p")) + "</p></div></li>"; }).join("");
+    return '<section class="sl-sb"><div class="sl-sb-top"><div><span class="sl-eyebrow"><i class="rule"></i>' + X.esc(lt("sb_eb")) + "</span><h2>" + lt("sb_t") + "</h2><p>" + X.esc(lt("sb_p")) +
+      '</p><a class="sl-btn sl-btn-p" href="/intro/#part-c">' + X.esc(lt("sb_more")) + ' →</a></div><ol class="sl-sb-flow">' + steps + '</ol></div><div class="sl-sb-nums" id="slSbNums">' + sectNums(k) + "</div></section>";
+  }
+
   /* ------------------------------------------------------------------ creator levels */
   // A creator's level comes only from their launches on chain, nothing is stored anywhere else.
   // Every coin that reaches its goal earns points by its goal ($3K 10 · $7K 20 · $15K 30), multiplied by
@@ -1716,6 +1742,7 @@
       var bk = document.getElementById("slBlk"); if (bk && st.block) bk.textContent = X.nf(st.block, 0);
     }
     if (part === "summary" || part === "usd") { var sm = document.getElementById("slLSummary"); if (sm) sm.innerHTML = createSummary(net); }
+    if (part === "usd") { var sb = document.getElementById("slSbNums"); if (sb) sb.innerHTML = sectNums(net); }
   }
 
   window.SLLive = {
@@ -1723,7 +1750,7 @@
     chains: CHAINS, order: ORDER, isLive: isLive, deployed: deployed, liveChains: liveChains,
     defaultNet: function () { var l = liveChains(); return l.length ? l[0] : ORDER[0]; },
     t: override, netChip: netChip, acctBtn: acctBtn, banner: banner, hud: hud, storyRaise: storyRaise, factory: factoryOf, sizes: usdSizes,
-    explore: explore, statTiles: statTiles, create: createView, token: tokenView, me: meView, stats: statsView, creator: creatorView,
+    explore: explore, statTiles: statTiles, create: createView, token: tokenView, me: meView, stats: statsView, creator: creatorView, sectBand: sectBand,
     onAction: onAction, wire: wire, tick: tick, refresh: refresh,
     wallet: function () { return W.addr; }
   };

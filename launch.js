@@ -368,7 +368,7 @@
   function loadLang(l, done) {
     if (T[l] || xdict(l, "core")) { done(); return; }
     var s = document.createElement("script");
-    s.src = "i18n/" + l + ".js?v=20261126c";
+    s.src = "i18n/" + l + ".js?v=20261126e";
     s.onload = s.onerror = function () { done(); };
     document.head.appendChild(s);
   }
@@ -981,7 +981,7 @@
       '<button class="sl-play" type="button" data-a="film"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg>' + esc(t("film_eb")) + " · 0:34</button></div></div>" +
       '<div class="sl-orbit" id="slOrbit" aria-hidden="true"></div></section>' +
       (live() ? '<div class="sl-hero-stats fade-in" style="--d:.75s">' + LIVE.statTiles(NET) + "</div>" : "") +
-      '<div class="sl-sheet lt"><div class="sl-sheet-in">' + (live() ? LIVE.explore(NET) : demoExplore(tabs)) + filmSec() + storySec() + whySec(why) + endBand() + "</div></div>";
+      '<div class="sl-sheet lt"><div class="sl-sheet-in">' + (live() && LIVE.sectBand ? LIVE.sectBand(NET) : "") + (live() ? LIVE.explore(NET) : demoExplore(tabs)) + filmSec() + storySec() + whySec(why) + endBand() + "</div></div>";
   }
   // pinned, scroll-driven story: how a coin is born (canvas drawn by launch-scenes.js)
   function storySec() {
