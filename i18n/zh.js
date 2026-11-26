@@ -15,7 +15,7 @@
     end_t1: "抢先体验", end_t2: "SectoraEVM。", end_s: "Sectora Launch 将随 SectoraEVM 主网开放。今天就可以在测试网体验所有功能——发行、交易、毕业和代币化。", end_in: "距主网",
     d_d: "天", d_h: "小时", d_m: "分", d_s: "秒", close: "关闭",
     banner: "SectoraEVM 测试网预览——测试 SECT 和测试代币没有实际价值。主网：预计 2027 年 3 月 22 日。",
-    nav_explore: "探索", nav_launch: "发行", nav_tokenize: "代币化", nav_assets: "真实资产", nav_me: "账户", nav_stats: "透明度", nav_safety: "安全",
+    nav_explore: "探索", nav_launch: "发行", nav_tokenize: "代币化", nav_assets: "真实资产", nav_me: "账户", nav_stats: "透明度", nav_safety: "安全", nav_guide: "指南与文档",
     why_more: "所有安全措施详解", connect: "创建测试账户", connect_s: "演示", net: "SectoraEVM · 测试网", eyebrow: "Sectora Launch · 运行于 SectoraEVM",
     hero_t: "发行代币，将真实资产代币化——<em>杜绝跑路</em>。",
     hero_s: "公平发行：防狙击限制、无人能撤走的流动性、每个代币都有 Sectora Shield 安全扫描，手续费用于回购并销毁 SECT——全部写进合约。",

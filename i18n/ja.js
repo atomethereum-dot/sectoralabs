@@ -15,7 +15,7 @@
     end_t1: "一番乗りで", end_t2: "SectoraEVM へ。", end_s: "Sectora Launch は SectoraEVM メインネットとともに公開されます。今すぐテストネットで、発行・取引・卒業・トークン化のすべての機能を試せます。", end_in: "メインネットまで",
     d_d: "日", d_h: "時間", d_m: "分", d_s: "秒", close: "閉じる",
     banner: "SectoraEVM テストネットのプレビュー — テスト用 SECT とテストコインに実際の価値はありません。メインネット：2027 年 3 月 22 日ごろ。",
-    nav_explore: "探す", nav_launch: "発行", nav_tokenize: "トークン化", nav_assets: "実物資産", nav_me: "アカウント", nav_stats: "透明性", nav_safety: "セキュリティ",
+    nav_explore: "探す", nav_launch: "発行", nav_tokenize: "トークン化", nav_assets: "実物資産", nav_me: "アカウント", nav_stats: "透明性", nav_safety: "セキュリティ", nav_guide: "ガイドと資料",
     why_more: "すべての安全対策を詳しく見る", connect: "テストアカウントを作成", connect_s: "デモ", net: "SectoraEVM · テストネット", eyebrow: "Sectora Launch · SectoraEVM 上",
     hero_t: "コインを発行し、実物資産をトークン化 — <em>ラグプルなしで</em>。",
     hero_s: "アンチスナイパー制限、誰にも引き出せない流動性、すべてのコインに Sectora Shield のセキュリティスキャン、そして SECT を買い戻してバーンする手数料 — すべてがコントラクトに記述されたフェアローンチ。",

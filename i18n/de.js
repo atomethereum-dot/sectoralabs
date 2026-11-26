@@ -15,7 +15,7 @@
     end_t1: "Sei zuerst dabei", end_t2: "auf SectoraEVM.", end_s: "Sectora Launch startet mit dem SectoraEVM-Mainnet. Teste schon heute jede Funktion im Testnet — launchen, handeln, graduieren und tokenisieren.", end_in: "Mainnet in",
     d_d: "Tage", d_h: "Stunden", d_m: "Min.", d_s: "Sek.", close: "Schließen",
     banner: "Vorschau im SectoraEVM-Testnet — Test-SECT und Test-Coins haben keinen echten Wert. Mainnet: voraussichtlich 22. März 2027.",
-    nav_explore: "Entdecken", nav_launch: "Launchen", nav_tokenize: "Tokenisieren", nav_assets: "Reale Werte", nav_me: "Konto", nav_stats: "Transparenz", nav_safety: "Sicherheit",
+    nav_explore: "Entdecken", nav_launch: "Launchen", nav_tokenize: "Tokenisieren", nav_assets: "Reale Werte", nav_me: "Konto", nav_stats: "Transparenz", nav_safety: "Sicherheit", nav_guide: "Leitfaden & Dokumente",
     why_more: "Alle Sicherheitsmaßnahmen erklärt", connect: "Testkonto erstellen", connect_s: "Demo", net: "SectoraEVM · Testnet", eyebrow: "Sectora Launch · auf SectoraEVM",
     hero_t: "Coins launchen und reale Werte tokenisieren — <em>ohne Rug Pulls</em>.",
     hero_s: "Faire Launches mit Anti-Sniper-Limits, Liquidität, die niemand abziehen kann, einem Sectora-Shield-Sicherheitsscan für jeden Coin und Gebühren, die SECT zurückkaufen und verbrennen — alles in den Verträgen festgeschrieben.",

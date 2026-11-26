@@ -1378,3 +1378,12 @@ button[disabled] .sl-cdot, .sl-cdot.is-off { animation: none; opacity: .55; }
 .sl-netpill em { font-style: normal; font-family: var(--mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink3); opacity: 1; }
 .sl-soon-ic { border: 0 !important; background: none !important; width: auto; height: auto; }
 .sl-soon-ic .sl-clogo { filter: drop-shadow(0 10px 22px rgba(21, 105, 255, .35)); }
+
+/* guide & docs button (links to /intro/) */
+.sl-guide { display: inline-flex; align-items: center; gap: 7px; height: 36px; padding: 0 14px; border: 1px solid var(--hair); border-radius: var(--pill); background: var(--surf2); color: var(--ink2); font-family: var(--sans); font-size: 13px; white-space: nowrap; flex: none; transition: border-color .2s var(--ease), color .2s var(--ease); }
+html:not(.sl-ondark) .sl-guide { background: #fff; }
+.sl-guide:hover { border-color: var(--blue); color: var(--ink); }
+.sl-guide svg { width: 15px; height: 15px; flex: none; }
+@media (max-width: 1360px) { .sl-guide span { display: none; } .sl-guide { width: 36px; padding: 0; justify-content: center; } }
+.sl-guide-m { display: none; }
+@media (max-width: 640px) { .sl-top-r .sl-guide { display: none; } .sl-hero-cta .sl-guide-m { display: inline-flex; } }

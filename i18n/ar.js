@@ -15,7 +15,7 @@
     end_t1: "كن الأول", end_t2: "على SectoraEVM.", end_s: "يُطلق Sectora Launch مع الشبكة الرئيسية SectoraEVM. جرّب كل الميزات اليوم على شبكة الاختبار — الإطلاق والتداول والتخرّج والترميز.", end_in: "الشبكة الرئيسية بعد",
     d_d: "يوم", d_h: "ساعة", d_m: "دقيقة", d_s: "ثانية", close: "إغلاق",
     banner: "معاينة شبكة اختبار SectoraEVM — لا قيمة حقيقية لـ SECT والعملات التجريبية. الشبكة الرئيسية: 22 مارس 2027 تقريبًا.",
-    nav_explore: "استكشاف", nav_launch: "إطلاق", nav_tokenize: "ترميز", nav_assets: "أصول حقيقية", nav_me: "الحساب", nav_stats: "الشفافية", nav_safety: "الأمان",
+    nav_explore: "استكشاف", nav_launch: "إطلاق", nav_tokenize: "ترميز", nav_assets: "أصول حقيقية", nav_me: "الحساب", nav_stats: "الشفافية", nav_safety: "الأمان", nav_guide: "الدليل والوثائق",
     why_more: "كل إجراءات الأمان بالتفصيل", connect: "إنشاء حساب تجريبي", connect_s: "عرض", net: "SectoraEVM · شبكة الاختبار", eyebrow: "Sectora Launch · على SectoraEVM",
     hero_t: "أطلق عملات وحوّل الأصول الحقيقية إلى رموز — <em>بلا احتيال</em>.",
     hero_s: "إطلاقات عادلة بحدود ضد القنص، وسيولة لا يستطيع أحد سحبها، وفحص أمني من Sectora Shield لكل عملة، ورسوم تعيد شراء SECT وتحرقه — كل ذلك مكتوب في العقود.",

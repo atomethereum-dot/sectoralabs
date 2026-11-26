@@ -15,7 +15,7 @@
     end_t1: "가장 먼저", end_t2: "SectoraEVM에서.", end_s: "Sectora Launch는 SectoraEVM 메인넷과 함께 열립니다. 지금 테스트넷에서 발행, 거래, 졸업, 토큰화까지 모든 기능을 시험해 보세요.", end_in: "메인넷까지",
     d_d: "일", d_h: "시간", d_m: "분", d_s: "초", close: "닫기",
     banner: "SectoraEVM 테스트넷 미리보기 — 테스트 SECT와 테스트 코인은 실제 가치가 없습니다. 메인넷: 2027년 3월 22일경.",
-    nav_explore: "탐색", nav_launch: "발행", nav_tokenize: "토큰화", nav_assets: "실물 자산", nav_me: "계정", nav_stats: "투명성", nav_safety: "보안",
+    nav_explore: "탐색", nav_launch: "발행", nav_tokenize: "토큰화", nav_assets: "실물 자산", nav_me: "계정", nav_stats: "투명성", nav_safety: "보안", nav_guide: "가이드 및 문서",
     why_more: "모든 안전장치 자세히 보기", connect: "테스트 계정 만들기", connect_s: "데모", net: "SectoraEVM · 테스트넷", eyebrow: "Sectora Launch · SectoraEVM에서",
     hero_t: "코인을 발행하고 실물 자산을 토큰화하세요 — <em>러그풀 없이</em>.",
     hero_s: "스나이퍼 방지 한도, 누구도 뺄 수 없는 유동성, 모든 코인에 Sectora Shield 보안 검사, SECT를 되사서 소각하는 수수료까지 — 모두 컨트랙트에 기록된 공정한 출시.",
