@@ -57,7 +57,7 @@ var COINS = [
   var o3 = function (x) { return 1 - Math.pow(1 - x, 3); }, io3 = function (x) { return x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
   var back = function (x) { var c = 1.6; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
   // intro timeline (seconds)
-  var S0 = 1.25, MOVE0 = 1.4, MOVE1 = 2.2, TEXT = 1.65, PAGE = 2.3;
+  var S0 = 1.25, MOVE0 = 1.4, MOVE1 = 2.2, CM0 = 1.4, CM1 = 2.15, TEXT = 1.75, PAGE = 2.35;
   function introOn() { var I = window.SLIntro; return !!(I && I.on) && !introDone; }
   function mount(hero) {
     var keepT0 = state ? state.t0 : 0; // a new render of the home keeps the coins where they are
@@ -77,17 +77,22 @@ var COINS = [
       return;
     }
     if (intro) { hero.style.animation = "none"; if (mark) mark.style.transform = ""; }
+    // the field of coins reaches up to the top of the page (behind the header), so the intro fills the whole screen;
+    // the coins of the cover itself stay below the header (from y0)
+    var htop = hero.getBoundingClientRect().top + scrollY;
+    bg.style.top = (-htop).toFixed(1) + "px";
+    var y0 = Math.max(0, htop - 48);
     var W = bg.clientWidth, H = bg.clientHeight, br = bg.getBoundingClientRect(), ir = inner.getBoundingClientRect();
     var small = W < 700, pad = small ? 4 : 18;
     var keep = [ir.left - br.left - pad, ir.top - br.top - pad, ir.right - br.left + pad, ir.bottom - br.top + pad];
     var minD = small ? 34 : 54, maxD = small ? 68 : Math.min(160, W / 11);
-    var n = Math.round(Math.min(small ? 26 : 64, (W * H) / (small ? 9000 : 26000)));
+    var n = Math.round(Math.min(small ? 26 : 64, (W * (H - y0)) / (small ? 9000 : 26000)));
     var seed = 31, rnd = function () { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
     // the intro bursts the coins out of the mark while it waits in the middle of the screen
     var sx = innerWidth / 2 - br.left, sy = innerHeight / 2 - br.top, far = Math.hypot(Math.max(sx, W - sx), Math.max(sy, H - sy));
     var placed = [], coins = [];
     for (var i = 0, tries = 0; i < n && tries < 6000; tries++) {
-      var d = minD + rnd() * (maxD - minD), x = -d * .2 + rnd() * (W + d * .4), y = -d * .2 + rnd() * (H + d * .4);
+      var d = minD + rnd() * (maxD - minD), x = -d * .2 + rnd() * (W + d * .4), y = y0 - d * .2 + rnd() * (H - y0 + d * .4);
       if (x + d / 2 > keep[0] && x - d / 2 < keep[2] && y + d / 2 > keep[1] && y - d / 2 < keep[3]) continue;
       var ok = true;
       for (var j = 0; j < placed.length; j++) { var p = placed[j]; if (Math.hypot(p[0] - x, p[1] - y) < (p[2] + d) / 2 + 8) { ok = false; break; } }
@@ -106,6 +111,24 @@ var COINS = [
     }
     var ring = null, mc = null;
     if (intro && mark) {
+      var vx0 = -br.left, vy0 = -br.top, VW = innerWidth, VH = innerHeight, mw = mark.offsetWidth * S0 / 2 + 22, spots = [];
+      for (var k = 0, tr = 0; k < coins.length && tr < 6000; tr++) {
+        var c0 = coins[k], qx = vx0 - c0.d * .15 + rnd() * (VW + c0.d * .3), qy = vy0 - c0.d * .15 + rnd() * (VH + c0.d * .3);
+        if (Math.hypot(qx - sx, qy - sy) < mw + c0.d / 2) continue;
+        var free = true;
+        for (var q = 0; q < spots.length; q++) { if (Math.hypot(spots[q][0] - qx, spots[q][1] - qy) < (spots[q][2] + c0.d) / 2 + 6) { free = false; break; } }
+        if (!free) continue;
+        spots.push([qx, qy, c0.d]); k++;
+      }
+      // each coin takes the free spot in the same direction from the mark, so they barely cross on the way to their places
+      var ang = function (x, y) { return Math.atan2(y - sy, x - sx); };
+      var byA = coins.slice(0, spots.length).sort(function (p1, p2) { return ang(p1.x, p1.y) - ang(p2.x, p2.y); });
+      spots.sort(function (p1, p2) { return ang(p1[0], p1[1]) - ang(p2[0], p2[1]); });
+      byA.forEach(function (c1, q) { c1.ix = spots[q][0] - c1.x; c1.iy = spots[q][1] - c1.y; });
+      coins.forEach(function (c1) {
+        if (c1.ix == null) { c1.ix = 0; c1.iy = 0; }
+        c1.bd = .62 + Math.hypot(c1.ix - c1.bx, c1.iy - c1.by) / far * .55;
+      });
       var mr = mark.getBoundingClientRect();
       mc = { dx: innerWidth / 2 - (mr.left + mr.width / 2), dy: innerHeight / 2 - (mr.top + mr.height / 2) };
       ring = document.createElement("i"); ring.className = "sl-cv-ring"; ring.style.left = sx.toFixed(1) + "px"; ring.style.top = sy.toFixed(1) + "px";
@@ -152,9 +175,11 @@ var COINS = [
     state.coins.forEach(function (c) {
       var fx = Math.sin(t * .55 * c.sp + c.ph) * c.d * .10, fy = Math.cos(t * .7 * c.sp + c.ph2) * c.d * .12, s, op, rot = c.rot + Math.sin(t * .5 + c.ph) * 14;
       if (intro) {
-        // the burst: out of the mark, along a slight curve, spinning, to the coin's place on the cover
-        var a = seg(t, c.bl, c.bl + c.bd), e = back(a) , u = 1 - e, w = Math.sin(Math.PI * a) * c.cv;
-        fx = fx * o3(a) + c.bx * u - c.by * w; fy = fy * o3(a) + c.by * u + c.bx * w;
+        // the burst: out of the mark, along a slight curve, spinning, to a free spot on the screen; then, as the
+        // headline comes in, each coin steps aside to its place on the cover
+        var a = seg(t, c.bl, c.bl + c.bd), e = back(a), w = Math.sin(Math.PI * a) * c.cv, mv = io3(seg(t, CM0, CM1));
+        var px = c.bx + (c.ix - c.bx) * e, py = c.by + (c.iy - c.by) * e, ddx = c.ix - c.bx, ddy = c.iy - c.by;
+        fx = fx * o3(a) + px * (1 - mv) - ddy * w * (1 - mv); fy = fy * o3(a) + py * (1 - mv) + ddx * w * (1 - mv);
         s = .22 + .78 * o3(a); op = seg(a, 0, .12); rot += (1 - o3(a)) * c.spin;
       } else {
         // later visits: each coin pops in from the centre outwards, then floats and turns slowly
