@@ -1459,7 +1459,7 @@ html[lang="ar"] .sl-cv-eb, html[lang="zh"] .sl-cv-eb, html[lang="ja"] .sl-cv-eb,
 .sl-hero.sl-cv h1 .k { color: #1569ff; }
 .sl-cv .sl-hero-p { color: #3c4352; }
 @media (max-width: 700px) {
-  .sl-hero.sl-cv { min-height: 0; padding: 92px 0 96px; }
+  .sl-hero.sl-cv, html:not(.sl-gl) .sl-hero.sl-cv { min-height: 0; padding: 92px 0 178px; }
   .sl-cv-mark { box-shadow: 0 0 0 7px #fff, 0 12px 28px rgba(21, 105, 255, .26); }
   .sl-cv-eb { font-size: 10px; letter-spacing: .12em; padding-left: .12em; }
   .sl-hero.sl-cv h1 { font-size: clamp(27px, 7.6vw, 40px); }
@@ -1470,5 +1470,5 @@ html.ci-run body { background: #fff; }
 html.ci-run .sl-top, html.ci-run .sl-banner, html.ci-run .sl-tabbar, html.ci-run .sl-foot, html.ci-run .sl-sprog, html.ci-run #slMain > :not(.sl-hero) { opacity: 0; visibility: hidden; }
 html.ci-fade .sl-top, html.ci-fade .sl-banner, html.ci-fade .sl-tabbar, html.ci-fade .sl-foot, html.ci-fade #slMain > :not(.sl-hero) { transition: opacity .65s var(--ease), visibility .65s !important; }
 /* the field of coins fades out at the bottom of the cover instead of ending in a straight cut */
-.sl-cv-bg { -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - 170px), transparent 100%); mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - 170px), transparent 100%); }
-@media (max-width: 700px) { .sl-cv-bg { -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - 120px), transparent 100%); mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - 120px), transparent 100%); } }
+.sl-cv-bg { -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - 110px), transparent 100%); mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - 110px), transparent 100%); }
+@media (max-width: 700px) { .sl-cv-bg { -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - 64px), transparent 100%); mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - 64px), transparent 100%); } }

@@ -110,6 +110,25 @@ var COINS = [
         bx: sx - x, by: sy - y, bl: .7 + rnd() * .22, bd: .62 + dist / far * .55, cv: (rnd() - .5) * .5, spin: (rnd() < .5 ? -1 : 1) * (160 + rnd() * 200) });
       i++;
     }
+    // phones: the text takes the whole width, so the band under it gets its own row of coins (whole, fading out at the bottom)
+    if (small) {
+      for (var nb = 0, tb = 0; nb < 7 && tb < 3000; tb++) {
+        var d2 = 36 + rnd() * 26, x2 = -d2 * .2 + rnd() * (W + d2 * .4), y2 = keep[3] + d2 / 2 + 6 + rnd() * Math.max(1, H - keep[3] - d2 * 1.16 - 14);
+        if (y2 + d2 * .64 > H || y2 - d2 / 2 < keep[3]) continue;
+        var ok2 = true;
+        for (var j2 = 0; j2 < placed.length; j2++) { var p2 = placed[j2]; if (Math.hypot(p2[0] - x2, p2[1] - y2) < (p2[2] + d2) / 2 + 8) { ok2 = false; break; } }
+        if (!ok2) continue;
+        placed.push([x2, y2, d2]);
+        var el2 = document.createElement("i"); el2.className = "sl-cv-coin";
+        el2.style.cssText = "left:" + (x2 - d2 / 2).toFixed(1) + "px;top:" + (y2 - d2 / 2).toFixed(1) + "px;width:" + d2.toFixed(1) + "px;height:" + d2.toFixed(1) + "px";
+        el2.innerHTML = coinSVG(i * 7 + 3);
+        bg.appendChild(el2);
+        var dist2 = Math.hypot(x2 - sx, y2 - sy);
+        coins.push({ el: el2, x: x2, y: y2, d: d2, rot: (rnd() - .5) * 24, ph: rnd() * 6.283, ph2: rnd() * 6.283, sp: .6 + rnd() * .7,
+          delay: Math.hypot(x2 - W / 2, y2 - H / 2) / Math.hypot(W / 2, H / 2), bx: sx - x2, by: sy - y2, bl: .7 + rnd() * .22, bd: .62 + dist2 / far * .55, cv: (rnd() - .5) * .5, spin: (rnd() < .5 ? -1 : 1) * (160 + rnd() * 200) });
+        nb++; i++;
+      }
+    }
     var ring = null, mc = null;
     if (intro && mark) {
       var vx0 = -br.left, vy0 = -br.top, VW = innerWidth, VH = innerHeight, mw = mark.offsetWidth * S0 / 2 + 22, spots = [];
