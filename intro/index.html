@@ -115,7 +115,13 @@ h2 span { color: var(--key); font-weight: 400; }
 .browser .bar { height: 30px; display: flex; align-items: center; gap: 6px; padding: 0 12px; border-bottom: 1px solid var(--line); background: var(--surf); }
 .browser .bar i { width: 8px; height: 8px; border-radius: 50%; background: var(--line2); display: block; }
 .browser .bar span { margin-left: 10px; font-family: var(--mono); font-size: 10.5px; color: var(--ink3); background: #fff; border: 1px solid var(--line); border-radius: 4px; padding: 2px 10px; flex: 1; max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.phone { width: 230px; flex: 0 0 auto; border: 8px solid #0a0f1a; border-radius: 30px; overflow: hidden; background: #000; box-shadow: 0 20px 44px -26px rgba(15,23,42,.5); }
+.phone { position: relative; width: 230px; flex: 0 0 auto; border: 2px solid transparent; border-radius: 16% / 7.7%;
+  background: linear-gradient(#030405,#030405) padding-box, linear-gradient(150deg,#a7aab0,#45474c 20%,#8c8f96 46%,#33353a 72%,#9a9da4) border-box;
+  box-shadow: 0 30px 56px -30px rgba(7,8,10,.6), 0 2px 6px rgba(7,8,10,.12); }
+.phone img { display: block; width: 93%; margin: 3.5%; border-radius: 13.4% / 6.2%; }
+.phone::before { content: ""; position: absolute; right: -4px; top: 25%; width: 3px; height: 12%; border-radius: 0 2px 2px 0; background: linear-gradient(90deg,#55575c,#9a9da4); }
+.phone::after { content: ""; position: absolute; left: -4px; top: 15%; width: 3px; height: 27%; border-radius: 2px 0 0 2px;
+  background: linear-gradient(#8c8f96 0 11%, transparent 11% 27%, #8c8f96 27% 57%, transparent 57% 66%, #8c8f96 66% 96%, transparent 96%); }
 .cap { font-size: 12.5px; color: var(--ink3); line-height: 1.45; }
 .cap::before { content: "▲ "; color: var(--key); font-size: 9px; }
 .ok-note, .warn { margin-top: 18px; display: flex; gap: 12px; align-items: flex-start; border-radius: 8px; padding: 16px 18px; font-size: 14.5px; line-height: 1.55; }
@@ -316,7 +322,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   <div class="step">
     <div class="num">02<small data-i="a_l">Part A</small></div>
     <div><h3 data-i="s2t"></h3><ol><li data-i="s2a"></li><li data-i="s2b"></li><li data-i="s2c"></li></ol></div>
-    <div class="shots row2"><div class="browser" style="flex:1 1 0;max-width:330px"><div class="bar"><i></i><i></i><i></i><span>sectoralabs.com</span></div><img data-img="join" width="800" height="1450" alt=""></div><div class="phone"><img data-img="phone" width="1170" height="1782" alt=""></div></div>
+    <div class="shots row2"><div class="browser" style="flex:1 1 0;max-width:330px"><div class="bar"><i></i><i></i><i></i><span>sectoralabs.com</span></div><img data-img="join" width="800" height="1450" alt=""></div><div class="phone"><img data-img="phone" width="780" height="1688" alt=""></div></div>
   </div>
   <p class="cap" style="margin-top:-8px" data-i="s2cap"></p>
   <div class="step">
@@ -339,18 +345,18 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   <div class="inv">
     <div class="ex">
       <div class="h" data-i="b_exh"></div>
-      <div class="r"><span data-i="b_r1"></span><b data-v="100"></b></div>
-      <div class="r"><span data-i="b_r2"></span><b data-v="150"></b></div>
-      <div class="r"><span data-i="b_r3"></span><b data-v="112.5"></b></div>
-      <div class="r"><span data-i="b_r4"></span><b data-v="37.5"></b></div>
-      <div class="r t"><span data-i="b_r5"></span><b data-v="50" data-plus="1"></b></div>
+      <div class="r"><span data-i="b_r1"></span><b data-v="500"></b></div>
+      <div class="r"><span data-i="b_r2"></span><b data-v="750"></b></div>
+      <div class="r"><span data-i="b_r3"></span><b data-v="562.5"></b></div>
+      <div class="r"><span data-i="b_r4"></span><b data-v="187.5"></b></div>
+      <div class="r t"><span data-i="b_r5"></span><b data-v="250" data-plus="1"></b></div>
     </div>
     <div class="bars">
       <div class="bl" data-i="bl_in"></div>
-      <div class="bk"><div class="in" style="width:66.67%"><b data-v="100" data-d="0"></b><span data-i="bk_in"></span></div></div>
+      <div class="bk"><div class="in" style="width:66.67%"><b data-v="500" data-d="0"></b><span data-i="bk_in"></span></div></div>
       <div class="bl" style="margin-top:18px" data-i="bl_out"></div>
-      <div class="bk"><div class="a" style="width:75%"><b data-v="112.5"></b><span data-i="bk_a"></span></div><div class="c" style="width:25%"><b data-v="37.5"></b><span data-i="bk_c"></span></div></div>
-      <div class="ruler"><span style="left:0;transform:none">$0</span><span style="left:66.67%">$100</span><span style="right:0;left:auto;transform:none">$150</span></div>
+      <div class="bk"><div class="a" style="width:75%"><b data-v="562.5"></b><span data-i="bk_a"></span></div><div class="c" style="width:25%"><b data-v="187.5"></b><span data-i="bk_c"></span></div></div>
+      <div class="ruler"><span style="left:0;transform:none">$0</span><span style="left:66.67%">$500</span><span style="right:0;left:auto;transform:none">$750</span></div>
       <p data-i="b_bars"></p>
     </div>
   </div>
@@ -468,6 +474,6 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
 
 <footer><div class="wrap"><span data-i="foot"></span><span><b>Sectora Foundation IL</b> · EIN 32-0868576 · sectoralabs.com</span></div></footer>
 
-<script src="i18n.js?v=2"></script>
+<script src="i18n.js?v=3"></script>
 </body>
 </html>

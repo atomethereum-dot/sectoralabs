@@ -885,6 +885,7 @@ html.sl-lb-open, html.sl-lb-open body { overflow: hidden; }
 .sl-field .sl-pay { justify-content: flex-start; }
 .sl-route { margin: -4px 0 14px; font-size: 12px; line-height: 1.55; color: var(--ink4); }
 .sl-route a { color: var(--blue); }
+.sl-btn + .sl-route { margin: 12px 0 0; }
 
 /* ==========================================================================
    Friendly layer — rounded and soft, black with white (like the Airdrop page):

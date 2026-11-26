@@ -54,14 +54,14 @@
     w_note: "<b>The goal is not reached in time?</b> Everyone takes back 100 % of what they put in. No fees, no small print.",
     b_eb: "Part B · Your investment", b_t: "With the 75 % you get your 100 % back. <span>The 25 % is profit.</span>",
     b_p: "Because the pool opens 50 % above the price everyone paid in the reserve, the 75 % you receive at launch is already worth more than everything you put in. The 25 % that arrives over the next 7 days is the gain: the reflection of that 50 % rise.",
-    b_exh: "Example · you put $100 in a reserve",
+    b_exh: "Example · you put $500 in a reserve (the maximum per wallet)",
     b_r1: "You put in the reserve", b_r2: "Your tokens at the opening price (+50 %)", b_r3: "75 % delivered at launch", b_r4: "25 % delivered over 7 days", b_r5: "Total gain at the opening price",
     bl_in: "What you put in", bk_in: "your investment",
-    bl_out: "What you receive, at the opening price", bk_a: "75 % · covers your $100", bk_c: "25 % · gain",
-    b_bars: "The 75 % ($112.50) is more than your $100: <b>your whole investment is covered from day one</b>. The 25 % ($37.50) is pure gain, and with the $12.50 extra inside the 75 % it adds up to the +50 %.",
+    bl_out: "What you receive, at the opening price", bk_a: "75 % · covers your $500", bk_c: "25 % · gain",
+    b_bars: "The 75 % ($562.50) is more than your $500: <b>your whole investment is covered from day one</b>. The 25 % ($187.50) is pure gain, and with the $62.50 extra inside the 75 % it adds up to the +50 % ($250).",
     b1t: "Risk covered from day one", b1p: "At the opening price, the tokens you receive at launch are worth 112.5 % of what you paid.",
     b2t: "The gain arrives gradually", b2p: "The 25 % over 7 days keeps the price from being crushed in the first minute, which protects the value of what you already hold.",
-    b3t: "Or lock and earn more", b3p: "Lock for 30 days and receive everything plus a bonus of up to +25 %: up to $187.50 for every $100 at the opening price.",
+    b3t: "Or lock and earn more", b3p: "Lock for 30 days and receive everything plus a bonus of up to +25 %: up to $937.50 for your $500 at the opening price.",
     b_warn: "<b>Important:</b> the values are calculated at the opening price. Once trading starts the market sets the price: it can go up or down, and selling large amounts moves the price. The rules protect you from unfair launches, not from the market.",
     c_eb: "Part C · Why it matters for SECT holders", c_t: "Every launch <span>works for SECT</span>",
     c_p: "Every coin on Sectora Launch is priced in SECT. That means every reserve, every launch and every trade of every coin needs SECT. If you hold SECT, the launchpad is working for you.",
@@ -175,14 +175,14 @@
     w_note: "<b>¿No se llega a la meta a tiempo?</b> Todos recuperan el 100 % de lo que pusieron. Sin comisiones, sin letra pequeña.",
     b_eb: "Parte B · Tu inversión", b_t: "Con el 75 % recuperas el 100 %. <span>El 25 % es ganancia.</span>",
     b_p: "Como la pool abre un 50 % por encima del precio que todos pagaron en la reserva, el 75 % que recibes al lanzar ya vale más que todo lo que pusiste. El 25 % que llega en los 7 días siguientes es la ganancia: el reflejo de esa subida del 50 %.",
-    b_exh: "Ejemplo · pones $100 en una reserva",
+    b_exh: "Ejemplo · pones $500 en una reserva (el máximo por wallet)",
     b_r1: "Pones en la reserva", b_r2: "Tus tokens al precio de apertura (+50 %)", b_r3: "75 % que recibes al lanzar", b_r4: "25 % que recibes en 7 días", b_r5: "Ganancia total al precio de apertura",
     bl_in: "Lo que pones", bk_in: "tu inversión",
-    bl_out: "Lo que recibes, al precio de apertura", bk_a: "75 % · cubre tus $100", bk_c: "25 % · ganancia",
-    b_bars: "El 75 % ($112,50) es más que tus $100: <b>toda tu inversión queda cubierta desde el primer día</b>. El 25 % ($37,50) es ganancia pura, y con los $12,50 de más dentro del 75 % suma el +50 %.",
+    bl_out: "Lo que recibes, al precio de apertura", bk_a: "75 % · cubre tus $500", bk_c: "25 % · ganancia",
+    b_bars: "El 75 % ($562,50) es más que tus $500: <b>toda tu inversión queda cubierta desde el primer día</b>. El 25 % ($187,50) es ganancia pura, y con los $62,50 de más dentro del 75 % suma el +50 % ($250).",
     b1t: "Riesgo cubierto desde el día uno", b1p: "Al precio de apertura, los tokens que recibes al lanzar valen el 112,5 % de lo que pagaste.",
     b2t: "La ganancia llega poco a poco", b2p: "El 25 % en 7 días evita que el precio se hunda en el primer minuto, y eso protege el valor de lo que ya tienes.",
-    b3t: "O bloquea y gana más", b3p: "Bloquea 30 días y recibe todo más un bonus de hasta +25 %: hasta $187,50 por cada $100 al precio de apertura.",
+    b3t: "O bloquea y gana más", b3p: "Bloquea 30 días y recibe todo más un bonus de hasta +25 %: hasta $937,50 por tus $500 al precio de apertura.",
     b_warn: "<b>Importante:</b> los valores se calculan al precio de apertura. Cuando empieza el trading, el precio lo pone el mercado: puede subir o bajar, y vender cantidades grandes mueve el precio. Las reglas te protegen de lanzamientos injustos, no del mercado.",
     c_eb: "Parte C · Por qué importa a los holders de SECT", c_t: "Cada lanzamiento <span>trabaja para SECT</span>",
     c_p: "Todas las monedas de Sectora Launch cotizan en SECT. Eso significa que cada reserva, cada lanzamiento y cada operación de cada moneda necesita SECT. Si tienes SECT, el launchpad trabaja para ti.",
@@ -296,14 +296,14 @@
     w_note: "<b>A meta não foi atingida a tempo?</b> Todos recebem 100 % do que colocaram. Sem taxas, sem letras miúdas.",
     b_eb: "Parte B · Seu investimento", b_t: "Com os 75 % você recupera 100 %. <span>Os 25 % são lucro.</span>",
     b_p: "Como a pool abre 50 % acima do preço que todos pagaram na reserva, os 75 % que você recebe no lançamento já valem mais do que tudo o que você colocou. Os 25 % que chegam nos 7 dias seguintes são o ganho: o reflexo dessa alta de 50 %.",
-    b_exh: "Exemplo · você coloca $100 numa reserva",
+    b_exh: "Exemplo · você coloca $500 numa reserva (o máximo por carteira)",
     b_r1: "Você coloca na reserva", b_r2: "Seus tokens no preço de abertura (+50 %)", b_r3: "75 % que você recebe no lançamento", b_r4: "25 % que você recebe em 7 dias", b_r5: "Ganho total no preço de abertura",
     bl_in: "O que você coloca", bk_in: "seu investimento",
-    bl_out: "O que você recebe, no preço de abertura", bk_a: "75 % · cobre seus $100", bk_c: "25 % · ganho",
-    b_bars: "Os 75 % ($112,50) são mais que os seus $100: <b>todo o seu investimento fica coberto desde o primeiro dia</b>. Os 25 % ($37,50) são ganho puro, e com os $12,50 a mais dentro dos 75 % somam os +50 %.",
+    bl_out: "O que você recebe, no preço de abertura", bk_a: "75 % · cobre seus $500", bk_c: "25 % · ganho",
+    b_bars: "Os 75 % ($562,50) são mais que os seus $500: <b>todo o seu investimento fica coberto desde o primeiro dia</b>. Os 25 % ($187,50) são ganho puro, e com os $62,50 a mais dentro dos 75 % somam os +50 % ($250).",
     b1t: "Risco coberto desde o primeiro dia", b1p: "No preço de abertura, os tokens que você recebe no lançamento valem 112,5 % do que você pagou.",
     b2t: "O ganho chega aos poucos", b2p: "Os 25 % em 7 dias evitam que o preço desabe no primeiro minuto, e isso protege o valor do que você já tem.",
-    b3t: "Ou trave e ganhe mais", b3p: "Trave por 30 dias e receba tudo mais um bônus de até +25 %: até $187,50 para cada $100 no preço de abertura.",
+    b3t: "Ou trave e ganhe mais", b3p: "Trave por 30 dias e receba tudo mais um bônus de até +25 %: até $937,50 pelos seus $500 no preço de abertura.",
     b_warn: "<b>Importante:</b> os valores são calculados no preço de abertura. Quando o trading começa, o preço é definido pelo mercado: pode subir ou descer, e vender grandes quantidades move o preço. As regras protegem você de lançamentos injustos, não do mercado.",
     c_eb: "Parte C · Por que importa para os holders de SECT", c_t: "Cada lançamento <span>trabalha para o SECT</span>",
     c_p: "Todas as moedas do Sectora Launch são cotadas em SECT. Isso significa que cada reserva, cada lançamento e cada operação de cada moeda precisa de SECT. Se você tem SECT, o launchpad trabalha para você.",
@@ -377,9 +377,9 @@
   function pick() {
     var q = (location.search.match(/[?&]lang=([a-z]{2})/) || [])[1];
     if (q && T[q]) return q;
-    try { var s = sessionStorage.getItem("sectoraLaunch.lang"); if (s && T[s]) return s; } catch (e) {}
-    var n = String(navigator.language || "en").slice(0, 2).toLowerCase();
-    return T[n] ? n : "en";
+    // English unless the visitor picks another language on this page
+    try { var s = sessionStorage.getItem("sectoraIntro.lang"); if (s && T[s]) return s; } catch (e) {}
+    return "en";
   }
   function nf(v, d) { return v.toLocaleString(LOC[L], { maximumFractionDigits: d == null ? 0 : d, minimumFractionDigits: d == null ? 0 : d }); }
   function usd(v) { return "$" + nf(v, v < 100 ? 2 : 0); }
@@ -410,18 +410,18 @@
       document.getElementById("bigP").innerHTML = d.big_off;
     }
   }
-  function apply(l) {
+  function apply(l, save) {
     L = T[l] ? l : "en";
     var d = T[L];
     document.documentElement.lang = L;
     document.title = d.title;
     document.querySelectorAll("[data-i]").forEach(function (el) { var k = el.getAttribute("data-i"); if (d[k] != null) el.innerHTML = d[k]; });
-    document.querySelectorAll("img[data-img]").forEach(function (im) { im.src = "img/" + L + "-" + im.getAttribute("data-img") + ".jpg?v=2"; im.loading = "lazy"; im.decoding = "async"; im.onclick = function () { window.open(im.src, "_blank", "noopener"); }; });
+    document.querySelectorAll("img[data-img]").forEach(function (im) { im.src = "img/" + L + "-" + im.getAttribute("data-img") + ".jpg?v=3"; im.loading = "lazy"; im.decoding = "async"; im.onclick = function () { window.open(im.src, "_blank", "noopener"); }; });
     document.querySelectorAll("[data-v]").forEach(function (el) { var v = +el.getAttribute("data-v"), dd = el.hasAttribute("data-d") ? +el.getAttribute("data-d") : 2; el.textContent = (el.hasAttribute("data-plus") ? "+" : "") + "$" + nf(v, dd); });
     document.getElementById("tbl").innerHTML = table(d);
     sectTable();
     document.querySelectorAll("#langs button").forEach(function (b) { b.classList.toggle("on", b.getAttribute("data-l") === L); });
-    try { sessionStorage.setItem("sectoraLaunch.lang", L); } catch (e) {}
+    if (save) try { sessionStorage.setItem("sectoraIntro.lang", L); sessionStorage.setItem("sectoraLaunch.lang", L); } catch (e) {}
   }
   // live SECT price (largest SECT pool on Ethereum, from DexScreener)
   function loadPrice() {
@@ -435,7 +435,7 @@
       if (best) { PX = best.p; sectTable(); }
     }).catch(function () {});
   }
-  document.querySelectorAll("#langs button").forEach(function (b) { b.addEventListener("click", function () { apply(b.getAttribute("data-l")); }); });
+  document.querySelectorAll("#langs button").forEach(function (b) { b.addEventListener("click", function () { apply(b.getAttribute("data-l"), true); }); });
   apply(pick());
   loadPrice();
 })();
