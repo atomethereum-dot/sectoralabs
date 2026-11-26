@@ -94,6 +94,7 @@ var COINS = [
     for (var i = 0, tries = 0; i < n && tries < 6000; tries++) {
       var d = minD + rnd() * (maxD - minD), x = -d * .2 + rnd() * (W + d * .4), y = y0 - d * .2 + rnd() * (H - y0 + d * .4);
       if (x + d / 2 > keep[0] && x - d / 2 < keep[2] && y + d / 2 > keep[1] && y - d / 2 < keep[3]) continue;
+      if (y + d * .64 > H) continue; // whole coins only at the bottom of the cover (they fade out there, never cut)
       var ok = true;
       for (var j = 0; j < placed.length; j++) { var p = placed[j]; if (Math.hypot(p[0] - x, p[1] - y) < (p[2] + d) / 2 + 8) { ok = false; break; } }
       if (!ok) continue;
