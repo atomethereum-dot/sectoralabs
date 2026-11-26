@@ -1,4 +1,4 @@
-/* Sectora Launch intro guide: texts (EN / ES / PT), reference screenshots per language,
+/* Sectora Launch intro guide: texts (EN / ES / PT here, 8 more languages in lang/), reference screenshots per language,
  * comparison table and the "what Sectora gains" table computed with the live SECT price. */
 (function () {
   "use strict";
@@ -40,7 +40,7 @@
     s2a: "You pay with <span class=\"chip\">ETH</span> <span class=\"chip\">USDT</span> or <span class=\"chip\">SECT</span>. ETH and USDT are swapped to SECT automatically.",
     s2b: "Everyone pays <b>the same price</b>. The app shows how many tokens you get and what they are worth at the opening price.",
     s2c: "Changed your mind? <b>Take back 100 % at any time</b> before launch, with no fees.",
-    s2cap: "Joining a reserve with 100 USDT on a computer and with 50 USDT on a phone. Reference views with a test coin.",
+    s2cap: "Joining a reserve with 500 USDT, the maximum per wallet, on a computer and on a phone. Reference views with a test coin.",
     s3t: "The goal is reached: the coin goes live",
     s3a: "In the same transaction, <b>98 % of the reserve</b> and the pool share of the tokens become a pool on Uniswap.",
     s3b: "The pool opens <b>50 % above the reserve price</b>. Everyone who joined starts above what they paid.",
@@ -161,7 +161,7 @@
     s2a: "Pagas con <span class=\"chip\">ETH</span> <span class=\"chip\">USDT</span> o <span class=\"chip\">SECT</span>. El ETH y el USDT se cambian a SECT automáticamente.",
     s2b: "Todos pagan <b>el mismo precio</b>. La app te muestra cuántos tokens recibes y cuánto valen al precio de apertura.",
     s2c: "¿Cambiaste de idea? <b>Retiras el 100 % cuando quieras</b> antes del lanzamiento, sin comisiones.",
-    s2cap: "Entrar en una reserva con 100 USDT desde el ordenador y con 50 USDT desde el móvil. Vistas de referencia con una moneda de prueba.",
+    s2cap: "Entrar en una reserva con 500 USDT, el máximo por wallet, desde el ordenador y desde el móvil. Vistas de referencia con una moneda de prueba.",
     s3t: "Se llega a la meta: la moneda sale al mercado",
     s3a: "En la misma transacción, <b>el 98 % de la reserva</b> y la parte de tokens del pool forman una pool en Uniswap.",
     s3b: "La pool abre <b>un 50 % por encima del precio de la reserva</b>. Todos los que entraron empiezan por encima de lo que pagaron.",
@@ -282,7 +282,7 @@
     s2a: "Você paga com <span class=\"chip\">ETH</span> <span class=\"chip\">USDT</span> ou <span class=\"chip\">SECT</span>. O ETH e o USDT são trocados por SECT automaticamente.",
     s2b: "Todos pagam <b>o mesmo preço</b>. O app mostra quantos tokens você recebe e quanto valem no preço de abertura.",
     s2c: "Mudou de ideia? <b>Retire 100 % quando quiser</b> antes do lançamento, sem taxas.",
-    s2cap: "Entrando numa reserva com 100 USDT no computador e com 50 USDT no celular. Visualizações de referência com uma moeda de teste.",
+    s2cap: "Entrando numa reserva com 500 USDT, o máximo por carteira, no computador e no celular. Visualizações de referência com uma moeda de teste.",
     s3t: "A meta é atingida: a moeda vai ao mercado",
     s3a: "Na mesma transação, <b>98 % da reserva</b> e a parte dos tokens do pool formam uma pool na Uniswap.",
     s3b: "A pool abre <b>50 % acima do preço da reserva</b>. Todos que entraram começam acima do que pagaram.",
@@ -371,14 +371,45 @@
     foot: "© 2026 Sectora Foundation IL. Todos os direitos reservados."
   };
 
-  var LOC = { en: "en-US", es: "es-ES", pt: "pt-BR" };
+  var LOC = { en: "en-US", es: "es-ES", pt: "pt-BR", zh: "zh-CN", ru: "ru-RU", fr: "fr-FR", ja: "ja-JP", ko: "ko-KR", ar: "ar-u-nu-latn", de: "de-DE", hi: "hi-IN" };
+  // same languages, order and flag picker as the app (sectoralabs.com)
+  var LANGS = ["en", "es", "zh", "pt", "ru", "fr", "ja", "ko", "ar", "de", "hi"];
+  var LNAME = { en: "English", es: "Español", zh: "中文", pt: "Português", ru: "Русский", fr: "Français", ja: "日本語", ko: "한국어", ar: "العربية", de: "Deutsch", hi: "हिन्दी" };
+  var FLAGS = {
+    en: '<rect width="24" height="16" fill="#b22234"/><path d="M0 1.85h24M0 4.31h24M0 6.77h24M0 9.23h24M0 11.69h24M0 14.15h24" stroke="#fff" stroke-width="1.23"/><rect width="9.6" height="8.6" fill="#3c3b6e"/>',
+    es: '<rect width="24" height="16" fill="#c60b1e"/><rect y="4" width="24" height="8" fill="#ffc400"/>',
+    zh: '<rect width="24" height="16" fill="#de2910"/><circle cx="5" cy="4.4" r="2.1" fill="#ffde00"/><circle cx="9.4" cy="2.2" r=".8" fill="#ffde00"/><circle cx="11" cy="4.6" r=".8" fill="#ffde00"/><circle cx="10.6" cy="7.6" r=".8" fill="#ffde00"/><circle cx="8.4" cy="9.4" r=".8" fill="#ffde00"/>',
+    pt: '<rect width="24" height="16" fill="#009c3b"/><path d="M12 2.2 22 8l-10 5.8L2 8z" fill="#ffdf00"/><circle cx="12" cy="8" r="3.1" fill="#002776"/>',
+    ru: '<rect width="24" height="16" fill="#fff"/><rect y="5.33" width="24" height="5.34" fill="#0039a6"/><rect y="10.67" width="24" height="5.33" fill="#d52b1e"/>',
+    fr: '<rect width="24" height="16" fill="#fff"/><rect width="8" height="16" fill="#002395"/><rect x="16" width="8" height="16" fill="#ed2939"/>',
+    ja: '<rect width="24" height="16" fill="#fff"/><circle cx="12" cy="8" r="4.6" fill="#bc002d"/>',
+    ko: '<rect width="24" height="16" fill="#fff"/><path d="M12 3.6a4.4 4.4 0 0 1 0 8.8 2.2 2.2 0 0 0 0-4.4 2.2 2.2 0 0 1 0-4.4z" fill="#cd2e3a"/><path d="M12 3.6a2.2 2.2 0 0 1 0 4.4 2.2 2.2 0 0 0 0 4.4 4.4 4.4 0 0 1 0-8.8z" fill="#0047a0"/>',
+    ar: '<rect width="24" height="16" fill="#165d31"/><rect x="4" y="6.6" width="16" height="1.5" fill="#fff"/><rect x="4" y="9.4" width="11" height="1.2" fill="#fff"/>',
+    de: '<rect width="24" height="16" fill="#000"/><rect y="5.33" width="24" height="5.34" fill="#dd0000"/><rect y="10.67" width="24" height="5.33" fill="#ffce00"/>',
+    hi: '<rect width="24" height="16" fill="#ff9933"/><rect y="5.33" width="24" height="5.34" fill="#fff"/><rect y="10.67" width="24" height="5.33" fill="#138808"/><circle cx="12" cy="8" r="2" fill="none" stroke="#000080" stroke-width="1"/>'
+  };
+  function flag(c) { return '<svg class="fl" viewBox="0 0 24 16" aria-hidden="true">' + (FLAGS[c] || "") + "</svg>"; }
   var L = "en", PX = 0;
+  function ok(l) { return LANGS.indexOf(l) >= 0; }
+  // en, es and pt are in this file; the other languages load once from lang/<code>.js
+  function load(l, done) {
+    if (T[l]) { done(); return; }
+    var s = document.createElement("script");
+    s.src = "lang/" + l + ".js?v=1";
+    s.onload = s.onerror = function () { var x = window.INTRO_T && window.INTRO_T[l]; if (x) T[l] = x; done(); };
+    document.head.appendChild(s);
+  }
+  function picker() {
+    var lp = document.getElementById("lp"); if (!lp) return;
+    lp.innerHTML = '<button type="button" class="lp-b" aria-haspopup="listbox" aria-expanded="false" aria-label="Language">' + flag(L) + '<span class="nm">' + LNAME[L] + '</span><span class="cd">' + L.toUpperCase() + '</span><svg class="cv" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9.5l6 6 6-6"/></svg></button>' +
+      '<ul class="lp-l" role="listbox">' + LANGS.map(function (l) { return '<li role="option" data-l="' + l + '" aria-selected="' + (l === L) + '" lang="' + l + '">' + flag(l) + "<span>" + LNAME[l] + "</span></li>"; }).join("") + "</ul>";
+  }
 
   function pick() {
     var q = (location.search.match(/[?&]lang=([a-z]{2})/) || [])[1];
-    if (q && T[q]) return q;
+    if (q && ok(q)) return q;
     // English unless the visitor picks another language on this page
-    try { var s = sessionStorage.getItem("sectoraIntro.lang"); if (s && T[s]) return s; } catch (e) {}
+    try { var s = sessionStorage.getItem("sectoraIntro.lang"); if (s && ok(s)) return s; } catch (e) {}
     return "en";
   }
   function nf(v, d) { return v.toLocaleString(LOC[L], { maximumFractionDigits: d == null ? 0 : d, minimumFractionDigits: d == null ? 0 : d }); }
@@ -414,13 +445,14 @@
     L = T[l] ? l : "en";
     var d = T[L];
     document.documentElement.lang = L;
+    document.documentElement.dir = L === "ar" ? "rtl" : "ltr";
     document.title = d.title;
     document.querySelectorAll("[data-i]").forEach(function (el) { var k = el.getAttribute("data-i"); if (d[k] != null) el.innerHTML = d[k]; });
     document.querySelectorAll("img[data-img]").forEach(function (im) { im.src = "img/" + L + "-" + im.getAttribute("data-img") + ".jpg?v=3"; im.loading = "lazy"; im.decoding = "async"; im.onclick = function () { window.open(im.src, "_blank", "noopener"); }; });
     document.querySelectorAll("[data-v]").forEach(function (el) { var v = +el.getAttribute("data-v"), dd = el.hasAttribute("data-d") ? +el.getAttribute("data-d") : 2; el.textContent = (el.hasAttribute("data-plus") ? "+" : "") + "$" + nf(v, dd); });
     document.getElementById("tbl").innerHTML = table(d);
     sectTable();
-    document.querySelectorAll("#langs button").forEach(function (b) { b.classList.toggle("on", b.getAttribute("data-l") === L); });
+    picker();
     if (save) try { sessionStorage.setItem("sectoraIntro.lang", L); sessionStorage.setItem("sectoraLaunch.lang", L); } catch (e) {}
   }
   // live SECT price (largest SECT pool on Ethereum, from DexScreener)
@@ -435,7 +467,16 @@
       if (best) { PX = best.p; sectTable(); }
     }).catch(function () {});
   }
-  document.querySelectorAll("#langs button").forEach(function (b) { b.addEventListener("click", function () { apply(b.getAttribute("data-l"), true); }); });
-  apply(pick());
+  document.addEventListener("click", function (e) {
+    var lp = document.getElementById("lp"); if (!lp) return;
+    var li = e.target.closest && e.target.closest("#lp li[data-l]");
+    if (li) { lp.classList.remove("on"); var l = li.getAttribute("data-l"); load(l, function () { apply(l, true); }); return; }
+    if (e.target.closest && e.target.closest("#lp .lp-b")) { var on = !lp.classList.contains("on"); lp.classList.toggle("on", on); lp.querySelector(".lp-b").setAttribute("aria-expanded", on ? "true" : "false"); return; }
+    lp.classList.remove("on");
+  });
+  document.addEventListener("keydown", function (e) { var lp = document.getElementById("lp"); if (e.key === "Escape" && lp) lp.classList.remove("on"); });
+  var first = pick();
+  apply("en");
+  if (first !== "en") load(first, function () { apply(first); });
   loadPrice();
 })();
