@@ -368,7 +368,7 @@
   function loadLang(l, done) {
     if (T[l] || xdict(l, "core")) { done(); return; }
     var s = document.createElement("script");
-    s.src = "i18n/" + l + ".js?v=20261124e";
+    s.src = "i18n/" + l + ".js?v=20261126a";
     s.onload = s.onerror = function () { done(); };
     document.head.appendChild(s);
   }

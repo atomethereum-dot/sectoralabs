@@ -110,7 +110,7 @@
   live: {
     c_grad: "卒業目標", c_grad_h: "リザーブが目標に達するとコインは Uniswap で取引開始。全員同じ価格で、1 ウォレットの上限は目標に応じて上がります（{cap}）。そのため各ローンチには最低 {n} ウォレットが必要です。", g0: "クイック", g0_p: "{n} ウォレットから達成", g1: "バランス", g1_p: "{n} ウォレットから · 流動性が多い", g2: "ストロング", g2_p: "{n} ウォレットから · 流動性が最も厚い", c_minw: "必要なウォレット（最少）", goal: "卒業目標 {g}",
     net_on: "接続中",
-    bonus_up: "最大 +25 % のボーナス", r_p1: "{g} 中 {r} · 1 ウォレット", j_sect: "ETH から得る SECT", j_in: "リザーブに入る額", j_back: "返還される額", pay: "支払い方法",
+    bonus_up: "最大 +25 % のボーナス", r_p1: "{g} 中 {r} · 1 ウォレット", j_sect: "ETH から得る SECT", j_sect_u: "あなたの USDT からの SECT", approve_usdt: "{n} USDT を承認", j_swap_u: "あなたの USDT は Uniswap（SECT/USDT プール）で SECT に交換されます。入りきらない SECT はあなたに返されます。", j_in: "リザーブに入る額", j_back: "返還される額", pay: "支払い方法",
     banner_live: "{n} のフェアローンチ：全員が同じ価格、リザーブが埋まらなければ 100 % 返金。すべてのコインは {s} 建てです。",
     banner_off: "Sectora Launch はまもなく {n} で開始：全員が同じ価格、リザーブが埋まらなければ 100 % 返金。",
     sectora_soon_t: "SectoraEVM に登場予定", sectora_soon_p: "Sectora Launch は 2027 年 3 月 22 日ごろ、メインネットとともに SectoraEVM で利用可能になります。それまでは Ethereum 上で SECT 建ての本物のコインで稼働します。",

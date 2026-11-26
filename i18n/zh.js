@@ -110,7 +110,7 @@
   live: {
     c_grad: "毕业目标", c_grad_h: "储备达到目标后，代币即在 Uniswap 上线。人人同价；每个钱包的上限随目标提高（{cap}），因此每次发行至少需要 {n} 个钱包。", g0: "快速", g0_p: "至少 {n} 个钱包即可填满", g1: "均衡", g1_p: "至少 {n} 个钱包 · 流动性更多", g2: "强势", g2_p: "至少 {n} 个钱包 · 流动性最深", c_minw: "所需钱包（最少）", goal: "毕业目标 {g}",
     net_on: "已连接",
-    bonus_up: "奖励最高 +25 %", r_p1: "{r} / {g} · 1 个钱包", j_sect: "你的 ETH 可换 SECT", j_in: "进入储备", j_back: "退还给你", pay: "支付方式",
+    bonus_up: "奖励最高 +25 %", r_p1: "{r} / {g} · 1 个钱包", j_sect: "你的 ETH 可换 SECT", j_sect_u: "你的 USDT 兑换的 SECT", approve_usdt: "授权 {n} USDT", j_swap_u: "你的 USDT 会在 Uniswap（SECT/USDT 池）兑换成 SECT。放不下的 SECT 会退还给你。", j_in: "进入储备", j_back: "退还给你", pay: "支付方式",
     banner_live: "{n} 上的公平发行：所有人同一价格，储备未满则 100 % 退款。所有代币均以 {s} 计价。",
     banner_off: "Sectora Launch 即将在 {n} 上线：所有人同一价格，储备未满 100 % 退款。",
     sectora_soon_t: "即将登陆 SectoraEVM", sectora_soon_p: "Sectora Launch 预计于 2027 年 3 月 22 日随主网登陆 SectoraEVM。在此之前，它在 Ethereum 上运行真实代币，以 SECT 计价。",

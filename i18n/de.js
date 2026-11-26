@@ -110,7 +110,7 @@
   live: {
     c_grad: "Graduierungsziel", c_grad_h: "Erreicht die Reserve das Ziel, geht der Coin auf Uniswap live. Gleicher Preis für alle; das Maximum pro Wallet wächst mit dem Ziel ({cap}), daher braucht jeder Launch mindestens {n} Wallets.", g0: "Schnell", g0_p: "Voll ab {n} Wallets", g1: "Ausgewogen", g1_p: "Ab {n} Wallets · mehr Liquidität", g2: "Stark", g2_p: "Ab {n} Wallets · tiefste Liquidität", c_minw: "Benötigte Wallets (min.)", goal: "Graduierung {g}",
     net_on: "Verbunden",
-    bonus_up: "Bonus bis zu +25 %", r_p1: "{r} von {g} · 1 Wallet", j_sect: "SECT für dein ETH", j_in: "Geht in die Reserve", j_back: "Geht an dich zurück", pay: "Zahlen mit",
+    bonus_up: "Bonus bis zu +25 %", r_p1: "{r} von {g} · 1 Wallet", j_sect: "SECT für dein ETH", j_sect_u: "SECT für dein USDT", approve_usdt: "{n} USDT freigeben", j_swap_u: "Dein USDT wird auf Uniswap (SECT/USDT-Pool) in SECT getauscht. SECT, das nicht hineinpasst, geht an dich zurück.", j_in: "Geht in die Reserve", j_back: "Geht an dich zurück", pay: "Zahlen mit",
     banner_live: "Faire Launches auf {n}: ein Preis für alle, 100 % zurück, wenn sich eine Reserve nicht füllt. Jeder Coin ist in {s} bepreist.",
     banner_off: "Sectora Launch startet in Kürze auf {n}: ein Preis für alle und 100 % zurück, wenn sich eine Reserve nicht füllt.",
     sectora_soon_t: "Bald auf SectoraEVM", sectora_soon_p: "Sectora Launch ist voraussichtlich ab dem 22. März 2027 mit dem Mainnet auf SectoraEVM verfügbar. Bis dahin läuft es mit echten Coins auf Ethereum, bepreist in SECT.",

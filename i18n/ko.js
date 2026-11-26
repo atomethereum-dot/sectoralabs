@@ -110,7 +110,7 @@
   live: {
     c_grad: "졸업 목표", c_grad_h: "리저브가 목표에 도달하면 코인이 Uniswap에 상장됩니다. 모두에게 같은 가격이며, 지갑당 최대 금액은 목표에 따라 커집니다({cap}). 따라서 모든 런치에는 최소 {n}개 지갑이 필요합니다.", g0: "빠른", g0_p: "지갑 {n}개부터 채워짐", g1: "균형", g1_p: "지갑 {n}개부터 · 유동성 더 많음", g2: "강력", g2_p: "지갑 {n}개부터 · 가장 깊은 유동성", c_minw: "필요한 지갑 (최소)", goal: "졸업 목표 {g}",
     net_on: "연결됨",
-    bonus_up: "최대 +25 % 보너스", r_p1: "{g} 중 {r} · 지갑 1개", j_sect: "내 ETH로 받는 SECT", j_in: "리저브에 들어가는 금액", j_back: "돌려받는 금액", pay: "결제 수단",
+    bonus_up: "최대 +25 % 보너스", r_p1: "{g} 중 {r} · 지갑 1개", j_sect: "내 ETH로 받는 SECT", j_sect_u: "내 USDT로 받는 SECT", approve_usdt: "{n} USDT 승인", j_swap_u: "내 USDT는 Uniswap(SECT/USDT 풀)에서 SECT로 교환됩니다. 들어가지 못한 SECT는 돌려받습니다.", j_in: "리저브에 들어가는 금액", j_back: "돌려받는 금액", pay: "결제 수단",
     banner_live: "{n}의 공정 출시: 모두 같은 가격, 리저브가 차지 않으면 100 % 환불. 모든 코인은 {s} 기준입니다.",
     banner_off: "Sectora Launch가 곧 {n}에서 시작됩니다: 모두 같은 가격, 리저브가 차지 않으면 100 % 환불.",
     sectora_soon_t: "곧 SectoraEVM에서", sectora_soon_p: "Sectora Launch는 2027년 3월 22일경 메인넷과 함께 SectoraEVM에서 이용할 수 있습니다. 그때까지는 Ethereum에서 SECT 기준의 실제 코인으로 운영됩니다.",

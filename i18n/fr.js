@@ -110,7 +110,7 @@
   live: {
     c_grad: "Objectif de graduation", c_grad_h: "Quand la réserve l’atteint, le coin passe en direct sur Uniswap. Même prix pour tous ; le maximum par wallet augmente avec l’objectif ({cap}), donc chaque lancement nécessite au moins {n} wallets.", g0: "Rapide", g0_p: "Rempli dès {n} wallets", g1: "Équilibré", g1_p: "Dès {n} wallets · plus de liquidité", g2: "Solide", g2_p: "Dès {n} wallets · liquidité maximale", c_minw: "Wallets nécessaires (min.)", goal: "Graduation {g}",
     net_on: "Connecté",
-    bonus_up: "Bonus jusqu’à +25 %", r_p1: "{r} sur {g} · 1 wallet", j_sect: "SECT pour votre ETH", j_in: "Entre dans la réserve", j_back: "Vous est rendu", pay: "Payer avec",
+    bonus_up: "Bonus jusqu’à +25 %", r_p1: "{r} sur {g} · 1 wallet", j_sect: "SECT pour votre ETH", j_sect_u: "SECT pour votre USDT", approve_usdt: "Approuver {n} USDT", j_swap_u: "Votre USDT est échangé contre du SECT sur Uniswap (pool SECT/USDT). Le SECT qui ne rentre pas vous est rendu.", j_in: "Entre dans la réserve", j_back: "Vous est rendu", pay: "Payer avec",
     banner_live: "Lancements équitables sur {n} : même prix pour tous, 100 % remboursé si la réserve ne se remplit pas. Toutes les monnaies sont cotées en {s}.",
     banner_off: "Sectora Launch ouvre très bientôt sur {n} : même prix pour tous et 100 % remboursé si la réserve ne se remplit pas.",
     sectora_soon_t: "Bientôt sur SectoraEVM", sectora_soon_p: "Sectora Launch sera disponible sur SectoraEVM vers le 22 mars 2027, avec le mainnet. D’ici là, il fonctionne avec de vraies monnaies sur Ethereum, cotées en SECT.",

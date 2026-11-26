@@ -1,5 +1,5 @@
 /* Sectora Launch — one-time deployment of the fair-launch contract on Ethereum (team only). Three graduation targets ($3,000, $7,000 and $15,000) the creator picks from.
- * Every coin is priced in SECT: reserves sized in dollars with the 30-minute SECT/USDT price, ETH swapped to SECT on Uniswap V3,
+ * Every coin is priced in SECT: reserves sized in dollars with the 30-minute SECT/USDT price, ETH or USDT swapped to SECT on Uniswap V3,
  * launch into a COIN/SECT Uniswap V2 pool with the LP burned. */
 (function () {
   "use strict";
@@ -19,6 +19,7 @@
   ORDER.forEach(function (k) { var o = document.createElement("option"); o.value = k; o.textContent = C[k].name + " · " + C[k].qs + " (" + C[k].id + ")"; $("dpNet").appendChild(o); });
   function net() { return $("dpNet").value; }
   function path(k) { return E.solidityPacked(["address", "uint24", "address", "uint24", "address"], C[k].path); }
+  function upath(k) { return C[k].upath ? E.solidityPacked(["address", "uint24", "address"], C[k].upath) : "0x"; }
   function num(id) { return parseFloat(String($(id).value).replace(",", ".")) || 0; }
   function nf(v, d) { return v.toLocaleString("es-ES", { maximumFractionDigits: d == null ? (v >= 100 ? 0 : 4) : d }); }
   function usd(v) { return "$" + nf(v, v >= 100 ? 0 : 2); }
@@ -97,7 +98,8 @@
       F.allPairsLength().catch(function () { return -1n; }),
       R.factory().catch(nope), R.WETH().catch(nope), R3.WETH9().catch(nope),
       Q.quoteExactInput.staticCall(path(k), E.parseEther("0.01")).then(function (r) { return r[0]; }).catch(nope),
-      oracleRead(k).catch(nope)
+      oracleRead(k).catch(nope),
+      ch.upath ? Q.quoteExactInput.staticCall(upath(k), 100000000n).then(function (r) { return r[0]; }).catch(nope) : Promise.resolve(null)
     ]).then(function (r) {
       if (id !== runId) return;
       var same = function (a, b) { return a && b && a.toLowerCase() === b.toLowerCase(); }, o = r[8];
@@ -108,6 +110,7 @@
         [same(r[4], ch.dexFactory) && same(r[5], ch.wnative), "Router de Uniswap V2 (compraventa en la web) apunta a la misma fábrica y a WETH", ch.router],
         [same(r[6], ch.wnative), "Router de Uniswap V3 (pagar con ETH) usa WETH", ch.v3router],
         [r[7] && r[7] > 0n, "Ruta ETH → USDT → SECT: 0,01 ETH = " + (r[7] ? nf(Number(E.formatEther(r[7])), 2) + " SECT" : "sin liquidez"), ch.quoter],
+        [!ch.upath || (r[9] && r[9] > 0n), ch.upath ? "Ruta USDT → SECT (pagar con USDT): 100 USDT = " + (r[9] ? nf(Number(E.formatEther(r[9])), 2) + " SECT" : "sin liquidez") : "Pago con USDT desactivado", ch.usdt || ch.quoter],
         [!!(o && o.has), "Oráculo de precio: " + ch.oracleDex + (o ? " · ahora $" + nf(o.spot, 6) + (o.price ? " · media de 30 min $" + nf(o.price, 6) : "") : ""), ch.oracle]
       ];
       var hist = "";
@@ -161,7 +164,7 @@
     var k = net(), ch = C[k], btn = $("dpDeploy"), st = $("dpState"), out = $("dpResult");
     var cfg = {
       owner: E.getAddress($("dpOwner").value.trim()), feeRecipient: E.getAddress($("dpFee").value.trim()), quote: ch.qaddr, dexFactory: ch.dexFactory,
-      swapRouter: ch.v3router, wrappedNative: ch.wnative, swapPath: path(k), oraclePool: ch.oracle,
+      swapRouter: ch.v3router, wrappedNative: ch.wnative, swapPath: path(k), stablePath: upath(k), oraclePool: ch.oracle,
       targetsUsd: ["dpTU", "dpTU1", "dpTU2"].map(function (id) { return E.parseEther(String(num(id))); }), capsUsd: ["dpCU", "dpCU1", "dpCU2"].map(function (id) { return E.parseEther(String(num(id))); }),
       targetFallbacks: ["dpTF", "dpTF1", "dpTF2"].map(function (id) { return E.parseEther(String(num(id))); }), capFallbacks: ["dpCF", "dpCF1", "dpCF2"].map(function (id) { return E.parseEther(String(num(id))); }), burnShareBps: Math.round(num("dpBurn") * 100)
     };

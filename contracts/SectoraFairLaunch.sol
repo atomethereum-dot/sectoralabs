@@ -9,8 +9,8 @@ pragma solidity 0.8.24;
  * 2. Reserve: everyone pays the same price. The creator picks the graduation target, $3,000,
  *    $7,000 or $15,000 worth of SECT, and each wallet can put at most $150, $350 or $500 worth
  *    respectively (so every launch needs at least 20 different wallets), both converted to
- *    SECT when the coin is created with the 30-minute average price of the SECT/USDT pool. Paying with ETH swaps it to SECT on a route
- *    fixed at deployment. Until the target is reached anyone can take their SECT back; if the
+ *    SECT when the coin is created with the 30-minute average price of the SECT/USDT pool. Paying with
+ *    ETH or USDT swaps it to SECT on routes fixed at deployment. Until the target is reached anyone can take their SECT back; if the
  *    deadline passes first, everyone takes back 100 % and no fee is charged.
  * 3. Launch, in the transaction that reaches the target: 1 % of the reserve goes to the creator and
  *    1 % to the platform (part of it burned when withdrawn). The other 98 % and the pool share of
@@ -27,6 +27,7 @@ interface IERC20Min {
     function balanceOf(address a) external view returns (uint256);
     function transfer(address to, uint256 amount) external returns (bool);
     function transferFrom(address from, address to, uint256 amount) external returns (bool);
+    function approve(address spender, uint256 amount) external returns (bool);
 }
 
 interface IV2Factory {
@@ -168,11 +169,13 @@ contract SectoraFairLaunch {
     uint256 private immutable capFallback1;
     uint256 private immutable capFallback2;
     uint256 public immutable burnShareBps;     // share of platform income burned on withdrawal
+    address public immutable stable;           // USDT (first token of stablePath), 0 if USDT payments are off
     address public immutable tokenImplementation;
     bool private immutable quoteIsToken0;
     uint256 private immutable quoteUnit;
     uint256 private immutable usdUnit;
     bytes public swapPath;                     // WETH … SECT
+    bytes public stablePath;                   // USDT … SECT (empty: USDT payments off)
 
     address public owner;
     address public feeRecipient;
@@ -237,6 +240,7 @@ contract SectoraFairLaunch {
         address swapRouter;
         address wrappedNative;
         bytes swapPath;
+        bytes stablePath;
         address oraclePool;
         uint256[3] targetsUsd;
         uint256[3] capsUsd;
@@ -252,6 +256,13 @@ contract SectoraFairLaunch {
         uint256 n = cfg.swapPath.length;
         require(n >= 43 && (n - 20) % 23 == 0, "SF: swap path");
         require(_pathToken(cfg.swapPath, 0) == cfg.wrappedNative && _pathToken(cfg.swapPath, n - 20) == cfg.quote, "SF: swap path ends");
+        uint256 m = cfg.stablePath.length;
+        address st;
+        if (m > 0) {
+            require(m >= 43 && (m - 20) % 23 == 0, "SF: USDT path");
+            st = _pathToken(cfg.stablePath, 0);
+            require(st != cfg.quote && st.code.length > 0 && _pathToken(cfg.stablePath, m - 20) == cfg.quote, "SF: USDT path ends");
+        }
         require(cfg.targetsUsd[0] < cfg.targetsUsd[1] && cfg.targetsUsd[1] < cfg.targetsUsd[2], "SF: dollar amounts");
         require(cfg.targetFallbacks[0] < cfg.targetFallbacks[1] && cfg.targetFallbacks[1] < cfg.targetFallbacks[2], "SF: fallback amounts");
         for (uint256 i; i < TIERS; ++i) {
@@ -274,6 +285,8 @@ contract SectoraFairLaunch {
         swapRouter = cfg.swapRouter;
         wrappedNative = cfg.wrappedNative;
         swapPath = cfg.swapPath;
+        stablePath = cfg.stablePath;
+        stable = st;
         oraclePool = cfg.oraclePool;
         targetUsd0 = cfg.targetsUsd[0];
         targetUsd1 = cfg.targetsUsd[1];
@@ -328,6 +341,14 @@ contract SectoraFairLaunch {
         if (used < got) _pay(msg.sender, got - used);
     }
 
+    /// Same, joining the reserve with USDT (needs an approval; swapped to SECT, SECT that does not fit is returned).
+    function createCoinWithUSDT(NewCoin calldata c, uint256 amountIn, uint256 minQuoteOut, bool lock) external nonReentrant returns (address token) {
+        token = _create(c);
+        uint256 got = _swapStable(amountIn, minQuoteOut);
+        uint256 used = _contribute(token, msg.sender, got, lock);
+        if (used < got) _pay(msg.sender, got - used);
+    }
+
     // ------------------------------------------------------------------ reserve
 
     /// Joins the reserve with SECT (needs an approval). Takes only what fits under the target and the
@@ -341,6 +362,14 @@ contract SectoraFairLaunch {
     /// Joins the reserve with ETH: swaps it to SECT on the fixed route; SECT that does not fit is returned.
     function contributeWithETH(address token, uint256 minQuoteOut, bool lock) external payable nonReentrant returns (uint256 used) {
         uint256 got = _swapIn(msg.value, minQuoteOut);
+        used = _contribute(token, msg.sender, got, lock);
+        if (used < got) _pay(msg.sender, got - used);
+    }
+
+    /// Joins the reserve with USDT (needs an approval): swaps it to SECT on the fixed route; SECT that does
+    /// not fit is returned.
+    function contributeWithUSDT(address token, uint256 amountIn, uint256 minQuoteOut, bool lock) external nonReentrant returns (uint256 used) {
+        uint256 got = _swapStable(amountIn, minQuoteOut);
         used = _contribute(token, msg.sender, got, lock);
         if (used < got) _pay(msg.sender, got - used);
     }
@@ -680,6 +709,25 @@ contract SectoraFairLaunch {
         require(got >= minQuoteOut && got > 0, "SF: swap slippage");
     }
 
+    /// Pulls USDT from the caller and swaps it to SECT on the fixed route.
+    function _swapStable(uint256 amountIn, uint256 minQuoteOut) private returns (uint256 got) {
+        address st = stable;
+        require(st != address(0), "SF: USDT payments off");
+        require(amountIn > 0, "SF: zero amount");
+        uint256 b0 = IERC20Min(st).balanceOf(address(this));
+        _call(st, abi.encodeWithSelector(IERC20Min.transferFrom.selector, msg.sender, address(this), amountIn));
+        uint256 inAmt = IERC20Min(st).balanceOf(address(this)) - b0;
+        require(inAmt > 0, "SF: USDT transfer");
+        _call(st, abi.encodeWithSelector(IERC20Min.approve.selector, swapRouter, 0));
+        _call(st, abi.encodeWithSelector(IERC20Min.approve.selector, swapRouter, inAmt));
+        uint256 before = IERC20Min(quote).balanceOf(address(this));
+        IV3SwapRouter(swapRouter).exactInput(
+            IV3SwapRouter.ExactInputParams({path: stablePath, recipient: address(this), amountIn: inAmt, amountOutMinimum: minQuoteOut})
+        );
+        got = IERC20Min(quote).balanceOf(address(this)) - before;
+        require(got >= minQuoteOut && got > 0, "SF: swap slippage");
+    }
+
     /// Pulls SECT and rejects tokens that take a fee on transfer.
     function _pull(address from, uint256 amount) private {
         require(amount > 0, "SF: zero amount");
@@ -694,7 +742,7 @@ contract SectoraFairLaunch {
 
     function _call(address target, bytes memory data) private {
         (bool ok, bytes memory ret) = target.call(data);
-        require(ok && (ret.length == 0 || abi.decode(ret, (bool))), "SF: quote transfer failed");
+        require(ok && (ret.length == 0 || abi.decode(ret, (bool))), "SF: token call failed");
     }
 
     function _clamp(uint256 v, uint256 ref) private pure returns (uint256) {

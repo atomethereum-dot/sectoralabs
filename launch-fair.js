@@ -19,6 +19,8 @@
       qs: "SECT", qaddr: "0x8C9984B06281f1CA9416e493c2E602AaB08513db", qquick: ["500", "1000", "2500", "4700"],
       v3router: "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45", quoter: "0x61fFE014bA17989E743c5F6cB21bF9697530B21e",
       path: ["0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2", 500, "0xdAC17F958D2ee523a2206206994597C13D831ec7", 100, "0x8C9984B06281f1CA9416e493c2E602AaB08513db"],
+      // paying with USDT swaps USDT → SECT in the same SECT/USDT pool
+      usdt: "0xdAC17F958D2ee523a2206206994597C13D831ec7", upath: ["0xdAC17F958D2ee523a2206206994597C13D831ec7", 100, "0x8C9984B06281f1CA9416e493c2E602AaB08513db"], uquick: ["25", "50", "100"],
       oracle: "0xA12A11fc202827B7c734Cf2019f2C7A6CF061d69", oracleDex: "Uniswap V3 SECT/USDT 0.01 %" }
   };
   var ORDER = ["ethereum"];
@@ -54,7 +56,7 @@
     en: {
       net_on: "Connected",
       bonus_up: "Bonus up to +25 %", r_p1: "{r} of {g} · 1 wallet", 
-      j_sect: "SECT from your ETH", j_in: "Goes into the reserve", j_back: "Returned to you", 
+      j_sect: "SECT from your ETH", j_sect_u: "SECT from your USDT", approve_usdt: "Approve {n} USDT", j_swap_u: "Your USDT is swapped to SECT on Uniswap (SECT/USDT pool). SECT that does not fit is returned to you.", j_in: "Goes into the reserve", j_back: "Returned to you", 
       pay: "Pay with", banner_live: "Fair launches on {n}: one price for everyone, 100 % back if a reserve does not fill. Every coin is priced in {s}.",
       banner_off: "Sectora Launch opens on {n} very soon: one price for everyone and 100 % back if a reserve does not fill.",
       sectora_soon_t: "Coming to SectoraEVM", sectora_soon_p: "Sectora Launch will be available on SectoraEVM approximately on 22 March 2027, at mainnet. Until then it runs with real coins on Ethereum, priced in SECT.",
@@ -108,7 +110,7 @@
     es: {
       net_on: "Conectada",
       bonus_up: "Bonus de hasta +25 %", r_p1: "{r} de {g} · 1 wallet", 
-      j_sect: "SECT por tu ETH", j_in: "Entra en la reserva", j_back: "Se te devuelve", 
+      j_sect: "SECT por tu ETH", j_sect_u: "SECT por tu USDT", approve_usdt: "Aprobar {n} USDT", j_swap_u: "Tu USDT se cambia a SECT en Uniswap (pool SECT/USDT). El SECT que no quepa se te devuelve.", j_in: "Entra en la reserva", j_back: "Se te devuelve", 
       pay: "Pagar con", banner_live: "Lanzamientos justos en {n}: mismo precio para todos y 100 % de vuelta si la reserva no se llena. Todas las monedas cotizan en {s}.",
       banner_off: "Sectora Launch abre muy pronto en {n}: mismo precio para todos y 100 % de vuelta si la reserva no se llena.",
       sectora_soon_t: "Llega a SectoraEVM", sectora_soon_p: "Sectora Launch estará disponible en SectoraEVM aproximadamente el 22 de marzo de 2027, con la mainnet. Mientras tanto funciona con monedas reales en Ethereum, cotizadas en SECT.",
@@ -162,7 +164,7 @@
     pt: {
       net_on: "Conectada",
       bonus_up: "Bônus de até +25 %", r_p1: "{r} de {g} · 1 carteira", 
-      j_sect: "SECT pelo seu ETH", j_in: "Entra na reserva", j_back: "Volta para você", 
+      j_sect: "SECT pelo seu ETH", j_sect_u: "SECT pelo seu USDT", approve_usdt: "Aprovar {n} USDT", j_swap_u: "Seu USDT é trocado por SECT na Uniswap (pool SECT/USDT). O SECT que não couber volta para você.", j_in: "Entra na reserva", j_back: "Volta para você", 
       pay: "Pagar com", banner_live: "Lançamentos justos na {n}: mesmo preço para todos e 100 % de volta se a reserva não encher. Todas as moedas são cotadas em {s}.",
       banner_off: "O Sectora Launch abre em breve na {n}: mesmo preço para todos e 100 % de volta se a reserva não encher.",
       sectora_soon_t: "Chega à SectoraEVM", sectora_soon_p: "O Sectora Launch estará disponível na SectoraEVM aproximadamente em 22 de março de 2027, com a mainnet. Até lá funciona com moedas reais na Ethereum, cotadas em SECT.",
@@ -425,11 +427,26 @@
   function pathBytes(k) { var pth = CHAINS[k].path; return E.solidityPacked(["address", "uint24", "address", "uint24", "address"], pth); }
   // SECT received for `wei` of ETH along the fixed route (Uniswap QuoterV2, read-only call)
   function quoteEth(k, wei) { if (CHAINS[k].native) return Promise.resolve(wei); return withRpc(k, function (p) { return new E.Contract(CHAINS[k].quoter, QUOTER_ABI, p).quoteExactInput.staticCall(pathBytes(k), wei); }).then(function (r) { return r[0]; }); }
+  function uC(k, runner) { return new E.Contract(CHAINS[k].usdt, ERC20_ABI, runner || rp(k)); }
+  function upathBytes(k) { return E.solidityPacked(["address", "uint24", "address"], CHAINS[k].upath); }
+  // SECT received for `units` of USDT (6 decimals) along the fixed USDT → SECT route
+  function quoteUsdt(k, units) { return withRpc(k, function (p) { return new E.Contract(CHAINS[k].quoter, QUOTER_ABI, p).quoteExactInput.staticCall(upathBytes(k), units); }).then(function (r) { return r[0]; }); }
+  // USDT payments are offered only when the deployed contract has its USDT route switched on
+  function hasUsdt(k) { var cf = D[k] && D[k].cfg; return !!(CHAINS[k].usdt && cf && cf.stable); }
+  function fu(x) { return Number(E.formatUnits(x, 6)); }
+  function usdtSend(k, s, spender, amount, reset) {
+    // USDT only accepts a new allowance after the old one is set to zero
+    var u = uC(k, s);
+    if (!reset) return u.approve(spender, amount);
+    return u.approve(spender, 0).then(function (t) { return t.wait(1); }).then(function () { return u.approve(spender, amount); });
+  }
   var RATE = {};
   function loadRate(k) {
-    if (CHAINS[k].native) { RATE[k] = { r: 1, at: Date.now() }; return Promise.resolve(1); }
+    if (CHAINS[k].native) { RATE[k] = { r: 1, u: 0, at: Date.now() }; return Promise.resolve(1); }
     if (RATE[k] && Date.now() - RATE[k].at < 60000) return Promise.resolve(RATE[k].r);
-    return quoteEth(k, E.parseEther("0.01")).then(function (out) { RATE[k] = { r: fx(out) / 0.01, at: Date.now() }; return RATE[k].r; });
+    return Promise.all([quoteEth(k, E.parseEther("0.01")), CHAINS[k].usdt ? quoteUsdt(k, 100000000n).catch(function () { return 0n; }) : 0n]).then(function (o) {
+      RATE[k] = { r: fx(o[0]) / 0.01, u: fx(o[1]) / 100, at: Date.now() }; return RATE[k].r;
+    });
   }
   var PAIR_ABI = ["function getReserves() view returns (uint112, uint112, uint32)", "function token0() view returns (address)"];
 
@@ -488,10 +505,10 @@
     if (!st.cfgLoading) {
       st.cfgLoading = withRpc(k, function (p) {
         var f = fac(k, p);
-        return Promise.all([f.sizesNow(0), f.sizesNow(1), f.sizesNow(2), f.quoteUsdPrice(), f.burnShareBps(), f.targetsUsd(), f.capsUsd()]);
+        return Promise.all([f.sizesNow(0), f.sizesNow(1), f.sizesNow(2), f.quoteUsdPrice(), f.burnShareBps(), f.targetsUsd(), f.capsUsd(), f.stable().catch(function () { return E.ZeroAddress; })]);
       }).then(function (r) {
         st.cfg = { tiers: [0, 1, 2].map(function (i) { return { target: r[i][0], cap: r[i][1], usd: fx(r[5][i]), capUsd: fx(r[6][i]) }; }),
-          px: fx(r[3]), burn: Number(r[4]), at: Date.now() };
+          px: fx(r[3]), burn: Number(r[4]), stable: r[7] && r[7] !== E.ZeroAddress ? r[7] : "", at: Date.now() };
         // dollar values come from DexScreener; until it answers, the contract's own 30-minute SECT price is used
         if (st.cfg.px > 0) { NUSD[k] = NUSD[k] || { p: 0, eth: 0, at: 0 }; if (!(NUSD[k].p > 0)) NUSD[k].p = st.cfg.px; }
         st.cfgLoading = null; return st.cfg;
@@ -581,17 +598,18 @@
     if (!W.addr) return Promise.resolve();
     var me = W.addr, c = td.c, ch = CHAINS[k];
     return withRpc(k, function (p) {
-      var f = fac(k, p), q = qC(k, p), t = tokC(c.addr, p);
+      var f = fac(k, p), q = qC(k, p), t = tokC(c.addr, p), u = ch.usdt ? uC(k, p) : null, none = function () { return null; };
       return Promise.all([p.getBalance(me), q.balanceOf(me), q.allowance(me, factoryOf(k)), f.seatView(c.addr, me), t.balanceOf(me),
-        f.creatorFees(me), f.creatorClaimable(c.addr), q.allowance(me, ch.router), t.allowance(me, ch.router)]);
+        f.creatorFees(me), f.creatorClaimable(c.addr), q.allowance(me, ch.router), t.allowance(me, ch.router),
+        u ? u.balanceOf(me).catch(none) : null, u ? u.allowance(me, factoryOf(k)).catch(none) : null]);
     }).then(function (r) {
       if (W.addr !== me) return;
       td.mine = { addr: me, native: r[0], sect: r[1], qAllow: r[2], seat: { amount: r[3][0], locked: r[3][1], claimed: r[3][2], claimable: r[3][3] },
-        bal: r[4], cfees: r[5], cclaim: r[6], qAllowR: r[7], tAllowR: r[8] };
-      var ms = meState(k); ms.native = r[0]; ms.sect = r[1]; ms.qAllow = r[2];
+        bal: r[4], cfees: r[5], cclaim: r[6], qAllowR: r[7], tAllowR: r[8], usdt: r[9], uAllow: r[10] };
+      var ms = meState(k); ms.native = r[0]; ms.sect = r[1]; ms.qAllow = r[2]; ms.usdt = r[9]; ms.uAllow = r[10];
     }).catch(function () {});
   }
-  function meState(k) { return ME[k] || (ME[k] = { native: null, sect: null, qAllow: null, at: 0, fees: 0n, seats: {} }); }
+  function meState(k) { return ME[k] || (ME[k] = { native: null, sect: null, qAllow: null, usdt: null, uAllow: null, at: 0, fees: 0n, seats: {} }); }
   function loadMe(k) {
     var ms = meState(k);
     if (!W.addr || !deployed(k)) return Promise.resolve(ms);
@@ -599,11 +617,12 @@
     return loadChain(k).then(function (st) {
       var coins = st.coins.slice(0, 60);
       return withRpc(k, function (p) {
-        var f = fac(k, p), q = qC(k, p);
-        return Promise.all([p.getBalance(me), f.creatorFees(me), q.balanceOf(me), q.allowance(me, factoryOf(k))].concat(coins.map(function (c) { return f.seatView(c.addr, me).catch(function () { return null; }); })));
+        var f = fac(k, p), q = qC(k, p), u = CHAINS[k].usdt ? uC(k, p) : null, none = function () { return null; };
+        return Promise.all([p.getBalance(me), f.creatorFees(me), q.balanceOf(me), q.allowance(me, factoryOf(k))].concat(coins.map(function (c) { return f.seatView(c.addr, me).catch(function () { return null; }); }))
+          .concat([u ? u.balanceOf(me).catch(none) : null, u ? u.allowance(me, factoryOf(k)).catch(none) : null]));
       }).then(function (r) {
         if (W.addr !== me) return ms;
-        ms.native = r[0]; ms.fees = r[1]; ms.sect = r[2]; ms.qAllow = r[3]; ms.seats = {};
+        ms.native = r[0]; ms.fees = r[1]; ms.sect = r[2]; ms.qAllow = r[3]; ms.usdt = r[r.length - 2]; ms.uAllow = r[r.length - 1]; ms.seats = {};
         coins.forEach(function (c, i) { var s = r[4 + i]; if (s && s[0] > 0n) ms.seats[c.addr] = { amount: s[0], locked: s[1], claimed: s[2], claimable: s[3] }; });
         ms.at = Date.now();
         return ms;
@@ -953,13 +972,16 @@
     return n * 10n ** 18n;
   }
   function rateOf(k) { return RATE[k] ? RATE[k].r : 0; }
-  // the creator's optional seat, in SECT (paying with ETH it is an estimate at the live swap rate)
+  function rateU(k) { return RATE[k] ? RATE[k].u || 0 : 0; }
+  function payOf(k, pay) { return pay === "usdt" && !hasUsdt(k) ? "eth" : pay; }
+  // the creator's optional seat, in SECT (paying with ETH or USDT it is an estimate at the live swap rate)
   function joinPlan(k) {
-    var cf = chainState(k).cfg, v = X.num(draft.join), r = rateOf(k);
-    if (!(v > 0)) return { v: 0, sect: 0, eth: draft.pay === "eth", ready: !!cf };
-    var sect = draft.pay === "eth" ? v * r : v;
-    return { v: v, sect: sect, eth: draft.pay === "eth", ready: !!(cf && (draft.pay !== "eth" || r)) };
+    var cf = chainState(k).cfg, v = X.num(draft.join), pay = payOf(k, draft.pay), r = pay === "eth" ? rateOf(k) : pay === "usdt" ? rateU(k) : 1;
+    if (!(v > 0)) return { v: 0, sect: 0, eth: pay !== "sect", pay: pay, ready: !!cf };
+    return { v: v, sect: v * r, eth: pay !== "sect", pay: pay, ready: !!(cf && r) };
   }
+  // USDT units (6 decimals) the creator pays
+  function usdtWei() { var v = X.num(draft.join); if (!(v > 0)) return 0n; try { return E.parseUnits(String(v), 6); } catch (e) { return 0n; } }
   function createErrors(k) {
     var e = {}, nb = utf8len(draft.name.trim()), sb = draft.sym.length, ch = CHAINS[k], cf = chainState(k).cfg;
     if (!nb || nb > 32) e.name = lt("e_name");
@@ -972,8 +994,9 @@
     var tcap = cf ? tierCfg(cf).cap : 0n;
     if (jp.v > 0 && cf && jp.ready && jp.sect > fx(tcap) * (jp.eth ? 1.02 : 1)) e.join = lt("e_cap", { n: amt(fx(tcap), ch.qs) });
     if (jp.v > 0 && W.addr) {
-      if (jp.eth && ms.native != null && jp.v > fx(ms.native)) e.join = lt("e_bal", { s: ch.sym });
-      if (!jp.eth && ms.sect != null && jp.v > fx(ms.sect)) e.join = lt("e_bal", { s: ch.qs });
+      if (jp.pay === "eth" && ms.native != null && jp.v > fx(ms.native)) e.join = lt("e_bal", { s: ch.sym });
+      if (jp.pay === "usdt" && ms.usdt != null && jp.v > fu(ms.usdt)) e.join = lt("e_bal", { s: "USDT" });
+      if (jp.pay === "sect" && ms.sect != null && jp.v > fx(ms.sect)) e.join = lt("e_bal", { s: ch.qs });
     }
     return e;
   }
@@ -996,10 +1019,10 @@
       }
       rows += kv(lt("c_until"), X.dateStr(chainNow(k) + DUR[draft.dur] * 1000) + " · " + X.timeStr(chainNow(k) + DUR[draft.dur] * 1000), "");
     } else rows = '<p class="sl-note">' + X.esc(lt("ex_loading", { c: ch.name })) + "</p>";
-    var needApprove = !jp.eth && jp.v > 0 && W.addr && ms.qAllow != null && cf && ms.qAllow < joinWei(k);
+    var needApprove = jp.v > 0 && W.addr && cf && (jp.pay === "sect" ? ms.qAllow != null && ms.qAllow < joinWei(k) : jp.pay === "usdt" ? ms.uAllow != null && ms.uAllow < usdtWei() : false);
     var ok = !Object.keys(errs).length && draft.ack && !!cf && jp.ready;
     var btn = !W.addr ? '<button class="sl-btn sl-btn-p sl-btn-w" data-a="wconnect">' + X.esc(lt("w_connect")) + "</button>"
-      : '<button class="sl-btn sl-btn-p sl-btn-w" data-a="llaunch"' + (ok ? "" : " disabled") + ">" + X.ico("rocket") + X.esc(needApprove ? lt("approve_sect", { n: amt(fx(joinWei(k))) }) : lt("c_btn", { c: ch.name })) + "</button>";
+      : '<button class="sl-btn sl-btn-p sl-btn-w" data-a="llaunch"' + (ok ? "" : " disabled") + ">" + X.ico("rocket") + X.esc(needApprove ? (jp.pay === "usdt" ? lt("approve_usdt", { n: X.nf(jp.v, 2) }) : lt("approve_sect", { n: amt(fx(joinWei(k))) })) : lt("c_btn", { c: ch.name })) + "</button>";
     var errList = ["join", "meta", "supply"].filter(function (x) { return errs[x] && (x !== "supply" || draft.touched.supply); }).map(function (x) { return '<div class="sl-alert is-bad" style="margin-top:10px">' + X.ico("alert") + "<span>" + X.esc(errs[x]) + "</span></div>"; }).join("");
     var burn = cf ? Math.round(cf.burn / 100) : 50, gtxt = dollars(tc.usd || usdOfTier(draft.tier)), ctxt = dollars(tc.capUsd || capOfTier(draft.tier));
     return '<div class="sl-panel"><h3>' + X.ico("file") + X.esc(lt("c_summary")) + "</h3>" + chainLogo(k, 16) + ' <b style="font-size:13px">' + X.esc(ch.name) + " · " + X.esc(ch.qs) + "</b>" + rows +
@@ -1022,6 +1045,7 @@
     loadChain(net).then(function () {}, function () {});
     loadUsd(net);
     loadRate(net).then(function () { X.refreshLive("summary"); }, function () {});
+    var cpay = payOf(net, draft.pay);
     if (W.addr) loadMe(net).then(function () { X.refreshLive("summary"); }, function () {});
     var ch = CHAINS[net], cf = chainState(net).cfg, errs = createErrors(net), tch = draft.touched, sim = (draft.name || draft.sym) ? similar(net, draft.name, draft.sym, null) : null;
     function f(id, label, val, attrs, err, hint) {
@@ -1036,8 +1060,9 @@
         '<em class="sl-tier-cap">' + X.esc(lt("c_cap")) + " " + dollars(cu) + "</em>" +
         (sect ? '<small class="num">≈ ' + X.esc(amt(sect, ch.qs)) + "</small>" : "") + "</button>";
     }).join("") + "</div><small>" + X.esc(lt("c_grad_h", { cap: z.cboth, n: z.minW })) + "</small></div>";
-    var r0 = rateOf(net), capS = cf ? fx(tcf.cap) : 0, maxJ = draft.pay === "eth" ? (r0 && capS ? Math.floor(capS / r0 * 0.98 * 1e5) / 1e5 : 0) : capS;
-    var jUnit = draft.pay === "eth" ? ch.sym : ch.qs, jQuick = draft.pay === "eth" ? ch.quick.slice(0, 3) : ch.qquick.slice(0, 3);
+    var r0 = rateOf(net), ru0 = rateU(net), capS = cf ? fx(tcf.cap) : 0;
+    var maxJ = cpay === "eth" ? (r0 && capS ? Math.floor(capS / r0 * 0.98 * 1e5) / 1e5 : 0) : cpay === "usdt" ? (ru0 && capS ? Math.floor(capS / ru0 * 0.98 * 100) / 100 : 0) : capS;
+    var jUnit = cpay === "eth" ? ch.sym : cpay === "usdt" ? "USDT" : ch.qs, jQuick = cpay === "eth" ? ch.quick.slice(0, 3) : cpay === "usdt" ? ch.uquick : ch.qquick.slice(0, 3);
     var supShown = X.nf(Number(String(draft.supply).replace(/[^0-9]/g, "") || 0), 0);
     return '<a class="sl-back" href="#/">' + X.ico("back") + X.esc(X.t("back")) + "</a>" +
       '<div class="sl-pagehead"><span class="sl-eyebrow"><i class="rule"></i>Sectora Launch · ' + X.esc(ch.name) + "</span><h1>" + X.esc(lt("c_t")) + "</h1><p>" + X.esc(lt("c_s", { c: ch.name, g: gTxt })) + "</p></div>" +
@@ -1054,7 +1079,7 @@
       '<div class="sl-field"><span class="sl-label">' + X.esc(lt("c_dur")) + '</span><div class="sl-chips">' + DUR.map(function (d, i) { return '<button type="button" data-a="ldur" data-v="' + i + '"' + (draft.dur === i ? ' class="on"' : "") + ">" + X.esc(lt("dur")[i]) + "</button>"; }).join("") + "</div>" +
       "<small>" + X.esc(lt("c_dur_h", { g: gTxt })) + "</small></div>" +
       '<h4 class="sl-sub">' + X.esc(lt("c_join")) + "</h4>" +
-      '<div class="sl-pay">' + '<span>' + X.esc(lt("pay")) + "</span>" + ["eth", "sect"].map(function (x) { return '<button type="button" data-a="lcpay" data-v="' + x + '"' + (draft.pay === x ? ' class="on"' : "") + ">" + X.esc(x === "eth" ? ch.sym : ch.qs) + "</button>"; }).join("") + "</div>" +
+      '<div class="sl-pay">' + '<span>' + X.esc(lt("pay")) + "</span>" + ["eth", "usdt", "sect"].filter(function (x) { return x !== "usdt" || hasUsdt(net); }).map(function (x) { return '<button type="button" data-a="lcpay" data-v="' + x + '"' + (cpay === x ? ' class="on"' : "") + ">" + X.esc(x === "eth" ? ch.sym : x === "usdt" ? "USDT" : ch.qs) + "</button>"; }).join("") + "</div>" +
       '<div class="sl-field"><div class="sl-input-wrap"><input class="sl-input num" id="slLJoin" inputmode="decimal" placeholder="0" value="' + X.esc(draft.join) + '"><span class="unit">' + X.esc(jUnit) + "</span></div>" +
       '<div class="sl-quick" style="margin:6px 0 0">' + jQuick.map(function (v) { return '<button type="button" data-a="ljoinamt" data-v="' + v + '">' + v + "</button>"; }).join("") + (maxJ ? '<button type="button" data-a="ljoinamt" data-v="' + maxJ + '">' + X.esc(X.t("max")) + "</button>" : "") + "</div>" +
       "<small>" + X.esc(lt("c_join_h", { cap: capTxt })) + "</small></div>" +
@@ -1120,6 +1145,21 @@
         return;
       }
       txFlow(net, function (s) { return fac(net, s).createCoin([name, sym, meta, sup, dur, tier], amount, lock); }, done);
+      return;
+    }
+    if (jp.pay === "usdt") {
+      // paying USDT: exact approval for this amount, then swapped to SECT on the fixed route
+      var units = usdtWei();
+      if (!(units > 0n)) return;
+      if (ms.uAllow == null || ms.uAllow < units) {
+        txFlow(net, function (s) { return usdtSend(net, s, factoryOf(net), units, ms.uAllow != null && ms.uAllow > 0n); }, function () { ME[net] && (ME[net].at = 0); loadMe(net).then(function () { X.refreshLive("summary"); }); return { html: X.esc(lt("ok_approve")) }; });
+        return;
+      }
+      txFlow(net, function (s) {
+        return quoteUsdt(net, units).then(function (out) {
+          return fac(net, s).createCoinWithUSDT([name, sym, meta, sup, dur, tier], units, out * 98n / 100n, lock);
+        });
+      }, done);
       return;
     }
     // paying ETH: swapped to SECT on the fixed route; SECT above the wallet maximum comes back to the creator
@@ -1248,26 +1288,26 @@
     return html + "</div>";
   }
   function joinPanel(k, td) {
-    var c = td.c, ch = CHAINS[k], m = td.mine, pay = ui.pay, locked = m && m.seat && m.seat.locked;
+    var c = td.c, ch = CHAINS[k], m = td.mine, pay = payOf(k, ui.pay), locked = m && m.seat && m.seat.locked;
     var room = c.target - c.raised, capLeft = c.cap - (m && m.seat ? m.seat.amount : 0n), fit = room < capLeft ? room : capLeft;
     var head = "<h3>" + X.ico("rocket") + X.esc(lt("j_t")) + "</h3>";
     if (W.addr && m && fit <= 0n) return '<div class="sl-panel" id="slLTrade">' + head + '<div class="sl-alert is-ok">' + X.ico("check") + "<span>" + X.esc(lt("j_full")) + "</span></div></div>";
-    var payRow = '<div class="sl-pay"><span>' + X.esc(lt("pay")) + "</span>" + ["eth", "sect"].map(function (x) { return '<button data-a="lpay" data-v="' + x + '"' + (pay === x ? ' class="on"' : "") + ">" + X.esc(x === "eth" ? ch.sym : ch.qs) + "</button>"; }).join("") + "</div>";
-    var unit = pay === "eth" ? ch.sym : ch.qs, r0 = rateOf(k);
-    var bal = '<div class="sl-bal"><span>' + X.esc(lt("t_bal")) + '</span><span class="num">' + (m ? X.esc(pay === "eth" ? amt(fx(m.native), ch.sym) : amt(fx(m.sect), ch.qs)) : "—") + "</span></div>";
-    // paying ETH, Max aims 2 % above what fits (price impact): whatever does not fit comes back as SECT
-    var maxV = pay === "eth" ? (r0 ? Math.ceil(fx(fit) / r0 * 1.02 * 1e5) / 1e5 : 0) : Math.floor(fx(fit) * 1e4) / 1e4;
-    var quick = (pay === "eth" ? ch.quick.slice(0, 3) : ch.qquick.slice(0, 3)).map(function (v) { return '<button data-a="lamt" data-v="' + v + '">' + v + "</button>"; }).join("") +
+    var payRow = '<div class="sl-pay"><span>' + X.esc(lt("pay")) + "</span>" + ["eth", "usdt", "sect"].filter(function (x) { return x !== "usdt" || hasUsdt(k); }).map(function (x) { return '<button data-a="lpay" data-v="' + x + '"' + (pay === x ? ' class="on"' : "") + ">" + X.esc(x === "eth" ? ch.sym : x === "usdt" ? "USDT" : ch.qs) + "</button>"; }).join("") + "</div>";
+    var unit = pay === "eth" ? ch.sym : pay === "usdt" ? "USDT" : ch.qs, r0 = rateOf(k), ru0 = rateU(k);
+    var bal = '<div class="sl-bal"><span>' + X.esc(lt("t_bal")) + '</span><span class="num">' + (m ? X.esc(pay === "eth" ? amt(fx(m.native), ch.sym) : pay === "usdt" ? (m.usdt != null ? X.nf(fu(m.usdt), 2) + " USDT" : "—") : amt(fx(m.sect), ch.qs)) : "—") + "</span></div>";
+    // paying ETH or USDT, Max aims 2 % above what fits (price impact): whatever does not fit comes back as SECT
+    var maxV = pay === "eth" ? (r0 ? Math.ceil(fx(fit) / r0 * 1.02 * 1e5) / 1e5 : 0) : pay === "usdt" ? (ru0 ? Math.ceil(fx(fit) / ru0 * 1.02 * 100) / 100 : 0) : Math.floor(fx(fit) * 1e4) / 1e4;
+    var quick = (pay === "eth" ? ch.quick.slice(0, 3) : pay === "usdt" ? ch.uquick : ch.qquick.slice(0, 3)).map(function (v) { return '<button data-a="lamt" data-v="' + v + '">' + v + "</button>"; }).join("") +
       (maxV > 0 ? '<button data-a="lamt" data-v="' + maxV + '">' + X.esc(X.t("max")) + "</button>" : "");
     var lock = '<label class="sl-check" style="margin:2px 0 14px"><input type="checkbox" id="slJLock"' + (locked || ui.lock ? " checked" : "") + (locked ? " disabled" : "") + "><span>" + X.esc(lt("c_lock")) + '<br><small class="faint">' + X.esc(lt("c_lock_h")) + "</small></span></label>";
-    var slip = pay === "eth" ? '<div class="sl-slip"><span>' + X.esc(lt("t_slip")) + "</span>" + [1, 3, 5].map(function (s2) { return '<button data-a="lslip" data-v="' + s2 + '"' + (ui.slip === s2 ? ' class="on"' : "") + ">" + s2 + " %</button>"; }).join("") + "</div>" : "";
+    var slip = pay !== "sect" ? '<div class="sl-slip"><span>' + X.esc(lt("t_slip")) + "</span>" + [1, 3, 5].map(function (s2) { return '<button data-a="lslip" data-v="' + s2 + '"' + (ui.slip === s2 ? ' class="on"' : "") + ">" + s2 + " %</button>"; }).join("") + "</div>" : "";
     var btn = !W.addr ? '<button class="sl-btn sl-btn-p sl-btn-w" data-a="wconnect">' + X.esc(lt("w_connect")) + "</button>"
       : '<button class="sl-btn sl-btn-w sl-btn-g" data-a="ltrade" id="slLTradeBtn" disabled>' + X.esc(lt("j_btn")) + "</button>";
     return '<div class="sl-panel" id="slLTrade">' + head + payRow +
       '<div class="sl-field" style="margin-bottom:12px"><div class="sl-input-wrap"><input class="sl-input num" id="slLAmt" inputmode="decimal" placeholder="0.0" autocomplete="off" value="' + X.esc(ui.amt) + '"><span class="unit">' + X.esc(unit) + "</span></div></div>" +
       bal + '<div class="sl-quick">' + quick + "</div>" + lock + slip +
       '<div class="sl-quote" id="slLQuote">' + quoteRows([]) + "</div>" +
-      '<div id="slLTradeErr"></div>' + btn + (pay === "eth" ? '<p class="sl-route">' + X.esc(lt("j_swap")) + "</p>" : "") + "</div>";
+      '<div id="slLTradeErr"></div>' + btn + (pay !== "sect" ? '<p class="sl-route">' + X.esc(lt(pay === "usdt" ? "j_swap_u" : "j_swap")) + "</p>" : "") + "</div>";
   }
   function tradePanel(k, td) {
     var c = td.c, ch = CHAINS[k], side = ui.side, m = td.mine, uni = ch.swap ? ch.swap + c.addr : "";
@@ -1320,8 +1360,8 @@
         er.innerHTML = q.err ? '<div class="sl-alert is-bad" style="margin-bottom:12px">' + X.ico("alert") + "<span>" + X.esc(q.err) + "</span></div>" : q.note ? '<div class="sl-alert is-info" style="margin-bottom:12px">' + X.ico("info") + "<span>" + X.esc(q.note) + "</span></div>" : "";
         if (btn) {
           btn.disabled = !!q.err || !W.addr;
-          if (q.approve) btn.textContent = q.approveQ ? lt("approve_sect", { n: amt(fx(q.amount)) }) : lt("t_approve", { s: td.c.sym });
-          else btn.textContent = q.kind === "joineth" || q.kind === "joinsect" ? lt("j_btn") : lt(ui.side === "buy" ? "t_btn_buy" : "t_btn_sell", { s: td.c.sym });
+          if (q.approve) btn.textContent = q.approveU ? lt("approve_usdt", { n: X.nf(fu(q.amount), 2) }) : q.approveQ ? lt("approve_sect", { n: amt(fx(q.amount)) }) : lt("t_approve", { s: td.c.sym });
+          else btn.textContent = q.kind === "joineth" || q.kind === "joinsect" || q.kind === "joinusdt" ? lt("j_btn") : lt(ui.side === "buy" ? "t_btn_buy" : "t_btn_sell", { s: td.c.sym });
         }
       }, function (err) { er.innerHTML = '<div class="sl-alert is-bad" style="margin-bottom:12px">' + X.ico("alert") + "<span>" + X.esc(errMsg(err)) + "</span></div>"; }); }, 260);
     }
@@ -1333,12 +1373,12 @@
   }
   function quote(k, td, v) {
     var c = td.c, ch = CHAINS[k], m = td.mine, slip = BigInt(Math.round(ui.slip * 100));
-    var wei;
-    try { wei = E.parseEther(String(v)); } catch (e) { return Promise.reject(new Error("amount")); }
+    var wei, pay = payOf(k, ui.pay);
+    try { wei = !c.launched && pay === "usdt" ? E.parseUnits(String(v), 6) : E.parseEther(String(v)); } catch (e) { return Promise.reject(new Error("amount")); }
     var cut = function (x) { return x * (10000n - slip) / 10000n; };
     if (!c.launched) {
       // joining the reserve: only what fits under the target and this wallet's maximum is taken
-      var pay = ui.pay, sq = pay === "eth" ? quoteEth(k, wei) : Promise.resolve(wei);
+      var sq = pay === "eth" ? quoteEth(k, wei) : pay === "usdt" ? quoteUsdt(k, wei) : Promise.resolve(wei);
       return sq.then(function (s) {
         var room = c.target - c.raised, capLeft = c.cap - (m && m.seat ? m.seat.amount : 0n), fit = room < capLeft ? room : capLeft;
         if (fit < 0n) fit = 0n;
@@ -1346,19 +1386,21 @@
         if (pay === "sect" && s < fit && fit - s <= 10n ** 14n) s = fit;
         var used = s < fit ? s : fit, tokens = fx(used) * fx(c.res) / fx(c.target), lock = !!ui.lock || !!(m && m.seat && m.seat.locked);
         var rows = [];
-        if (pay === "eth") rows.push([lt("j_sect"), amt(fx(s), ch.qs)]);
+        if (pay !== "sect") rows.push([lt(pay === "usdt" ? "j_sect_u" : "j_sect"), amt(fx(s), ch.qs)]);
         rows.push([lt("j_in"), amt(fx(used), ch.qs) + (usdOf(k, fx(used)) ? " · " + usdOf(k, fx(used)) : "")]);
         if (s > used) rows.push([lt("j_back"), amt(fx(s - used), ch.qs)]);
         rows.push([lt("j_get"), X.compact(tokens) + " $" + c.sym + (lock ? " · " + lt("bonus_up") : "")]);
         rows.push([lt("j_open"), amt(tokens * c.oprice, ch.qs) + (usdOf(k, tokens * c.oprice) ? " · " + usdOf(k, tokens * c.oprice) : "")]);
-        if (pay === "eth") rows.push([lt("t_min"), amt(fx(cut(s)), ch.qs)]);
+        if (pay !== "sect") rows.push([lt("t_min"), amt(fx(cut(s)), ch.qs)]);
         var err = "";
         if (statusOf(k, c) !== "open") err = lt("r_closed");
         else if (fit <= 0n) err = lt("j_full");
         else if (m && pay === "eth" && wei > m.native) err = lt("e_bal", { s: ch.sym });
+        else if (m && pay === "usdt" && m.usdt != null && wei > m.usdt) err = lt("e_bal", { s: "USDT" });
         else if (m && pay === "sect" && used > m.sect) err = lt("e_bal", { s: ch.qs });
         var q = { rows: rows, err: err, note: used > 0n && used === room ? lt("j_launch", { d: ch.dex }) : "", lock: lock };
         if (pay === "eth") { q.kind = "joineth"; q.value = wei; q.minQuote = cut(s); }
+        else if (pay === "usdt") { q.kind = "joinusdt"; q.units = wei; q.minQuote = cut(s); q.amount = wei; q.approve = !!(m && m.uAllow != null && m.uAllow < wei); q.approveU = true; q.reset = !!(m && m.uAllow != null && m.uAllow > 0n); q.spender = factoryOf(k); }
         else { q.kind = "joinsect"; q.amount = used; q.approve = m && m.qAllow < used; q.approveQ = true; q.spender = factoryOf(k); }
         return q;
       });
@@ -1379,15 +1421,17 @@
     var c = td.c, ch = CHAINS[k], dl = Math.floor(chainNow(k) / 1000) + 1200;
     txFlow(k, function (s) {
       // approvals are always for the exact amount, never unlimited
+      if (q.approve && q.approveU) return usdtSend(k, s, q.spender, q.amount, q.reset);
       if (q.approve) return (q.approveQ ? qC(k, s) : tokC(c.addr, s)).approve(q.spender, q.amount);
       if (q.kind === "joineth") return fac(k, s).contributeWithETH(c.addr, q.minQuote, q.lock, { value: q.value });
+      if (q.kind === "joinusdt") return fac(k, s).contributeWithUSDT(c.addr, q.units, q.minQuote, q.lock);
       if (q.kind === "joinsect") return fac(k, s).contribute(c.addr, q.amount, q.lock);
       return new E.Contract(ch.router, ROUTER_ABI, s).swapExactTokensForTokens(q.amount, q.min, q.path, W.addr, dl);
     }, function (rc) {
       td.at = 0; chainState(k).at = 0; ME[k] && (ME[k].at = 0);
       if (q.approve) return { html: X.esc(lt("ok_approve")) };
       ui.amt = "";
-      if (q.kind === "joineth" || q.kind === "joinsect") {
+      if (q.kind === "joineth" || q.kind === "joinsect" || q.kind === "joinusdt") {
         var launched = rc.logs.some(function (l) { try { var p = IF.parseLog(l); return p && p.name === "Launched"; } catch (e) { return false; } });
         return { html: X.esc(launched ? lt("ok_live") : lt("ok_join")) };
       }
