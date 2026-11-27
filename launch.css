@@ -1472,3 +1472,8 @@ html.ci-fade .sl-top, html.ci-fade .sl-banner, html.ci-fade .sl-tabbar, html.ci-
 /* the field of coins fades out at the bottom of the cover instead of ending in a straight cut */
 .sl-cv-bg { -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - 110px), transparent 100%); mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - 110px), transparent 100%); }
 @media (max-width: 700px) { .sl-cv-bg { -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - 64px), transparent 100%); mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - 64px), transparent 100%); } }
+
+/* the header does not cover the coins: over the cover it has no bar and no line while the page is at the top
+   (the coins start just below it), and turns into frosted glass once the page scrolls under it */
+html.sl-cvh .sl-top { background: rgba(255, 255, 255, .78); -webkit-backdrop-filter: saturate(1.6) blur(18px); backdrop-filter: saturate(1.6) blur(18px); border-bottom-color: rgba(10, 13, 18, .07); transition: background-color .35s var(--ease), border-color .35s var(--ease); }
+html.sl-cvh.sl-cvh0 .sl-top { background: transparent; -webkit-backdrop-filter: none; backdrop-filter: none; border-bottom-color: transparent; }

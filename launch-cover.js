@@ -116,7 +116,8 @@
     // the coins of the cover itself stay below the header (from y0)
     var htop = hero.getBoundingClientRect().top + scrollY;
     bg.style.top = (-htop).toFixed(1) + "px";
-    var y0 = Math.max(0, htop - 48);
+    // the header never covers a coin: they all start just below it (the header is clear while the page is at the top)
+    var y0 = htop, yb = htop + 6;
     var W = bg.clientWidth, H = bg.clientHeight, br = bg.getBoundingClientRect(), ir = inner.getBoundingClientRect();
     var small = W < 700, pad = small ? 4 : 18;
     var keep = [ir.left - br.left - pad, ir.top - br.top - pad, ir.right - br.left + pad, ir.bottom - br.top + pad];
@@ -130,6 +131,7 @@
       var d = minD + rnd() * (maxD - minD), x = -d * .2 + rnd() * (W + d * .4), y = y0 - d * .2 + rnd() * (H - y0 + d * .4);
       if (x + d / 2 > keep[0] && x - d / 2 < keep[2] && y + d / 2 > keep[1] && y - d / 2 < keep[3]) continue;
       if (y + d * .64 > H) continue; // whole coins only at the bottom of the cover (they fade out there, never cut)
+      if (y - d / 2 < yb) continue;
       var ok = true;
       for (var j = 0; j < placed.length; j++) { var p = placed[j]; if (Math.hypot(p[0] - x, p[1] - y) < (p[2] + d) / 2 + 8) { ok = false; break; } }
       if (!ok) continue;
@@ -189,6 +191,7 @@
       ring = document.createElement("i"); ring.className = "sl-cv-ring"; ring.style.left = sx.toFixed(1) + "px"; ring.style.top = sy.toFixed(1) + "px";
       bg.appendChild(ring);
     }
+    HT.classList.add("sl-cvh"); glassTop();
     state = { hero: hero, coins: coins, t0: intro ? introT0 : keepT0 || performance.now(), raf: 0, on: true, W: W, mark: intro ? mark : null, mc: mc, ring: ring };
     if ("IntersectionObserver" in window) {
       state.io = new IntersectionObserver(function (es) { if (!state) return; state.on = es[es.length - 1].isIntersecting; if (state.on && !state.raf) loop(); }, { threshold: 0 });
@@ -255,7 +258,12 @@
       loop();
     });
   }
+  // header over the cover: clear (no bar, no line) while the page is at the top, frosted glass once it scrolls
+  var HT = document.documentElement;
+  function glassTop() { HT.classList.toggle("sl-cvh0", scrollY < 12); }
+  addEventListener("scroll", function () { if (state) glassTop(); }, { passive: true });
   function unmount() {
+    HT.classList.remove("sl-cvh", "sl-cvh0");
     if (!state) return;
     if (state.raf) cancelAnimationFrame(state.raf);
     if (state.io) state.io.disconnect();
